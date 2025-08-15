@@ -1,7 +1,6 @@
 {
   "whatsapp_provider": "twilio",
   "twilio_account_sid": "ACabfcb37ffd779fca3dfdb47a028352a7",
-  "twilio_auth_token": "8699c97724e7c3458fb5a0f79dffbc5e",
   "twilio_whatsapp_number": "whatsapp:+15557888072",
   "meta_access_token": "",
   "meta_phone_number_id": "",
@@ -14,4 +13,5 @@
   "enabled": true,
   "send_media": true,
   "send_location": false
+
 }
