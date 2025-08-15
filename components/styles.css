@@ -1,0 +1,83 @@
+/* Import Google Font */
+@import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&display=swap');
+
+/* Police globale et couleur de texte */
+html, body, [class*="st-"] {
+    font-family: 'Nunito', sans-serif !important;
+    font-size: 16px;
+    color: #2F4F4F; /* Gris-vert doux */
+}
+
+/* Titres */
+h1, h2, h3 {
+    color: #2E7D32; /* Vert profond */
+    font-weight: 700;
+}
+h4, h5, h6 {
+    color: #388E3C; /* Vert moyen */
+    font-weight: 600;
+}
+
+/* Liens */
+a {
+    color: #0277BD;
+    text-decoration: none;
+}
+a:hover {
+    text-decoration: underline;
+}
+
+/* Boutons Streamlit */
+button[kind="primary"] {
+    background-color: #43A047 !important; /* Vert clair */
+    color: white !important;
+    border-radius: 10px !important;
+    border: none !important;
+}
+button[kind="primary"]:hover {
+    background-color: #2E7D32 !important; /* Vert plus foncé */
+}
+
+/* Encadrés et widgets */
+[class*="block-container"] {
+    padding-top: 2rem;
+}
+.stMarkdown, .stTextInput, .stSelectbox, .stNumberInput {
+    border-radius: 8px !important;
+}
+
+/* Tableaux */
+table {
+    border-collapse: collapse;
+    width: 100%;
+}
+th {
+    background-color: #E8F5E9;
+    color: #2E7D32;
+    padding: 8px;
+}
+td {
+    padding: 8px;
+    border-bottom: 1px solid #ddd;
+}
+
+
+
+
+
+
+
+
+
+
+
+/*
+
+def load_css(file_name):
+    css_path = Path(__file__).parent / "components" / file_name
+    with open(css_path) as f:
+        st.markdown(f"<style>{f.read()}</style>", unsafe_allow_html=True)
+
+load_css("styles.css")
+
+*/

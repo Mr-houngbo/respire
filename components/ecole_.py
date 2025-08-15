@@ -1,0 +1,946 @@
+import streamlit as st
+from components.calculer_iqa import calculer_iqa
+import pandas as pd
+import os
+from urllib.parse import urlencode
+import requests
+from datetime import datetime
+import random
+from config.settings import token,BASE_URL,VALEURS_LIMITE,location_ids,DATA_DIR
+from src.functions import fetch_current_data,calculer_iqa
+import streamlit.components.v1 as components
+import time
+
+
+#=============================================================================================================
+
+
+#=============================================================================================================
+def show_daily_tips(location_id, token):
+    """
+    Affiche des conseils adaptatifs selon la qualité de l'air actuelle
+    """
+    import streamlit.components.v1 as components
+    
+    # En-tête stylisé
+    st.markdown("""
+    <div style="
+        background: linear-gradient(135deg, #ff9a9e 0%, #fecfef 50%, #fecfef 100%);
+        padding: 2rem;
+        border-radius: 20px;
+        margin-bottom: 2rem;
+        box-shadow: 0 10px 30px rgba(255, 154, 158, 0.3);
+        text-align: center;
+    ">
+        <h1 style="
+            color: white;
+            font-size: 2.2rem;
+            margin: 0;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+        ">Des conseils magiques adaptés à l'air d'aujourd'hui</h1>
+        
+    </div>
+    """, unsafe_allow_html=True)
+    
+    # Récupérer l'IQA actuel
+    df = fetch_current_data(location_id, token)
+    df = pd.DataFrame([df])
+    iqa = calculer_iqa(df)
+    
+    if not iqa:
+        st.error("🔮 Impossible de récupérer les conseils magiques du jour")
+        return
+    
+    # Conseils par niveau avec couleurs harmonisées
+    if iqa <= 50:
+        conseils = [
+            {"icon": "🏃‍♂️", "titre": "Fais du sport dehors", "desc": "C'est parfait pour jouer ou courir dans la cour !"},
+            {"icon": "🌿", "titre": "Occupe-toi du jardin", "desc": "Les plantes adorent aussi cet air pur !"},
+            {"icon": "🪟", "titre": "Aère ta classe", "desc": "Ouvre les fenêtres pendant les pauses."}
+        ]
+        couleur_bg = "#e8f5e8"
+        couleur_border = "#4caf50"
+        niveau_emoji = "😊"
+        niveau_texte = "Air excellent"
+        
+    elif iqa <= 100:
+        conseils = [
+            {"icon": "🚶‍♀️", "titre": "Privilégie la marche", "desc": "Viens à pied à l'école si possible."},
+            {"icon": "💧", "titre": "Hydrate-toi", "desc": "Bois de l'eau régulièrement pour rester en forme."},
+            {"icon": "🧼", "titre": "Lave-toi les mains", "desc": "Surtout avant de manger ou après la récré."}
+        ]
+        couleur_bg = "#f1f8e9"
+        couleur_border = "#8bc34a"
+        niveau_emoji = "🙂"
+        niveau_texte = "Air bon"
+        
+    elif iqa <= 150:
+        conseils = [
+            {"icon": "⛅", "titre": "Évite les efforts", "desc": "Limite les activités physiques en plein air."},
+            {"icon": "🪟", "titre": "Aération courte", "desc": "Aère ta salle en petits moments bien choisis."},
+            {"icon": "💤", "titre": "Repose-toi", "desc": "Sois attentif à ton énergie pendant la journée."}
+        ]
+        couleur_bg = "#fff8e1"
+        couleur_border = "#ffb300"
+        niveau_emoji = "😐"
+        niveau_texte = "Air moyen"
+        
+    elif iqa <= 200:
+        conseils = [
+            {"icon": "😷", "titre": "Porte ton masque", "desc": "Surtout si tu tousses ou si l'air pique les yeux."},
+            {"icon": "📚", "titre": "Reste calme", "desc": "Fais des activités tranquilles comme la lecture."},
+            {"icon": "🏠", "titre": "Reste à l'intérieur", "desc": "Pas de sport ou récré dehors aujourd'hui."}
+        ]
+        couleur_bg = "#ffebee"
+        couleur_border = "#e53935"
+        niveau_emoji = "😷"
+        niveau_texte = "Air mauvais"
+        
+    else:
+        conseils = [
+            {"icon": "🚫", "titre": "Ne sors pas", "desc": "L'air est très mauvais, reste à l'abri en classe."},
+            {"icon": "🧴", "titre": "Lave-toi bien", "desc": "Fais attention à ton hygiène pour te protéger."},
+            {"icon": "📞", "titre": "Préviens un adulte", "desc": "Si tu ne te sens pas bien, dis-le à ton professeur."}
+        ]
+        couleur_bg = "#fce4ec"
+        couleur_border = "#8e24aa"
+        niveau_emoji = "😨"
+        niveau_texte = "Air très mauvais"
+    
+    # Affichage des conseils avec st.components.v1.html
+    cols = st.columns(len(conseils))
+    
+    for i, conseil in enumerate(conseils):
+        with cols[i]:
+            components.html(f"""
+            <div style='
+                background: {couleur_bg};
+                border: 2px solid {couleur_border};
+                border-radius: 15px;
+                padding: 20px;
+                text-align: center;
+                height: 200px;
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                font-family: "Source Sans Pro", sans-serif;
+                box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+                transition: transform 0.3s ease;
+                cursor: pointer;
+            ' onmouseover="this.style.transform='translateY(-5px)'; this.style.boxShadow='0 10px 25px rgba(0,0,0,0.15)'"
+               onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 5px 15px rgba(0,0,0,0.1)'">
+                <div style='font-size: 45px; margin-bottom: 12px;'>{conseil["icon"]}</div>
+                <h4 style='
+                    color: {couleur_border}; 
+                    margin: 8px 0; 
+                    font-size: 16px;
+                    font-weight: bold;
+                '>{conseil["titre"]}</h4>
+                <p style='
+                    color: #555; 
+                    font-size: 13px; 
+                    line-height: 1.4;
+                    margin: 0;
+                    padding: 0 5px;
+                '>{conseil["desc"]}</p>
+            </div>
+            """, height=270)
+    
+#=============================================================================================================
+
+def show_header(nom_ecole: str = None, logo_path: str = None):
+    """
+    Affiche un en-tête moderne et attractif pour la page École.
+    :param nom_ecole: Nom de l'école à afficher (optionnel)
+    :param logo_path: Chemin vers le logo de l'école (optionnel)
+    """
+    
+    # CSS personnalisé pour l'animation et le style
+    st.markdown("""
+    <style>
+    .header-container {
+        background: linear-gradient(135deg, #e8f5e8 0%, #c8e6c9 50%, #a5d6a7 100%);
+        border-radius: 20px;
+        padding: 25px;
+        margin-bottom: 10px;
+        box-shadow: 0 8px 32px rgba(46, 125, 50, 0.1);
+        border: 2px solid rgba(46, 125, 50, 0.1);
+        backdrop-filter: blur(10px);
+    }
+    
+    .title-main {
+        font-size: 2.5rem;
+        font-weight: bold;
+        color: #1b5e20;
+        text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+        margin-bottom: 0px;
+        animation: fadeInUp 1s ease-out;
+    }
+    
+    .subtitle {
+        font-size: 1.3rem;
+        color: #2e7d32;
+        margin-bottom: 0px;
+        font-weight: 500;
+        animation: fadeInUp 1.2s ease-out;
+    }
+    
+    .school-name {
+        font-size: 1.1rem;
+        color: #4caf50;
+        background: rgba(255,255,255,0.7);
+        padding: 0px 0px;
+        padding-left: 0px;
+        border-radius: 25px;
+        display: inline-block;
+        margin-top: 0px;
+        box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+        animation: fadeInUp 1.4s ease-out;
+    }
+    
+    .logo-container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100%;
+    }
+    
+    .logo-image {
+        border-radius: 15px;
+        box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+        border: 3px solid white;
+        animation: bounce 2s infinite;
+    }
+    
+    .air-emoji {
+        font-size: 2rem;
+        animation: float 3s ease-in-out infinite;
+        margin: 0 10px;
+    }
+    
+    @keyframes fadeInUp {
+        from {
+            opacity: 0;
+            transform: translateY(30px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+    
+    @keyframes bounce {
+        0%, 20%, 50%, 80%, 100% {
+            transform: translateY(0);
+        }
+        40% {
+            transform: translateY(-10px);
+        }
+        60% {
+            transform: translateY(-5px);
+        }
+    }
+    
+    @keyframes float {
+        0%, 100% {
+            transform: translateY(0px);
+        }
+        50% {
+            transform: translateY(-10px);
+        }
+    }
+    
+    .decorative-line {
+        height: 4px;
+        background: linear-gradient(90deg, #4caf50, #81c784, #a5d6a7, #4caf50);
+        border-radius: 2px;
+        margin: 10px 0;
+        animation: shimmer 2s infinite;
+    }
+    
+    @keyframes shimmer {
+        0% {
+            background-position: -200px 0;
+        }
+        100% {
+            background-position: 200px 0;
+        }
+    }
+    </style>
+    """, unsafe_allow_html=True)
+
+    # Conteneur principal avec design moderne
+    with st.container():
+        st.markdown('<div class="header-container">', unsafe_allow_html=True)
+        
+        col1, col2 = st.columns([4, 1])
+        
+        with col1:
+            # Titre principal avec emojis animés
+            st.markdown(
+                """
+                <div class="title-main">
+                    Bienvenue dans ton espace Respire
+                </div>
+                """,
+                unsafe_allow_html=True
+            )
+            
+            # Sous-titre engageant
+            st.markdown(
+                '<div class="subtitle"> Découvre comment va l\'air de ton école aujourd\'hui ! </div>',
+                unsafe_allow_html=True
+            )
+            
+            
+        with col2:
+            if logo_path:
+                st.markdown('<div class="logo-container">', unsafe_allow_html=True)
+                try:
+                    # Nom de l'école avec style modernisé
+                    if nom_ecole:
+                        st.markdown(
+                            f'<div class="school-name">{nom_ecole}</div>',
+                            unsafe_allow_html=True
+                        )
+        
+                    st.image(logo_path, width=100, use_container_width=False)
+                except:
+                    # Fallback si l'image ne se charge pas
+                    st.markdown(
+                        '<div style="font-size: 60px; text-align: center;">🏫</div>',
+                        unsafe_allow_html=True
+                    )
+                st.markdown('</div>', unsafe_allow_html=True)
+            else:
+                # Logo par défaut si aucun logo fourni
+                st.markdown(
+                    '<div class="logo-container"><div style="font-size: 60px; text-align: center;">🏫</div></div>',
+                    unsafe_allow_html=True
+                )
+        
+        st.markdown('</div>', unsafe_allow_html=True)
+        
+        # Ligne décorative animée
+        st.markdown('<div class="decorative-line"></div>', unsafe_allow_html=True)
+
+#============================================================================================================
+
+def section_en_savoir_plus_air(liens):
+    """
+    Crée une section 'En savoir plus sur l'air' avec un carrousel de vidéos
+    
+    Args:
+        liens (dict): Dictionnaire contenant les liens et noms des vidéos
+                     Format: {"1":{"lien":"url","nom":"nom"}, ...}
+    """
+    
+    def extract_youtube_id(url):
+        """Extrait l'ID YouTube d'une URL"""
+        if 'youtu.be' in url:
+            return url.split('/')[-1].split('?')[0]
+        elif 'youtube.com' in url:
+            return url.split('v=')[1].split('&')[0]
+        return None
+    
+    # CSS pour le carrousel
+    st.markdown("""
+    <style>
+    .air-section {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        padding: 40px;
+        border-radius: 20px;
+        margin: 30px 0;
+        box-shadow: 0 15px 35px rgba(0,0,0,0.1);
+    }
+    
+    .air-title {
+        color: white;
+        text-align: center;
+        font-size: 2.5em;
+        font-weight: bold;
+        margin-bottom: 30px;
+        text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+    }
+    
+    
+    .video-card {
+        flex: 0 0 400px;
+        background: white;
+        border-radius: 15px;
+        padding: 20px;
+        box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+    
+    .video-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 15px 35px rgba(0,0,0,0.3);
+    }
+    
+    .video-title {
+        color: #333;
+        font-size: 1.2em;
+        font-weight: bold;
+        margin-bottom: 15px;
+        text-align: center;
+    }
+    
+    .video-frame {
+        width: 100%;
+        height: 405px;
+        border-radius: 10px;
+        border: none;
+    }
+    
+    .carousel-controls {
+        display: flex;
+        justify-content: center;
+        gap: 10px;
+        margin-top: 20px;
+    }
+    
+    .control-btn {
+        background: rgba(255,255,255,0.2);
+        border: 2px solid white;
+        color: white;
+        padding: 10px 20px;
+        border-radius: 25px;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        font-weight: bold;
+    }
+    
+    .control-btn:hover {
+        background: white;
+        color: #667eea;
+    }
+    
+    
+    .video-carousel::-webkit-scrollbar-track {
+        background: rgba(255,255,255,0.1);
+        border-radius: 4px;
+    }
+    
+    .video-carousel::-webkit-scrollbar-thumb {
+        background: rgba(255,255,255,0.3);
+        border-radius: 4px;
+    }
+    
+    .video-carousel::-webkit-scrollbar-thumb:hover {
+        background: rgba(255,255,255,0.5);
+    }
+    </style>
+    """, unsafe_allow_html=True)
+    
+    # Conteneur principal
+    st.markdown('<div class="air-section">', unsafe_allow_html=True)
+    st.markdown('<h2 class="air-title"> En savoir plus sur l\'air</h2>', unsafe_allow_html=True)
+    
+    
+    # Navigation avec boutons précédent/suivant
+    if 'current_video_index' not in st.session_state:
+        st.session_state.current_video_index = 0
+    
+    videos_list = list(liens.items())
+    current_index = st.session_state.current_video_index
+    
+    # Contrôles de navigation
+    col1, col2, col3, col4, col5 = st.columns([1, 1, 2, 1, 1])
+    
+    with col2:
+        if st.button("⬅️ Précédent", key="prev_video"):
+            if current_index > 0:
+                st.session_state.current_video_index -= 1
+                st.rerun()
+    
+    with col3:
+        st.markdown(f'''
+        <p style="color: white; text-align: center; font-weight: bold;">
+        Vidéo {current_index + 1} sur {len(videos_list)}
+        </p>
+        ''', unsafe_allow_html=True)
+    
+    with col4:
+        if st.button("Suivant ➡️", key="next_video"):
+            if current_index < len(videos_list) - 1:
+                st.session_state.current_video_index += 1
+                st.rerun()
+    
+    # Affichage de la vidéo courante
+    if videos_list:
+        key, video_info = videos_list[current_index]
+        video_id = extract_youtube_id(video_info["lien"])
+        
+        if video_id:
+            st.markdown(f'''
+            <div style="display: flex; justify-content: center;">
+                <div class="video-card" style="flex: 0 0 900px;">
+                    <div class="video-title">{video_info["nom"]}</div>
+                    <iframe class="video-frame" 
+                            src="https://www.youtube.com/embed/{video_id}"
+                            frameborder="0" 
+                            allowfullscreen>
+                    </iframe>
+                </div>
+            </div>
+            ''', unsafe_allow_html=True)
+    
+    
+    st.markdown('</div>', unsafe_allow_html=True)
+
+
+#=============================================================================================================
+ 
+#=============================================================================================================
+def show_air_quality(location_id, token):
+    st.markdown("## Comment va l'air de notre école ?")
+    
+    df = fetch_current_data(location_id, token)
+    df = pd.DataFrame([df])
+    iqa = calculer_iqa(df)
+    
+    if not iqa:
+        st.error("Impossible de calculer l'IQA.")
+        return
+    
+    # Détermination du niveau avec emojis adaptés et nouveaux seuils AQI
+    if iqa <= 50:
+        niveau = "Excellente"
+        emoji = "😊"
+        message = "Super ! L'air est pur, tu peux profiter de l'extérieur sans souci !"
+        couleur_bg = "#e8f5e8"
+        couleur_border = "#4caf50"
+    elif iqa <= 100:
+        niveau = "Bonne"
+        emoji = "🙂"
+        message = "L'air est acceptable. Un peu d'aération ne ferait pas de mal !"
+        couleur_bg = "#f1f8e9"
+        couleur_border = "#8bc34a"
+    elif iqa <= 150:
+        niveau = "Moyenne"
+        emoji = "😐"
+        message = "L'air est moyen. Évite les efforts intenses à l'extérieur."
+        couleur_bg = "#fff8e1"
+        couleur_border = "#ffb300"
+    elif iqa <= 200:
+        niveau = "Mauvaise"
+        emoji = "😷"
+        message = "L'air est pollué. Reste à l'intérieur et ferme les fenêtres."
+        couleur_bg = "#ffebee"
+        couleur_border = "#e53935"
+    else:
+        niveau = "Très mauvaise"
+        emoji = "😨"
+        message = "Attention ! L'air est très pollué. Aucune activité en extérieur recommandée."
+        couleur_bg = "#fce4ec"
+        couleur_border = "#8e24aa"
+    
+    # Disposition en colonnes : bloc de qualité à gauche, explication à droite
+    col1, col2 = st.columns([1, 1])
+    
+    # Colonne de gauche : Bloc de qualité de l'air
+    with col1:
+        st.markdown(
+            f"""
+            <div style='
+                background: {couleur_bg};
+                border: 3px solid {couleur_border};
+                border-radius: 20px;
+                padding: 30px;
+                text-align: center;
+                margin: 10px 0;
+                height: 350px;
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+            '>
+                <div style='font-size: 80px; margin-bottom: 10px;'>{emoji}</div>
+                <h1 style='color: {couleur_border}; font-size: 28px; margin: 10px 0;'>{niveau}</h1>
+                <h3 style='color: #555; font-size: 18px; line-height: 1.4;'>{message}</h3>
+                <p style='color: #777; margin-top: 15px; font-size: 14px;'>
+                    IQA : <strong>{int(iqa)}</strong><br>
+                    Dernière mesure : {datetime.now().strftime("%H:%M")}
+                </p>
+            </div>
+            """,
+            unsafe_allow_html=True
+        )
+    
+    # Colonne de droite : Explication de l'IQA pour les élèves
+    with col2:
+        # Utilisation de st.components.v1.html pour un rendu HTML propre
+        import streamlit.components.v1 as components
+        
+        components.html(f"""
+        <div style='
+            background: #f8f9ff;
+            border: 2px solid  {couleur_border};
+            border-radius: 15px;
+            padding: 25px;
+            font-family: "Source Sans Pro", sans-serif;
+            height: 300px;
+            overflow-y: auto;
+        '>
+            <h3 style='color: {couleur_border}; text-align: center; margin-bottom: 20px; margin-top: 0;'>
+                 C'est quoi l'IQA ?
+            </h3>
+            
+            <p style='margin: 10px 0; color: #333;'>
+                <strong>IQA</strong> = <strong>I</strong>ndice de <strong>Q</strong>ualité de l'<strong>A</strong>ir
+            </p>
+            
+            <p style='margin: 15px 0; color: #333; line-height: 1.5;'>
+                C'est comme un thermomètre pour l'air ! Il nous dit si l'air qu'on respire est bon ou pas.
+            </p>
+            
+            <p style='margin: 15px 0; color: #333; font-weight: bold;'> L'échelle de l'air :</p>
+            
+            <div style='margin: 15px 0;'>
+                <div style='display: flex; align-items: center; margin: 8px 0;'>
+                    <span style='font-size: 20px; margin-right: 10px;'>😊</span>
+                    <span style='color: #333;'><strong>0-50 :</strong> Air excellent</span>
+                </div>
+                <div style='display: flex; align-items: center; margin: 8px 0;'>
+                    <span style='font-size: 20px; margin-right: 10px;'>🙂</span>
+                    <span style='color: #333;'><strong>51-100 :</strong> Air bon</span>
+                </div>
+                <div style='display: flex; align-items: center; margin: 8px 0;'>
+                    <span style='font-size: 20px; margin-right: 10px;'>😐</span>
+                    <span style='color: #333;'><strong>101-150 :</strong> Air moyen</span>
+                </div>
+                <div style='display: flex; align-items: center; margin: 8px 0;'>
+                    <span style='font-size: 20px; margin-right: 10px;'>😷</span>
+                    <span style='color: #333;'><strong>151-200 :</strong> Air mauvais</span>
+                </div>
+                <div style='display: flex; align-items: center; margin: 8px 0;'>
+                    <span style='font-size: 20px; margin-right: 10px;'>😨</span>
+                    <span style='color: #333;'><strong>200+ :</strong> Air très mauvais</span>
+                </div>
+            </div>
+            
+            <div style='
+                background: #e3f2fd; 
+                padding: 12px; 
+                border-radius: 8px; 
+                margin-top: 15px;
+                border-left: 4px solid #2196f3;
+            '>
+                <p style='margin: 0; color: #333; font-size: 14px;'>
+                    💡 <strong>Le savais-tu ?</strong> L'IQA mesure les particules invisibles dans l'air qui peuvent nous faire tousser ou nous rendre malades.
+                </p>
+            </div>
+        </div>
+        """, height=400)
+    
+#=============================================================================================================
+
+def show_animation(video_url: str = None):
+    """
+    Affiche le bloc de sensibilisation avec une vidéo ou, à défaut, une image et un texte explicatif.
+    :param video_url: URL de la vidéo YouTube ou intégrée. Si None, affiche une alternative statique.
+    """
+    
+    # En-tête attractif avec animation
+    st.markdown("""
+    <div style="
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        padding: 2rem;
+        border-radius: 20px;
+        margin-bottom: 2rem;
+        box-shadow: 0 10px 30px rgba(102, 126, 234, 0.3);
+        text-align: center;
+        position: relative;
+        overflow: hidden;
+    ">
+        <div style="
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
+            animation: pulse 3s ease-in-out infinite;
+        "></div>
+        <h1 style="
+            color: white;
+            font-size: 2.3rem;
+            margin: 0;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+            position: relative;
+            z-index: 1;
+        ">🎬 Tu veux savoir comment l'air devient pollué ?</h1>
+        <p style="
+            color: rgba(255,255,255,0.9);
+            font-size: 1.2rem;
+            margin: 0.5rem 0 0 0;
+            position: relative;
+            z-index: 1;
+        ">Découvre les secrets invisibles de notre atmosphère !</p>
+    </div>
+    
+    <style>
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); opacity: 0.3; }
+            50% { transform: scale(1.1); opacity: 0.1; }
+        }
+    </style>
+    """, unsafe_allow_html=True)
+    
+    if video_url:
+        # Colonnes pour encadrer la vidéo
+        col1, col2, col3 = st.columns([1, 6, 1])
+        
+       
+        with col2:
+            # Fonction pour déterminer le type de vidéo
+            def get_video_html(url):
+                if 'youtube.com' in url or 'youtu.be' in url:
+                    # Pour YouTube, extraire l'ID et utiliser embed
+                    if 'youtu.be' in url:
+                        video_id = url.split('/')[-1]
+                    else:
+                        video_id = url.split('v=')[1].split('&')[0]
+                    
+                    return f"""
+                    <div style="
+                        background: white;
+                        padding: 20px;
+                        border-radius: 15px;
+                        box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+                        border: 3px solid #667eea;
+                    ">
+                        <iframe width="100%" height="505" 
+                                src="https://www.youtube.com/embed/{video_id}" 
+                                style="border-radius: 10px;"
+                                frameborder="0" 
+                                allowfullscreen>
+                        </iframe>
+                    </div>
+                    """
+                elif url.startswith('data:'):
+                    # Pour les URLs data (base64)
+                    return f"""
+                    <div style="
+                        background: white;
+                        padding: 20px;
+                        border-radius: 15px;
+                        box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+                        border: 3px solid #667eea;
+                    ">
+                        <video width="100%" controls style="border-radius: 10px;" preload="auto">
+                            <source src="{url}" type="video/mp4">
+                            Impossible de charger la vidéo.
+                        </video>
+                    </div>
+                    """
+                else:
+                    # Pour les URLs HTTP directes
+                    return f"""
+                    <div style="
+                        background: white;
+                        padding: 20px;
+                        border-radius: 15px;
+                        box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+                        border: 3px solid #667eea;
+                    ">
+                        <video width="100%" controls style="border-radius: 10px;" 
+                            preload="metadata" crossorigin="anonymous">
+                            <source src="{url}" type="video/mp4">
+                            <source src="{url}" type="video/webm">
+                            Impossible de charger la vidéo depuis cette source.
+                        </video>
+                    </div>
+                    """
+            
+            st.markdown(get_video_html(video_url), unsafe_allow_html=True)
+            st.markdown("""<div><br><br></div>""",unsafe_allow_html=True)
+       
+       
+    
+        
+        col1, col2, col3 = st.columns(3)
+        
+        with col1:
+            components.html("""
+            <div style='
+                background: linear-gradient(135deg, #ff9a9e 0%, #fecfef 100%);
+                padding: 20px;
+                border-radius: 15px;
+                text-align: center;
+                color: white;
+                font-family: "Source Sans Pro", sans-serif;
+                box-shadow: 0 8px 25px rgba(255, 154, 158, 0.3);
+                cursor: pointer;
+                transition: transform 0.3s ease;
+            ' onmouseover="this.style.transform='translateY(-5px)'"
+               onmouseout="this.style.transform='translateY(0)'">
+                <div style='font-size: 40px; margin-bottom: 10px;'>🤔</div>
+                <h4 style='margin: 10px 0; font-size: 16px;'>As-tu appris quelque chose ?</h4>
+                <p style='font-size: 12px; margin: 0; opacity: 0.9;'>La pollution est partout autour de nous !</p>
+            </div>
+            """, height=150)
+        
+        with col2:
+            components.html("""
+            <div style='
+                background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
+                padding: 20px;
+                border-radius: 15px;
+                text-align: center;
+                color: white;
+                font-family: "Source Sans Pro", sans-serif;
+                box-shadow: 0 8px 25px rgba(17, 153, 142, 0.3);
+                cursor: pointer;
+                transition: transform 0.3s ease;
+            ' onmouseover="this.style.transform='translateY(-5px)'"
+               onmouseout="this.style.transform='translateY(0)'">
+                <div style='font-size: 40px; margin-bottom: 10px;'>💡</div>
+                <h4 style='margin: 10px 0; font-size: 16px;'>Maintenant tu sais !</h4>
+                <p style='font-size: 12px; margin: 0; opacity: 0.9;'>Tu peux agir pour protéger l'air !</p>
+            </div>
+            """, height=150)
+        
+        with col3:
+            components.html("""
+            <div style='
+                background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+                padding: 20px;
+                border-radius: 15px;
+                text-align: center;
+                color: white;
+                font-family: "Source Sans Pro", sans-serif;
+                box-shadow: 0 8px 25px rgba(102, 126, 234, 0.3);
+                cursor: pointer;
+                transition: transform 0.3s ease;
+            ' onmouseover="this.style.transform='translateY(-5px)'"
+               onmouseout="this.style.transform='translateY(0)'">
+                <div style='font-size: 40px; margin-bottom: 10px;'>🌟</div>
+                <h4 style='margin: 10px 0; font-size: 16px;'>Partage tes idées !</h4>
+                <p style='font-size: 12px; margin: 0; opacity: 0.9;'>Raconte à tes amis ce que tu as appris !</p>
+            </div>
+            """, height=150)
+    
+    else:
+        # Alternative sans vidéo - version améliorée
+        col1, col2 = st.columns([3, 2])
+        
+        with col1:
+            # Image avec overlay informatif
+            st.markdown("""
+            <div style="
+                position: relative;
+                border-radius: 15px;
+                overflow: hidden;
+                box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+                border: 3px solid #667eea;
+            ">
+            """, unsafe_allow_html=True)
+            
+            st.image(
+                "assets/images/bad_air_quality.png",
+                caption="",
+                use_container_width=True
+            )
+            
+            st.markdown("""
+            <div style="
+                position: absolute;
+                bottom: 0;
+                left: 0;
+                right: 0;
+                background: linear-gradient(transparent, rgba(0,0,0,0.8));
+                color: white;
+                padding: 20px;
+                text-align: center;
+            ">
+                <h3 style="margin: 0; font-size: 18px;">🔍 L'air invisible</h3>
+                <p style="margin: 5px 0 0 0; font-size: 14px;">
+                    Même quand l'air paraît propre... il peut cacher des choses invisibles !
+                </p>
+            </div>
+            </div>
+            """, unsafe_allow_html=True)
+        
+        with col2:
+            # Panneau éducatif interactif
+            components.html("""
+            <div style='
+                background: #f8f9ff;
+                border: 2px solid #667eea;
+                border-radius: 15px;
+                padding: 25px;
+                font-family: "Source Sans Pro", sans-serif;
+                height: 400px;
+                overflow-y: auto;
+            '>
+                <h3 style='color: #667eea; text-align: center; margin-bottom: 20px; margin-top: 0;'>
+                    🧪 Les secrets de l'air pollué
+                </h3>
+                
+                <div style='margin: 20px 0;'>
+                    <div style='display: flex; align-items: center; margin: 15px 0; padding: 10px; background: #e8f5e8; border-radius: 8px;'>
+                        <span style='font-size: 25px; margin-right: 15px;'>🏭</span>
+                        <div>
+                            <strong style='color: #333;'>Les usines</strong><br>
+                            <small style='color: #666;'>Rejettent des fumées toxiques</small>
+                        </div>
+                    </div>
+                    
+                    <div style='display: flex; align-items: center; margin: 15px 0; padding: 10px; background: #fff8e1; border-radius: 8px;'>
+                        <span style='font-size: 25px; margin-right: 15px;'>🚗</span>
+                        <div>
+                            <strong style='color: #333;'>Les voitures</strong><br>
+                            <small style='color: #666;'>Produisent des gaz d'échappement</small>
+                        </div>
+                    </div>
+                    
+                    <div style='display: flex; align-items: center; margin: 15px 0; padding: 10px; background: #ffebee; border-radius: 8px;'>
+                        <span style='font-size: 25px; margin-right: 15px;'>🔥</span>
+                        <div>
+                            <strong style='color: #333;'>Les feux</strong><br>
+                            <small style='color: #666;'>Brûlent et créent de la fumée</small>
+                        </div>
+                    </div>
+                    
+                    <div style='display: flex; align-items: center; margin: 15px 0; padding: 10px; background: #f3e5f5; border-radius: 8px;'>
+                        <span style='font-size: 25px; margin-right: 15px;'>💨</span>
+                        <div>
+                            <strong style='color: #333;'>Le vent</strong><br>
+                            <small style='color: #666;'>Transporte la pollution partout</small>
+                        </div>
+                    </div>
+                </div>
+                
+                <div style='
+                    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+                    color: white;
+                    padding: 15px;
+                    border-radius: 10px;
+                    text-align: center;
+                    margin-top: 20px;
+                '>
+                    <strong>💡 Le savais-tu ?</strong><br>
+                    <small>Certaines particules sont 100 fois plus petites qu'un cheveu !</small>
+                </div>
+            </div>
+            """, height=420)
+        
+        # Appel à l'action pour regarder une vraie vidéo
+        st.markdown("---")
+        st.markdown("""
+        <div style="
+            background: linear-gradient(135deg, #ff9a9e 0%, #fecfef 100%);
+            padding: 20px;
+            border-radius: 15px;
+            text-align: center;
+            margin: 20px 0;
+            box-shadow: 0 8px 25px rgba(255, 154, 158, 0.3);
+        ">
+            <h3 style="color: white; margin: 0 0 10px 0;">🎥 Envie d'en voir plus ?</h3>
+            <p style="color: rgba(255,255,255,0.9); margin: 0;">
+                Demande à ton professeur de te montrer une vraie vidéo sur la pollution de l'air !
+            </p>
+        </div>
+        """, unsafe_allow_html=True)
+#=============================================================================================================

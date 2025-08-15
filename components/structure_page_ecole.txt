@@ -1,0 +1,79 @@
+Voici la structure définitive et hiérarchisée de ta page École (section destinée aux élèves du dashboard Respire), conçue avec rigueur, pédagogie et ergonomie. Le contenu est structuré de manière à être à la fois impactant, compréhensible pour les enfants et techniquement réalisable dans ton framework.
+
+🧒🏾 PAGE ÉCOLE – STRUCTURE FINALE (Hiérarchisée)
+
+I. Entête / Titre de page (Header)
+ - Titre : Bienvenue dans ton espace santé – Respire 🌿
+ - Sous-titre : Découvre comment va l’air de ton école aujourd’hui !
+ - Éventuellement : nom de l’école ou logo si l’affichage est personnalisé
+
+II. 🟢 Bloc principal – Qualité de l’air actuelle
+ - Titre : “Qualité de l’air aujourd’hui”
+ - Composants :
+
+  🔵 Affichage en grand du niveau actuel (AQI ou PM2.5)
+   Ex : “PM2.5 : 76 µg/m³ – Qualité : Moyenne 😐”
+  🟡 Badge couleur : Vert / Jaune / Rouge / Marron
+  🧠 Message personnalisé :
+
+   → Bon : “L’air est bon ! Tu peux jouer dehors.”
+   → Moyen : “Pense à bien t’hydrater et à te laver les mains.”
+   → Mauvais : “Attention ! Il vaut mieux rester à l’intérieur aujourd’hui.”
+
+ - Style : Gros texte + emojis / pictos + couleur de fond adaptée
+
+III. 🎬 Bloc 2 – Vidéo animée de sensibilisation
+ - Titre : “Tu veux savoir comment l’air devient pollué ?”
+ - Contenu :
+
+  ▶️ Vidéo YouTube ou intégrée (1-2 minutes max, autoplay off)
+  → Représente le capteur, les dangers invisibles, comment se protéger
+  → Dessins simples, langage enfantin, voix douce
+  💡 Si vidéo indisponible : affiche une image fixe + texte explicatif court
+
+IV. 🌱 Bloc 3 – Les bons gestes du jour (liés aux données du jour)
+ - Titre : “Les bons réflexes du jour 🌟”
+ - Contenu dynamique : 2 à 3 recommandations automatiques, selon la pollution
+
+ Exemples :
+
+  📌 Air de bonne qualité :
+   - Profite pour faire du sport dehors !
+   - N’oublie pas d’arroser les plantes de la classe
+
+  📌 Air moyen ou mauvais :
+   - Ouvre les fenêtres 5 minutes avant le début des cours
+   - Mets ton masque si tu éternues
+   - Évite de courir pendant la récré
+
+ - Format : Liste à puce + icône illustrant chaque conseil
+
+V. 📊 Bloc 4 (facultatif) – Mini-zoom sur les données techniques
+ - Titre : “Ce que mesure notre capteur 👨🏽‍🔬”
+ - Contenu :
+
+  - PM2.5 : poussière minuscule invisible qui peut entrer dans les poumons
+  - CO₂ : gaz que l’on rejette en respirant – trop = fatigue !
+  - Température / Humidité / TVOC : décrits très simplement
+
+ - Format recommandé :
+  → Carousel horizontal (1 fiche par paramètre)
+  → Illustration simple + description courte (max 3 lignes)
+
+VI. (Optionnel) 🧠 Quiz express (pour interaction et mémorisation)
+ - Titre : “Le sais-tu ?”
+ - 1 question simple par jour
+  Ex : “Quand faut-il aérer la classe ?”
+  A. Jamais  B. Le matin et après les pauses  C. Pendant le déjeuner
+ - Réponse affichée après clic + explication courte
+
+VII. Pied de page (footer simple)
+ - “Respire est un projet qui t’aide à mieux respirer à l’école 💙”
+ - Logo équipe | Lien Contact (vers section dédiée si besoin)
+
+📌 Notes de design :
+
+* Adapter l’affichage au niveau d’éducation (primaire / collège)
+* Utiliser couleurs vives, polices lisibles, icônes enfantins
+* Tous les blocs doivent être affichés verticalement sur mobile et horizontalement (par section) sur tablette / PC
+
