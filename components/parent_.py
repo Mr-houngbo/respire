@@ -590,7 +590,7 @@ def show_health_parameters():
                 <h4>Effets sur la santé</h4>
                 <b>40-60%:</b> Idéal pour la santé respiratoire<br>
                 <b>Trop sec (<40%):</b> Irritation des voies respiratoires, nez sec<br>
-                <b>Trop humide (>60%):</b> Favorise moisissures et virus
+                <b>Trop humide (>60%):</b> Favorise moisissures et virus<br>
             </div>
             <div class="threshold-indicator">
                 <span style="color: #4caf50;">🟢 Idéal: 40-60%</span>
@@ -3408,4 +3408,5 @@ def render_whatsapp_documentation():
     5. **Horaires respectueux**
     
     
+
     """)
