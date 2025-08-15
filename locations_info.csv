@@ -1,0 +1,8 @@
+name,location_id,lat,lon,logo_path
+"Université de Thiès",89441,14.794498116325476,-16.96105368259619,"assets/images/logo_thies.jpg"
+"Lycée Technique André Peytavin, Saint-Louis",90104,16.019319341426606,-16.490593389948394,"assets/images/logo_ltap.png"
+"Ecole Elémentaire Ndiangué, Richard-Toll",90106,16.457985152738317,-15.705461444809703,"assets/images/logo_rt.png"
+"Lycée Cheikh Mouhamadou Moustapha Mbacké, Diourbel",151722,14.661614,-16.23111,"assets/images/logo_lcmmmb.jpg"
+"Ecole Notre Dame des Victoires, Diourbel",151726,14.653855,-16.2306,"assets/images/logo_vic.jpeg"
+"Station de référence, Pikine",151804,14.7444588,-17.4017114,"assets/images/logo_pik.jpeg"
+"Ecole Superieure Multinationnale des Telecommunications ",164928,14.700088,-17.451042,"assets/images/logo_esmt.jpeg"

@@ -1,0 +1,9 @@
+4.2 Structure du rapport
+
+En-tête : École, date, période couverte
+Résumé exécutif : État général, alertes principales
+Données actuelles : Polluants mesurés, indices calculés
+Analyse temporelle : Évolution sur 7 jours, comparaisons
+Prédictions : Prévisions J+1 et J+7 avec niveaux de confiance
+Recommandations : Actions suggérées selon les niveaux
+Annexes : Méthodologie, sources de données

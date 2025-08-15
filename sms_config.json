@@ -1,0 +1,14 @@
+{
+  "sms_provider": "twilio",
+  "twilio_account_sid": "ACabfcb37ffd779fca3dfdb47a028352a7",
+  "twilio_auth_token": "8699c97724e7c3458fb5a0f79dffbc5e",
+  "twilio_phone_number": "+17754297649",
+  "orange_api_key": "",
+  "max_sms_per_day": 10,
+  "quiet_hours_start": "00:00",
+  "quiet_hours_end": "07:00",
+  "pm25_alert_threshold": 35,
+  "pm25_danger_threshold": 55,
+  "co2_alert_threshold": 1000,
+  "enabled": true
+}

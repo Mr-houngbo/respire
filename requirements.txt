@@ -1,0 +1,26 @@
+streamlit
+pandas
+numpy
+streamlit-option-menu
+streamlit-authenticator
+bcrypt
+pyyaml
+bcrypt
+requests
+urllib3
+plotly
+twilio
+flask
+folium
+streamlit_folium
+Pillow>=10.0.0
+matplotlib
+fpdf
+google-api-python-client
+google-auth-httplib2
+google-auth-oauthlib
+pytest
+joblib
+scikit-learn
+xgboost
+# python -m tests.test_api_handler pour executer des fonctions , modules depuis la racine .
