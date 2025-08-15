@@ -1,0 +1,8 @@
+"Location ID","Location Name","Location Group","Location Type","Sensor ID","Place Open","Local Date/Time","UTC Date/Time","# of aggregated records","PM2.5 (μg/m³) raw","PM2.5 (μg/m³) corrected","0.3μm particle count","CO2 (ppm) raw","CO2 (ppm) corrected","Temperature (°C) raw","Temperature (°C) corrected","Heat Index (°C)","Humidity (%) raw","Humidity (%) corrected","TVOC (ppb)","TVOC index","NOX index","PM1 (μg/m³)","PM10 (μg/m³)"
+164928,"Breath4life",,"Outdoor","airgradient:d83bda1d43d8",true,"2025-07-28 00:00:00","2025-07-28T00:00:00.000Z",1100,5.3,5.3,355,403,403,30.6,31,38.8,54,75,162,145,2,2.2,5.9
+164928,"Breath4life",,"Outdoor","airgradient:d83bda1d43d8",true,"2025-07-27 00:00:00","2025-07-27T00:00:00.000Z",1400,3,3,265,391,391,30.2,30.5,36.7,51,72,123,121,2,0.7,3.5
+164928,"Breath4life",,"Outdoor","airgradient:d83bda1d43d8",true,"2025-07-26 00:00:00","2025-07-26T00:00:00.000Z",1398,5.4,5.4,349,395,395,30,30.3,35.4,49,69,113,110,2,2.2,6.3
+164928,"Breath4life",,"Outdoor","airgradient:d83bda1d43d8",true,"2025-07-25 00:00:00","2025-07-25T00:00:00.000Z",1398,4.8,4.8,310,396,396,28.4,28.4,31.7,52,73,94,94,1,1.5,5.6
+164928,"Breath4life",,"Outdoor","airgradient:d83bda1d43d8",true,"2025-07-24 00:00:00","2025-07-24T00:00:00.000Z",517,6.7,6.7,371,400,400,27.4,27.2,29.5,56,77,67,69,1,2.3,7.7
+164928,"Breath4life",,"Outdoor","airgradient:d83bda1d43d8",true,"2025-07-22 00:00:00","2025-07-22T00:00:00.000Z",51,24.4,24.4,740,505,505,32.3,33,45.9,54,75,95,101,1,9.3,26.5
+164928,"Breath4life",,"Outdoor","airgradient:d83bda1d43d8",true,"2025-07-18 00:00:00","2025-07-18T00:00:00.000Z",8,10.5,10.5,481,654,654,31.9,32.5,46.7,58,81,96,102,1,4.5,12.3

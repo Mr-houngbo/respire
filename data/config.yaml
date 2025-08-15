@@ -1,0 +1,12 @@
+cookie:
+  expiry_days: 1
+  key: cle_secrete
+  name: respire
+credentials:
+  usernames:
+    Gord:
+      name: GORD ENVER
+      password: $2b$12$fIWyWJopenTufdQb7p42dOANdQDFai59uKuEhatQ8eVYA6NNX7vRu
+    Meilleur:
+      name: Noir
+      password: $2b$12$FLRSIVaDAAtpB3GDbKMM6eGcci7vOBr029ZdxVnZhrLgTRCqS5tnu
