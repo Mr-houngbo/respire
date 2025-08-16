@@ -476,19 +476,8 @@ def main():
                 
                 return  # Arrêter ici pour l'auto-trigger
     
-if __name__ == "__main__":
-    main()
 
-
-
-
-
-
-
-
-
-
-
+main()
 
 
 
@@ -498,3 +487,4 @@ if __name__ == "__main__":
 
 
 show_footer()
+
