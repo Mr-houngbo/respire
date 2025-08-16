@@ -1788,9 +1788,7 @@ def setup_automatic_alerts(location_id, token, school_name, check_interval_minut
 def setup_streamlit_scheduler():
     """
     Configure les tâches automatiques pour Streamlit
-    """
-    import streamlit as st
-    
+    """    
     # Vérifier si le scheduler est déjà en cours
     if 'alert_scheduler_running' not in st.session_state:
         st.session_state.alert_scheduler_running = False
@@ -1902,9 +1900,6 @@ def show_sms_sytem():
     school_name = "ESMT"
     render_bloc_messages_alertes(location_id, token, school_name)
     
-    # Documentation
-    with st.expander("📚 Voir la documentation complète"):
-        render_sms_documentation()
 
 
 def graphique_iqa(location_id,token):
@@ -2794,7 +2789,6 @@ def setup_streamlit_whatsapp_scheduler():
     """
     Configure les tâches automatiques WhatsApp pour Streamlit
     """
-    import streamlit as st
     
     # Vérifier si le scheduler est déjà en cours
     if 'whatsapp_scheduler_running' not in st.session_state:
@@ -2978,12 +2972,4 @@ def show_whatsapp_system():
     school_name = "ESMT"
     render_bloc_messages_alertes_whatsapp(location_id, token, school_name)
     
-    # Système hybride
-    st.markdown("---")
-    render_hybrid_system_interface(location_id, token, school_name)
-    
-    # Documentation
-    with st.expander("📚 Voir la documentation WhatsApp complète"):
-        render_whatsapp_documentation()
-
 
