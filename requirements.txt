@@ -24,6 +24,9 @@ joblib
 scikit-learn
 xgboost
 streamlit-autorefresh
+schedule
+python-dotenv
 
 # python -m tests.test_api_handler pour executer des fonctions , modules depuis la racine .
+
 
