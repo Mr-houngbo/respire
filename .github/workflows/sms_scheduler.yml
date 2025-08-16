@@ -1,0 +1,13 @@
+name: SMS Scheduler
+on:
+  schedule:
+    - cron: '0 17 * * 0'  # Dimanche 17h UTC = 18h Sénégal
+  workflow_dispatch:
+
+jobs:
+  trigger-sms:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Trigger SMS via Streamlit
+        run: |
+          curl -s "https://respirer.streamlit.app/?auto_trigger=true&secret=${{secrets.WEBHOOK_SECRET}}"
