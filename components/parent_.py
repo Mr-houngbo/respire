@@ -1419,6 +1419,7 @@ class SMSAlertSystem:
                 
         # Récupérer les données actuelles
         current_data = fetch_current_data(location_id, token)
+        current_data = pd.DataFrame([current_data])
         if current_data.empty:
             return [], 0
         
@@ -2972,4 +2973,5 @@ def show_whatsapp_system():
     school_name = "ESMT"
     render_bloc_messages_alertes_whatsapp(location_id, token, school_name)
     
+
 
