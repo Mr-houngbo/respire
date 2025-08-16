@@ -35,16 +35,6 @@ def show():
             </div>""",unsafe_allow_html=True)
     
     
-    
-    show_sms_sytem()
-    
-    st.markdown("""
-            <div>
-                <br><br><br><br><br>
-            </div>""",unsafe_allow_html=True)
-    
-    show_whatsapp_system()
-    
 # Test de la fonction
 if __name__ == "__main__":
     show()
@@ -84,5 +74,6 @@ if __name__ == "__main__":
 
 
 #=========================== SECTION TOUT EN BAS RESERVEE AU FOOTER =================================
+
 
 # show_footer()
