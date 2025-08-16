@@ -18,8 +18,8 @@ sender="houngbo.calixte.r@gmail.com"
 VALEURS_LIMITE = {
 "pm03_count": 100000, # particules de 0.3μm - pas de norme OMS, seuil indicatif élevé
 "pm01_corrected": 15, # µg/m³ - Particules fines PM1 (plus sévère que PM2.5)
-"pm02_corrected": 25, # µg/m³ - PM2.5 - norme OMS 2021
-"pm10_corrected": 50, # µg/m³ - PM10 - norme OMS 2021
+"pm02_corrected": 75, # µg/m³ - PM2.5 - norme OMS 2021
+"pm10_corrected": 150, # µg/m³ - PM10 - norme OMS 2021
 "rco2_corrected": 1000, # ppm - qualité de l'air intérieur acceptable (OMS + ASHRAE)
 "atmp_corrected": 27, # °C - Température intérieure maximale conseillée
 "rhum_corrected": 60, # % - Humidité relative recommandée : 40-60%
@@ -60,6 +60,7 @@ locations = pd.read_csv("locations_info.csv")
 location_ids = locations["location_id"]
 school_names = locations["name"]
 logo_paths = locations["logo_path"]
+
 
 
 
