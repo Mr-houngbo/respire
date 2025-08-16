@@ -12,6 +12,7 @@ from config.settings import token,BASE_URL,VALEURS_LIMITE,location_ids,DATA_DIR,
 from components.ecole_ import section_en_savoir_plus_air
 from pathlib import Path
 from components.autorite_ import show_header
+from streamlit_autorefresh import st_autorefresh
 import warnings
 warnings.filterwarnings("ignore")
 # ...le reste de ton code...
@@ -244,9 +245,12 @@ if selected_main == "Accueil":
         # Liste de capteurs avec coordonnées
         
         locations = pd.read_csv("locations_info.csv")
+
+        # Déclenche un refresh automatique toutes les 60s
+        count = st_autorefresh(interval=60000, limit=10000, key="_fizzbuzzcounter")
         
         # Recuperation des donnees actuelles de toutes les locations 
-        @st.cache_data(show_spinner=False,ttl=300) # expire au bout de 5 min
+        @st.cache_data(show_spinner=False,ttl=60) # expire au bout de 5 min
         def get_all_locations_data(locations_df, token):
             results = {}
             for _, loc in locations_df.iterrows():
@@ -472,3 +476,4 @@ elif selected_main == "Sensibilisation":
 
 
 show_footer()
+
