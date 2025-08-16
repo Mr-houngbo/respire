@@ -23,4 +23,7 @@ pytest
 joblib
 scikit-learn
 xgboost
+streamlit-autorefresh
+
 # python -m tests.test_api_handler pour executer des fonctions , modules depuis la racine .
+
