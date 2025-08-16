@@ -17,6 +17,16 @@ warnings.filterwarnings("ignore")
 # ...le reste de ton code...
 
 
+# CSS pour cacher la barre Streamlit
+hide_streamlit_style = """
+    <style>
+    #MainMenu {visibility: hidden;}
+    footer {visibility: hidden;}
+    header {visibility: hidden;}
+    </style>
+"""
+st.markdown(hide_streamlit_style, unsafe_allow_html=True)
+
 # Configuration générale de la page
 st.set_page_config(page_title="RESPiRE – Accueil", layout="wide", initial_sidebar_state="expanded")
 
@@ -459,5 +469,6 @@ elif selected_main == "Sensibilisation":
 
 
 #=========================== SECTION TOUT EN BAS RESERVEE AU FOOTER =================================
+
 
 show_footer()
