@@ -16,13 +16,12 @@ from src.functions import fetch_current_data,calculer_iqa,afficher_iqa_plot,calc
 
 
 
-# Configuration (à adapter selon vos données)
+# Configuration 
 location_id = location_ids[6]
 DATA_DIR = os.path.join(os.path.dirname(__file__), '..', 'data/air_quality')
 
 
 #=============================================================================================================
-@st.cache_data(ttl=300) # expire au bout de 5 min
 def show_header(nom_ecole, logo_path: str = None):
     """
     Affiche un en-tête moderne et attractif pour la page École.
@@ -600,7 +599,7 @@ def show_health_parameters():
         </div>
         ''', unsafe_allow_html=True)
 
-@st.cache_data(ttl=300) # expire au bout de 5 min
+@st.cache_data(ttl=60) # expire au bout de 5 min
 def render_bloc_tendances(location_id: str = location_id, school_name="ESMT"):
     """
     Bloc III - Tendances pour la page Parent
@@ -866,7 +865,7 @@ def render_bloc_tendances(location_id: str = location_id, school_name="ESMT"):
             </div>
             """, unsafe_allow_html=True)
 
-@st.cache_data(ttl=300) # expire au bout de 5 min
+@st.cache_data(ttl=60) # expire au bout de 5 min
 def render_bloc_conseils(location_id: str = location_id, token: str = token, school_name="ESMT"):
     """
     Bloc IV - Conseils/Actions préventives pour la page Parent
@@ -1749,7 +1748,6 @@ def render_bloc_messages_alertes(location_id: str, token: str, school_name="Éco
         st.markdown("</div>", unsafe_allow_html=True)
 
 # === FONCTION POUR AUTOMATISER LES ALERTES ===
-@st.cache_data(ttl=300) # expire au bout de 5 min
 
 def setup_automatic_alerts(location_id, token, school_name, check_interval_minutes=30):
     """
@@ -1893,104 +1891,6 @@ def create_webhook_handler():
         '''
         
     return webhook_code
-
-# === DOCUMENTATION D'UTILISATION ===
-def render_sms_documentation():
-    """
-    Affiche la documentation du système SMS
-    """
-    st.markdown("""
-    ## 📚 **Documentation - Système d'Alertes SMS**
-    
-    ### 🚀 **Installation et Configuration**
-    
-    #### 1. **Prérequis**
-    ```bash
-    pip install twilio requests streamlit pandas
-    ```
-    
-    #### 2. **Fichier de contacts (parents_contacts.txt)**
-    ```
-    # Format: nom,telephone,enfant,classe
-    Aminata Diallo,771234567,Fatou Diallo,CP
-    Moussa Ndiaye,775678901,Omar Ndiaye,CP
-    ```
-    
-    #### 3. **Configuration Twilio**
-    1. Créer un compte sur [twilio.com](https://twilio.com)
-    2. Obtenir Account SID et Auth Token
-    3. Acheter un numéro de téléphone Twilio
-    4. Configurer dans l'interface
-    
-    ### 📱 **Types d'Alertes Disponibles**
-    
-    | Type | Déclencheur | Message type |
-    |------|-------------|--------------|
-    | `pollution_high` | PM2.5 > 55 µg/m³ | 🚨 Alerte rouge |
-    | `pollution_moderate` | PM2.5 > 35 µg/m³ | ⚠️ Alerte orange |
-    | `co2_high` | CO2 > 1000 ppm | 💨 Ventilation |
-    | `back_to_normal` | Retour normal | ✅ Rassurance |
-    | `daily_report` | Rapport quotidien | 📊 Résumé |
-    
-    ### ⚙️ **Configuration Avancée**
-    
-    #### **Seuils personnalisables**
-    - PM2.5 alerte: 35 µg/m³ (modifiable)
-    - PM2.5 danger: 55 µg/m³ (modifiable)
-    - CO2 alerte: 1000 ppm (modifiable)
-    
-    #### **Limitations anti-spam**
-    - Max 5 SMS par parent/jour (configurable)
-    - Heures de silence: 21h-7h (configurable)
-    - Pas de doublon sur même alerte/jour
-    
-    ### 🔧 **Intégrations**
-    
-    #### **Webhook automatique**
-    ```python
-    import requests
-    
-    # Envoyer alerte via webhook
-    data = {
-        "location_id": "school_001",
-        "school_name": "École XYZ",
-        "alert_type": "pollution_high",
-        "air_data": {"pm25": 45, "status": "Mauvaise"}
-    }
-    
-    response = requests.post("http://localhost:5000/webhook/air-quality-alert", json=data)
-    ```
-    
-    #### **Scheduler automatique**
-    ```python
-    # Vérification toutes les 30 minutes
-    setup_automatic_alerts("location_id", "token", "École XYZ", 30)
-    ```
-    
-    ### 💡 **Bonnes Pratiques**
-    
-    1. **Tester d'abord** avec le provider `free_sms`
-    2. **Vérifier les numéros** au format international (+221...)
-    3. **Surveiller les coûts** avec Twilio
-    4. **Backup des contacts** régulier
-    5. **Messages courts** (max 160 caractères recommandé)
-    
-    ### 🆘 **Dépannage**
-    
-    | Problème | Solution |
-    |----------|----------|
-    | SMS non reçus | Vérifier numéro format +221... |
-    | Erreur Twilio | Vérifier crédits et tokens |
-    | Heures silence | Changer config quiet_hours |
-    | Limite quotidienne | Augmenter max_sms_per_day |
-    
-    ### 📞 **Support**
-    
-    - **Twilio Support**: [support.twilio.com](https://support.twilio.com)
-    - **Orange Sénégal**: 8080 (numéro gratuit)
-    - **Documentation**: [docs.twilio.com](https://docs.twilio.com)
-    """)
-
 
 # === FONCTION D'UTILISATION PRINCIPALE ===
 def show_sms_sytem():
@@ -2856,7 +2756,6 @@ def render_bloc_messages_alertes_whatsapp(location_id: str, token: str, school_n
         st.markdown("</div>", unsafe_allow_html=True)
 
 # === FONCTION POUR AUTOMATISER LES ALERTES WHATSAPP ===
-@st.cache_data(ttl=300)  # expire au bout de 5 min
 def setup_automatic_whatsapp_alerts(location_id, token, school_name, check_interval_minutes=30):
     """
     Configure un système d'alertes WhatsApp automatiques
@@ -3068,165 +2967,6 @@ def create_whatsapp_webhook_handler():
         
     return webhook_code
 
-# === SYSTEME HYBRIDE SMS + WHATSAPP ===
-class HybridAlertSystem:
-    """
-    Système d'alertes hybride combinant SMS et WhatsApp
-    Utilise WhatsApp en priorité, SMS en fallback
-    """
-    
-    def __init__(self):
-        self.sms_system = SMSAlertSystem()
-        self.whatsapp_system = WhatsAppAlertSystem()
-        self.hybrid_config = {
-            "prefer_whatsapp": True,
-            "sms_fallback": True,
-            "test_whatsapp_first": True,
-            "retry_failed_via_sms": True,
-            "send_both_for_critical": False
-        }
-    
-    def send_hybrid_alert(self, alert_type, air_data, school_name, selected_classes=None):
-        """
-        Envoie des alertes en utilisant la stratégie hybride
-        """
-        contacts = self.whatsapp_system.load_parent_contacts()
-        results = []
-        whatsapp_sent = 0
-        sms_sent = 0
-        
-        for contact in contacts:
-            if selected_classes and contact['classe'] not in selected_classes:
-                continue
-            
-            phone = contact['telephone']
-            child_name = contact['enfant']
-            parent_name = contact['nom']
-            
-            success_whatsapp = False
-            success_sms = False
-            
-            # Stratégie 1: Essayer WhatsApp d'abord
-            if self.hybrid_config['prefer_whatsapp'] and self.whatsapp_system.config['enabled']:
-                if self.whatsapp_system.can_send_alert(alert_type, phone):
-                    message = self.whatsapp_system.generate_alert_message(
-                        alert_type, air_data, school_name, child_name
-                    )
-                    success_whatsapp, reason_wa = self.whatsapp_system.send_whatsapp(phone, message)
-                    
-                    if success_whatsapp:
-                        whatsapp_sent += 1
-            
-            # Stratégie 2: SMS en fallback ou pour les critiques
-            should_send_sms = (
-                (not success_whatsapp and self.hybrid_config['sms_fallback']) or
-                (alert_type == 'pollution_high' and self.hybrid_config['send_both_for_critical'])
-            )
-            
-            if should_send_sms and self.sms_system.config['enabled']:
-                if self.sms_system.can_send_alert(alert_type, phone):
-                    sms_message = self.sms_system.generate_alert_message(
-                        alert_type, air_data, school_name, child_name
-                    )
-                    success_sms, reason_sms = self.sms_system.send_sms(phone, sms_message)
-                    
-                    if success_sms:
-                        sms_sent += 1
-            
-            # Enregistrer les résultats
-            status_parts = []
-            if success_whatsapp:
-                status_parts.append("WhatsApp ✅")
-            if success_sms:
-                status_parts.append("SMS ✅")
-            if not success_whatsapp and not success_sms:
-                status_parts.append("Échec")
-            
-            results.append({
-                'parent': parent_name,
-                'phone': phone,
-                'child': child_name,
-                'status': " + ".join(status_parts),
-                'whatsapp': "✅" if success_whatsapp else "❌",
-                'sms': "✅" if success_sms else "❌"
-            })
-        
-        return results, whatsapp_sent, sms_sent
-
-def render_hybrid_system_interface(location_id: str, token: str, school_name: str):
-    """
-    Interface pour le système hybride SMS + WhatsApp
-    """
-    st.markdown("### 🔄 **Système Hybride SMS + WhatsApp**")
-    
-    hybrid_system = HybridAlertSystem()
-    
-    st.markdown("""
-    <div style="background: linear-gradient(135deg, #f0f8ff 0%, #e6f3ff 100%); 
-                padding: 20px; border-radius: 10px; margin-bottom: 15px;">
-    """, unsafe_allow_html=True)
-    
-    # Configuration hybride
-    col1, col2 = st.columns([1, 1])
-    
-    with col1:
-        st.markdown("#### ⚙️ **Stratégie d'envoi**")
-        hybrid_system.hybrid_config['prefer_whatsapp'] = st.checkbox(
-            "🥇 Privilégier WhatsApp", 
-            value=True,
-            help="Essaie WhatsApp en premier"
-        )
-        
-        hybrid_system.hybrid_config['sms_fallback'] = st.checkbox(
-            "📱 SMS de secours", 
-            value=True,
-            help="Utilise SMS si WhatsApp échoue"
-        )
-        
-        hybrid_system.hybrid_config['send_both_for_critical'] = st.checkbox(
-            "🚨 Double envoi critique", 
-            value=False,
-            help="SMS + WhatsApp pour alertes critiques"
-        )
-    
-    with col2:
-        st.markdown("#### 📊 **Statut des systèmes**")
-        
-        # Statut WhatsApp
-        wa_status = "✅ Actif" if hybrid_system.whatsapp_system.config['enabled'] else "❌ Inactif"
-        st.markdown(f"**WhatsApp:** {wa_status}")
-        
-        # Statut SMS  
-        sms_status = "✅ Actif" if hybrid_system.sms_system.config['enabled'] else "❌ Inactif"
-        st.markdown(f"**SMS:** {sms_status}")
-        
-        # Recommandation
-        if not hybrid_system.whatsapp_system.config['enabled'] and not hybrid_system.sms_system.config['enabled']:
-            st.error("⚠️ Aucun système activé !")
-        elif hybrid_system.whatsapp_system.config['enabled'] and hybrid_system.sms_system.config['enabled']:
-            st.success("🎯 Configuration optimale !")
-    
-    # Test du système hybride
-    if st.button("🚀 Test système hybride", type="primary",key = "Testdusystèmehybride"):
-        with st.spinner("Test en cours..."):
-            # Simuler des données de test
-            test_air_data = {
-                'pm25': 45.0,
-                'co2': 850,
-                'status': 'Dégradée'
-            }
-            
-            results, wa_count, sms_count = hybrid_system.send_hybrid_alert(
-                'pollution_moderate', test_air_data, school_name
-            )
-            
-            st.success(f"✅ Test terminé ! WhatsApp: {wa_count}, SMS: {sms_count}")
-            
-            if results:
-                df_results = pd.DataFrame(results)
-                st.dataframe(df_results, use_container_width=True)
-    
-    st.markdown("</div>", unsafe_allow_html=True)
 
 # === FONCTION D'UTILISATION PRINCIPALE WHATSAPP ===
 def show_whatsapp_system():
@@ -3246,167 +2986,4 @@ def show_whatsapp_system():
     with st.expander("📚 Voir la documentation WhatsApp complète"):
         render_whatsapp_documentation()
 
-def render_whatsapp_documentation():
-    """
-    Documentation complète du système WhatsApp
-    """
-    st.markdown("""
-    ## 📚 **Documentation - Système d'Alertes WhatsApp**
-    
-    ### 🚀 **Installation et Configuration**
-    
-    #### 1. **Prérequis**
-    ```bash
-    pip install twilio requests streamlit pandas matplotlib
-    ```
-    
-    #### 2. **Configuration Twilio WhatsApp (Sandbox)**
-    1. Créer un compte sur [console.twilio.com](https://console.twilio.com)
-    2. Aller dans **Messaging > Try it out > Send a WhatsApp message**
-    3. Noter le numéro sandbox (ex: +1 415 523 8886)
-    4. Connecter votre WhatsApp au sandbox:
-       - Envoyer "join [code]" au numéro sandbox
-       - Exemple: "join cotton-phrase"
-    5. Récupérer Account SID et Auth Token
-    
-    #### 3. **Configuration Meta Business API (Production)**
-    1. Créer une App Facebook Business
-    2. Ajouter le produit WhatsApp Business
-    3. Configurer le webhook
-    4. Obtenir l'Access Token permanent
-    5. Configurer le Phone Number ID
-    
-    ### 💬 **Avantages WhatsApp vs SMS**
-    
-    | Fonctionnalité | SMS | WhatsApp |
-    |----------------|-----|----------|
-    | **Formatage** | Texte simple | **Markdown, emojis, liens** |
-    | **Longueur** | 160 caractères | **4096 caractères** |
-    | **Médias** | Non | **Images, documents, audio** |
-    | **Accusé réception** | Basique | **Livré, lu, horodaté** |
-    | **Coût** | ~0.05€ | **~0.01€** |
-    | **Taux d'ouverture** | 95% | **98%** |
-    | **Interactivité** | Non | **Boutons, menus, géolocalisation** |
-    
-    ### 📱 **Types de Messages Disponibles**
-    
-    #### **Messages texte enrichi**
-    ```python
-    message = '''🚨 *ALERTE POLLUTION*
-    
-    📊 *Données:*
-    • PM2.5: 45.2 µg/m³
-    • Statut: Dégradé
-    
-    ⚠️ *Recommandations:*
-    • Hydratation++
-    • Surveiller symptômes
-    '''
-    ```
-    
-    #### **Messages avec médias**
-    - Graphiques de qualité d'air
-    - Photos des conditions météo
-    - Documents PDF avec conseils
-    - Cartes de localisation
-    
-    #### **Messages interactifs (Meta API)**
-    - Boutons de réponse rapide
-    - Menus de choix
-    - Confirmation de lecture
-    
-    ### ⚙️ **Configuration Avancée**
-    
-    #### **Templates approuvés (Meta Business)**
-    ```json
-    {
-        "name": "air_quality_alert",
-        "language": "fr",
-        "components": [
-            {
-                "type": "body",
-                "parameters": [
-                    {"type": "text", "text": "{{child_name}}"},
-                    {"type": "text", "text": "{{pm25_value}}"},
-                    {"type": "text", "text": "{{school_name}}"}
-                ]
-            }
-        ]
-    }
-    ```
-    
-    #### **Webhook de statut**
-    ```python
-    @app.route('/webhook/status', methods=['POST'])
-    def whatsapp_status():
-        # Recevoir les confirmations de livraison/lecture
-        # Mettre à jour les statistiques
-        return "OK"
-    ```
-    
-    ### 🔧 **Intégrations Avancées**
-    
-    #### **Chatbot de support**
-    - Réponses automatiques aux questions
-    - Menu interactif pour les parents
-    - Escalade vers opérateur humain
-    
-    #### **Rapports personnalisés**
-    - Graphiques individuels par enfant
-    - Comparaisons avec autres écoles
-    - Conseils adaptatés selon conditions
-    
-    #### **Géolocalisation**
-    - Position de l'école
-    - Directions en cas d'évacuation
-    - Centres de santé proches
-    
-    ### 📊 **Métriques et Analytics**
-    
-    #### **Indicateurs clés**
-    - Taux de livraison: ~99%
-    - Taux d'ouverture: ~98%
-    - Temps de réponse moyen
-    - Engagement par type d'alerte
-    
-    #### **Dashboard analytics**
-    ```python
-    # Suivi des performances
-    metrics = {
-        "messages_sent": 1250,
-        "delivery_rate": 99.2,
-        "read_rate": 89.5,
-        "response_rate": 23.1
-    }
-    ```
-    
-    ### 🛡️ **Sécurité et Conformité**
-    
-    #### **RGPD/Protection des données**
-    - Consentement explicite requis
-    - Possibilité de désinscription
-    - Chiffrement end-to-end
-    - Audit trail complet
-    
-    #### **Vérification des webhooks**
-    ```python
-    def verify_signature(signature, payload, secret):
-        expected = hmac.new(
-            secret.encode(), 
-            payload, 
-            hashlib.sha256
-        ).hexdigest()
-        return hmac.compare_digest(signature, f"sha256={expected}")
-    ```
-    
-    ### 💡 **Bonnes Pratiques**
-    
-    1. **Test d'abord en sandbox** avant production
-    2. **Messages courts mais informatifs** (< 1000 caractères)
-    3. **Émojis pour clarifier** mais sans excès  
-    4. **Templates approuvés** pour messages récurrents
-    5. **Horaires respectueux**
-    
-    
 
-    """)
