@@ -16,7 +16,7 @@ import matplotlib.pyplot as plt
 
 
 #=============================================================================================================
-@st.cache_data(ttl=300) # expire au bout de 5 min
+@st.cache_data(ttl=60) # expire au bout de 5 min
 def fetch_current_data(location_id: str, token: str) -> pd.DataFrame:
     """Récupère les données actuelles de qualité de l'air et 
        les retourne sous fome de dictionnaire contenant les 
@@ -68,7 +68,7 @@ def fetch_current_data(location_id: str, token: str) -> pd.DataFrame:
             st.error(f"Erreur lors de la récupération des données: {e}")
 
 #=============================================================================================================
-@st.cache_data(ttl=300) # expire au bout de 5 min
+@st.cache_data(ttl=60) # expire au bout de 5 min
 def calculer_iqa(df: pd.DataFrame):
     """
     Calcule l'IQA global de l'école à partir du df des données actuelles obtenues plus haut.
@@ -109,7 +109,7 @@ def get_aqi_status(aqi):
         return "Très mauvaise"
 
 #=============================================================================================================
-@st.cache_data(ttl=300) # expire au bout de 5 min
+@st.cache_data(ttl=60) # expire au bout de 5 min
 def get_past_measures(location_id: int, token: str) -> pd.DataFrame:
     """
     Récupère les données des 7 derniers jours pour un `location_id` donné.
@@ -140,7 +140,7 @@ def get_past_measures(location_id: int, token: str) -> pd.DataFrame:
         return pd.DataFrame()
 
 #=============================================================================================================
-@st.cache_data(ttl=300) # expire au bout de 5 min
+@st.cache_data(ttl=60) # expire au bout de 5 min
 def calculer_iqa_journalier(df: pd.DataFrame,location_id) -> pd.DataFrame:
     """
     Calcule l’IQA par jour pour un DataFrame donné.
@@ -350,7 +350,7 @@ def classify_by_iqa(location_ids, token, school_names):
 #=============================================================================================================
 
 #=============================================================================================================
-@st.cache_data(ttl=300) # expire au bout de 5 min
+@st.cache_data(ttl=60) # expire au bout de 5 min
 def calculate_air_quality_status(df):
     """Calcule le statut global de la qualité de l'air pour les parents"""
     df = pd.DataFrame([df])
@@ -412,4 +412,5 @@ def calculate_air_quality_status(df):
         "humidity": humidity,
         "last_update": datetime.now().strftime("%H:%M")
     }
+
 
