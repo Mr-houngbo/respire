@@ -1,0 +1,222 @@
+2025-08-16 14:37:39,621 - INFO - 🚀 === DÉMARRAGE SYSTÈME SMS RESPIRE ===
+2025-08-16 14:37:39,622 - INFO - Fichier sent_alerts.json valide
+2025-08-16 14:37:39,622 - INFO - Fichier sms_config.json valide
+2025-08-16 14:37:39,622 - INFO - Configuration SMS chargée avec succès
+2025-08-16 14:37:39,623 - INFO - Historique chargé: 0 entrées
+2025-08-16 14:37:39,623 - INFO - ✅ Système SMS initialisé
+2025-08-16 14:37:39,623 - INFO - ✅ Système opérationnel
+2025-08-16 14:37:40,795 - INFO - 📤 Test terminé: 0 alertes envoyées
+2025-08-16 14:49:19,010 - INFO - 🚀 === DÉMARRAGE SYSTÈME SMS RESPIRE ===
+2025-08-16 14:49:19,012 - INFO - Fichier sent_alerts.json valide
+2025-08-16 14:49:19,013 - INFO - Fichier sms_config.json valide
+2025-08-16 14:49:19,014 - INFO - Configuration SMS chargée avec succès
+2025-08-16 14:49:19,015 - INFO - Historique chargé: 0 entrées
+2025-08-16 14:49:19,016 - INFO - ✅ Système SMS initialisé
+2025-08-16 14:49:19,016 - INFO - ✅ Système opérationnel
+2025-08-16 14:49:19,889 - INFO - 📤 Test terminé: 0 alertes envoyées
+2025-08-16 14:51:19,631 - INFO - 🚀 === DÉMARRAGE SYSTÈME SMS RESPIRE ===
+2025-08-16 14:51:19,632 - INFO - Fichier sent_alerts.json valide
+2025-08-16 14:51:19,632 - INFO - Fichier sms_config.json valide
+2025-08-16 14:51:19,632 - INFO - Configuration SMS chargée avec succès
+2025-08-16 14:51:19,633 - INFO - Historique chargé: 0 entrées
+2025-08-16 14:51:19,633 - INFO - ✅ Système SMS initialisé
+2025-08-16 14:51:19,634 - INFO - ✅ Système opérationnel
+2025-08-16 14:51:20,126 - INFO - 📤 Test terminé: 0 alertes envoyées
+2025-08-16 14:52:24,450 - INFO - 🚀 === DÉMARRAGE SYSTÈME SMS RESPIRE ===
+2025-08-16 14:52:24,451 - INFO - Fichier sent_alerts.json valide
+2025-08-16 14:52:24,451 - INFO - Fichier sms_config.json valide
+2025-08-16 14:52:24,451 - INFO - Configuration SMS chargée avec succès
+2025-08-16 14:52:24,452 - INFO - Historique chargé: 0 entrées
+2025-08-16 14:52:24,452 - INFO - ✅ Système SMS initialisé
+2025-08-16 14:52:24,453 - INFO - ✅ Système opérationnel
+2025-08-16 14:52:25,402 - INFO - Chargé 1 contacts parents
+2025-08-16 14:52:25,511 - INFO - -- BEGIN Twilio API Request --
+2025-08-16 14:52:25,511 - INFO - POST Request: https://api.twilio.com/2010-04-01/Accounts/ACabfcb37ffd779fca3dfdb47a028352a7/Messages.json
+2025-08-16 14:52:25,511 - INFO - Headers:
+2025-08-16 14:52:25,512 - INFO - Content-Type : application/x-www-form-urlencoded
+2025-08-16 14:52:25,512 - INFO - User-Agent : twilio-python/9.3.7 (Windows AMD64) Python/3.13.2
+2025-08-16 14:52:25,512 - INFO - X-Twilio-Client : python-9.3.7
+2025-08-16 14:52:25,512 - INFO - Accept-Charset : utf-8
+2025-08-16 14:52:25,512 - INFO - Accept : application/json
+2025-08-16 14:52:25,512 - INFO - -- END Twilio API Request --
+2025-08-16 14:52:26,587 - INFO - Response Status Code: 201
+2025-08-16 14:52:26,588 - INFO - Response Headers: {'Content-Type': 'application/json;charset=utf-8', 'Content-Length': '971', 'Connection': 'keep-alive', 'Date': 'Sat, 16 Aug 2025 14:52:27 GMT', 'Twilio-Concurrent-Requests': '1', 'Twilio-Request-Id': 'RQ7a441ba25efa3dc3fca76b13d0a285b4', 'Twilio-Request-Duration': '0.134', 'X-Home-Region': 'us1', 'X-API-Domain': 'api.twilio.com', 'Strict-Transport-Security': 'max-age=31536000', 'X-Cache': 'Miss from cloudfront', 'Via': '1.1 1c301b860f1012db2b746c01d3e8617e.cloudfront.net (CloudFront)', 'X-Amz-Cf-Pop': 'MAD51-C2', 'X-Amz-Cf-Id': 'tSFRcr1SNljoerm_AEnj2O2YF9VADQDRpsHbVnuple3JwAe1XO5m7A==', 'X-Powered-By': 'AT-5000', 'X-Shenanigans': 'none', 'Vary': 'Origin'}
+2025-08-16 14:52:26,589 - INFO - SMS envoyé avec succès à +221771616286 (SID: SM7a441ba25efa3dc3fca76b13d0a285b4)
+2025-08-16 14:52:26,592 - INFO - Alerte pollution_high envoyée à CALIXTE  Pape (+221771616286)
+2025-08-16 14:52:26,593 - INFO - Total 1 SMS envoyés pour alerte pollution_high
+2025-08-16 14:52:26,593 - INFO - Chargé 1 contacts parents
+2025-08-16 14:52:26,594 - INFO - -- BEGIN Twilio API Request --
+2025-08-16 14:52:26,594 - INFO - POST Request: https://api.twilio.com/2010-04-01/Accounts/ACabfcb37ffd779fca3dfdb47a028352a7/Messages.json
+2025-08-16 14:52:26,594 - INFO - Headers:
+2025-08-16 14:52:26,594 - INFO - Content-Type : application/x-www-form-urlencoded
+2025-08-16 14:52:26,594 - INFO - User-Agent : twilio-python/9.3.7 (Windows AMD64) Python/3.13.2
+2025-08-16 14:52:26,595 - INFO - X-Twilio-Client : python-9.3.7
+2025-08-16 14:52:26,595 - INFO - Accept-Charset : utf-8
+2025-08-16 14:52:26,595 - INFO - Accept : application/json
+2025-08-16 14:52:26,595 - INFO - -- END Twilio API Request --
+2025-08-16 14:52:27,263 - INFO - Response Status Code: 201
+2025-08-16 14:52:27,264 - INFO - Response Headers: {'Content-Type': 'application/json;charset=utf-8', 'Content-Length': '945', 'Connection': 'keep-alive', 'Date': 'Sat, 16 Aug 2025 14:52:28 GMT', 'Twilio-Concurrent-Requests': '1', 'Twilio-Request-Id': 'RQbbf141e52076a0e2b44cf5340ede64aa', 'Twilio-Request-Duration': '0.121', 'X-Home-Region': 'us1', 'X-API-Domain': 'api.twilio.com', 'Strict-Transport-Security': 'max-age=31536000', 'X-Cache': 'Miss from cloudfront', 'Via': '1.1 dadbd3993b5303886df72c2fdce172ca.cloudfront.net (CloudFront)', 'X-Amz-Cf-Pop': 'MAD51-C2', 'X-Amz-Cf-Id': '7gkORK-var6g3IAEb3SnBjzJa-7V-fUgHGgmzOXYdkOrKstNp0cYXA==', 'X-Powered-By': 'AT-5000', 'X-Shenanigans': 'none', 'Vary': 'Origin'}
+2025-08-16 14:52:27,265 - INFO - SMS envoyé avec succès à +221771616286 (SID: SMbbf141e52076a0e2b44cf5340ede64aa)
+2025-08-16 14:52:27,265 - INFO - Alerte co2_high envoyée à CALIXTE  Pape (+221771616286)
+2025-08-16 14:52:27,266 - INFO - Total 1 SMS envoyés pour alerte co2_high
+2025-08-16 14:52:27,266 - INFO - 📤 Test terminé: 2 alertes envoyées
+2025-08-16 14:55:02,543 - INFO - 🚀 === DÉMARRAGE SYSTÈME SMS RESPIRE ===
+2025-08-16 14:55:02,543 - INFO - Fichier sent_alerts.json valide
+2025-08-16 14:55:02,544 - INFO - Fichier sms_config.json valide
+2025-08-16 14:55:02,544 - INFO - Configuration SMS chargée avec succès
+2025-08-16 14:55:02,544 - INFO - Historique chargé: 2 entrées
+2025-08-16 14:55:02,545 - INFO - ✅ Système SMS initialisé
+2025-08-16 14:55:02,545 - INFO - ✅ Système opérationnel
+2025-08-16 14:55:03,280 - INFO - Chargé 2 contacts parents
+2025-08-16 14:55:03,337 - INFO - -- BEGIN Twilio API Request --
+2025-08-16 14:55:03,337 - INFO - POST Request: https://api.twilio.com/2010-04-01/Accounts/ACabfcb37ffd779fca3dfdb47a028352a7/Messages.json
+2025-08-16 14:55:03,338 - INFO - Headers:
+2025-08-16 14:55:03,338 - INFO - Content-Type : application/x-www-form-urlencoded
+2025-08-16 14:55:03,338 - INFO - User-Agent : twilio-python/9.3.7 (Windows AMD64) Python/3.13.2
+2025-08-16 14:55:03,338 - INFO - X-Twilio-Client : python-9.3.7
+2025-08-16 14:55:03,339 - INFO - Accept-Charset : utf-8
+2025-08-16 14:55:03,339 - INFO - Accept : application/json
+2025-08-16 14:55:03,339 - INFO - -- END Twilio API Request --
+2025-08-16 14:55:04,629 - INFO - Response Status Code: 401
+2025-08-16 14:55:04,630 - INFO - Response Headers: {'Content-Type': 'application/json', 'Content-Length': '107', 'Connection': 'keep-alive', 'Date': 'Sat, 16 Aug 2025 14:55:05 GMT', 'X-Twilio-Error-Code': '20003', 'Twilio-Request-Id': 'RQd57e68ba0dc64da5a2426b3fbe11b04a', 'Twilio-Request-Duration': '0.017', 'X-Home-Region': 'us1', 'X-API-Domain': 'api.twilio.com', 'Strict-Transport-Security': 'max-age=31536000', 'WWW-Authenticate': 'Basic realm="Twilio API"', 'X-Cache': 'Error from cloudfront', 'Via': '1.1 32713ef80c317f26bc1691bc0aad3818.cloudfront.net (CloudFront)', 'X-Amz-Cf-Pop': 'MAD51-C2', 'X-Amz-Cf-Id': 'ZRtwecAq1pQQZgDGk-n-Sr8h8sr8oCIAPz1YmAh-gJUY_6pwSJsetw==', 'X-Powered-By': 'AT-5000', 'X-Shenanigans': 'none', 'Vary': 'Origin'}
+2025-08-16 14:55:04,632 - ERROR - Tentative 1/3 échouée pour +221774603692: 
+[31m[49mHTTP Error[0m [37m[49mYour request was:[0m
+
+[36m[49mPOST /Accounts/ACabfcb37ffd779fca3dfdb47a028352a7/Messages.json[0m
+
+[37m[49mTwilio returned the following information:[0m
+
+[34m[49mUnable to create record: Authenticate[0m
+
+[37m[49mMore information may be available here:[0m
+
+[34m[49mhttps://www.twilio.com/docs/errors/20003[0m
+
+
+2025-08-16 14:56:04,635 - INFO - -- BEGIN Twilio API Request --
+2025-08-16 14:56:04,635 - INFO - POST Request: https://api.twilio.com/2010-04-01/Accounts/ACabfcb37ffd779fca3dfdb47a028352a7/Messages.json
+2025-08-16 14:56:04,637 - INFO - Headers:
+2025-08-16 14:56:04,637 - INFO - Content-Type : application/x-www-form-urlencoded
+2025-08-16 14:56:04,638 - INFO - User-Agent : twilio-python/9.3.7 (Windows AMD64) Python/3.13.2
+2025-08-16 14:56:04,639 - INFO - X-Twilio-Client : python-9.3.7
+2025-08-16 14:56:04,640 - INFO - Accept-Charset : utf-8
+2025-08-16 14:56:04,640 - INFO - Accept : application/json
+2025-08-16 14:56:04,641 - INFO - -- END Twilio API Request --
+2025-08-16 14:56:05,459 - INFO - Response Status Code: 401
+2025-08-16 14:56:05,459 - INFO - Response Headers: {'Content-Type': 'application/json', 'Content-Length': '107', 'Connection': 'keep-alive', 'Date': 'Sat, 16 Aug 2025 14:56:06 GMT', 'X-Twilio-Error-Code': '20003', 'Twilio-Request-Id': 'RQ19836ba9e7dec1fffe2717b47f9d46bd', 'Twilio-Request-Duration': '0.005', 'X-Home-Region': 'us1', 'X-API-Domain': 'api.twilio.com', 'Strict-Transport-Security': 'max-age=31536000', 'WWW-Authenticate': 'Basic realm="Twilio API"', 'X-Cache': 'Error from cloudfront', 'Via': '1.1 c1f1733266ff22358c2c3dd7a5454d9c.cloudfront.net (CloudFront)', 'X-Amz-Cf-Pop': 'MAD51-C2', 'X-Amz-Cf-Id': '7qcD8CsgEQajB_m7C9svS8zESPvBrL8Vtm62krKtBMitRwtroLex2A==', 'X-Powered-By': 'AT-5000', 'X-Shenanigans': 'none', 'Vary': 'Origin'}
+2025-08-16 14:56:05,461 - ERROR - Tentative 2/3 échouée pour +221774603692: 
+[31m[49mHTTP Error[0m [37m[49mYour request was:[0m
+
+[36m[49mPOST /Accounts/ACabfcb37ffd779fca3dfdb47a028352a7/Messages.json[0m
+
+[37m[49mTwilio returned the following information:[0m
+
+[34m[49mUnable to create record: Authenticate[0m
+
+[37m[49mMore information may be available here:[0m
+
+[34m[49mhttps://www.twilio.com/docs/errors/20003[0m
+
+
+2025-08-16 14:57:05,463 - INFO - -- BEGIN Twilio API Request --
+2025-08-16 14:57:05,463 - INFO - POST Request: https://api.twilio.com/2010-04-01/Accounts/ACabfcb37ffd779fca3dfdb47a028352a7/Messages.json
+2025-08-16 14:57:05,464 - INFO - Headers:
+2025-08-16 14:57:05,464 - INFO - Content-Type : application/x-www-form-urlencoded
+2025-08-16 14:57:05,464 - INFO - User-Agent : twilio-python/9.3.7 (Windows AMD64) Python/3.13.2
+2025-08-16 14:57:05,465 - INFO - X-Twilio-Client : python-9.3.7
+2025-08-16 14:57:05,465 - INFO - Accept-Charset : utf-8
+2025-08-16 14:57:05,466 - INFO - Accept : application/json
+2025-08-16 14:57:05,466 - INFO - -- END Twilio API Request --
+2025-08-16 14:57:07,322 - INFO - Response Status Code: 401
+2025-08-16 14:57:07,322 - INFO - Response Headers: {'Content-Type': 'application/json', 'Content-Length': '107', 'Connection': 'keep-alive', 'Date': 'Sat, 16 Aug 2025 14:57:08 GMT', 'X-Twilio-Error-Code': '20003', 'Twilio-Request-Id': 'RQab6fbc4ffc64ebddf6a46b1cb54410e5', 'Twilio-Request-Duration': '0.018', 'X-Home-Region': 'us1', 'X-API-Domain': 'api.twilio.com', 'Strict-Transport-Security': 'max-age=31536000', 'WWW-Authenticate': 'Basic realm="Twilio API"', 'X-Cache': 'Error from cloudfront', 'Via': '1.1 83f9969abb9f43b17789799503ae532c.cloudfront.net (CloudFront)', 'X-Amz-Cf-Pop': 'MAD51-C2', 'X-Amz-Cf-Id': 'KBcbvfHB3Dv_bT9TC4Ahdr_vXWSfxDi9W9IJkSVJE8z8DDGuf9S_GA==', 'X-Powered-By': 'AT-5000', 'X-Shenanigans': 'none', 'Vary': 'Origin'}
+2025-08-16 14:57:07,324 - ERROR - Tentative 3/3 échouée pour +221774603692: 
+[31m[49mHTTP Error[0m [37m[49mYour request was:[0m
+
+[36m[49mPOST /Accounts/ACabfcb37ffd779fca3dfdb47a028352a7/Messages.json[0m
+
+[37m[49mTwilio returned the following information:[0m
+
+[34m[49mUnable to create record: Authenticate[0m
+
+[37m[49mMore information may be available here:[0m
+
+[34m[49mhttps://www.twilio.com/docs/errors/20003[0m
+
+
+2025-08-16 14:57:07,324 - INFO - Chargé 2 contacts parents
+2025-08-16 14:57:07,325 - INFO - -- BEGIN Twilio API Request --
+2025-08-16 14:57:07,325 - INFO - POST Request: https://api.twilio.com/2010-04-01/Accounts/ACabfcb37ffd779fca3dfdb47a028352a7/Messages.json
+2025-08-16 14:57:07,325 - INFO - Headers:
+2025-08-16 14:57:07,326 - INFO - Content-Type : application/x-www-form-urlencoded
+2025-08-16 14:57:07,327 - INFO - User-Agent : twilio-python/9.3.7 (Windows AMD64) Python/3.13.2
+2025-08-16 14:57:07,327 - INFO - X-Twilio-Client : python-9.3.7
+2025-08-16 14:57:07,327 - INFO - Accept-Charset : utf-8
+2025-08-16 14:57:07,327 - INFO - Accept : application/json
+2025-08-16 14:57:07,327 - INFO - -- END Twilio API Request --
+2025-08-16 14:57:07,979 - INFO - Response Status Code: 401
+2025-08-16 14:57:07,980 - INFO - Response Headers: {'Content-Type': 'application/json', 'Content-Length': '107', 'Connection': 'keep-alive', 'Date': 'Sat, 16 Aug 2025 14:57:09 GMT', 'X-Twilio-Error-Code': '20003', 'Twilio-Request-Id': 'RQ6a64d14ca6883ff4faa2cffde279fea8', 'Twilio-Request-Duration': '0.009', 'X-Home-Region': 'us1', 'X-API-Domain': 'api.twilio.com', 'Strict-Transport-Security': 'max-age=31536000', 'WWW-Authenticate': 'Basic realm="Twilio API"', 'X-Cache': 'Error from cloudfront', 'Via': '1.1 09e594de40cb3eb83a4bc581fa48d9e2.cloudfront.net (CloudFront)', 'X-Amz-Cf-Pop': 'MAD51-C2', 'X-Amz-Cf-Id': 'GSK3z4A__8s-jhtn-jNvS6tJsKdEH7pJyQNCmnOh5EUC4uZPn5sAfg==', 'X-Powered-By': 'AT-5000', 'X-Shenanigans': 'none', 'Vary': 'Origin'}
+2025-08-16 14:57:07,981 - ERROR - Tentative 1/3 échouée pour +221774603692: 
+[31m[49mHTTP Error[0m [37m[49mYour request was:[0m
+
+[36m[49mPOST /Accounts/ACabfcb37ffd779fca3dfdb47a028352a7/Messages.json[0m
+
+[37m[49mTwilio returned the following information:[0m
+
+[34m[49mUnable to create record: Authenticate[0m
+
+[37m[49mMore information may be available here:[0m
+
+[34m[49mhttps://www.twilio.com/docs/errors/20003[0m
+
+
+2025-08-16 14:58:07,984 - INFO - -- BEGIN Twilio API Request --
+2025-08-16 14:58:07,985 - INFO - POST Request: https://api.twilio.com/2010-04-01/Accounts/ACabfcb37ffd779fca3dfdb47a028352a7/Messages.json
+2025-08-16 14:58:07,985 - INFO - Headers:
+2025-08-16 14:58:07,986 - INFO - Content-Type : application/x-www-form-urlencoded
+2025-08-16 14:58:07,986 - INFO - User-Agent : twilio-python/9.3.7 (Windows AMD64) Python/3.13.2
+2025-08-16 14:58:07,986 - INFO - X-Twilio-Client : python-9.3.7
+2025-08-16 14:58:07,986 - INFO - Accept-Charset : utf-8
+2025-08-16 14:58:07,987 - INFO - Accept : application/json
+2025-08-16 14:58:07,987 - INFO - -- END Twilio API Request --
+2025-08-16 14:58:09,025 - INFO - Response Status Code: 401
+2025-08-16 14:58:09,025 - INFO - Response Headers: {'Content-Type': 'application/json', 'Content-Length': '107', 'Connection': 'keep-alive', 'Date': 'Sat, 16 Aug 2025 14:58:10 GMT', 'X-Twilio-Error-Code': '20003', 'Twilio-Request-Id': 'RQceefd25b2023599895379e64e0d58421', 'Twilio-Request-Duration': '0.008', 'X-Home-Region': 'us1', 'X-API-Domain': 'api.twilio.com', 'Strict-Transport-Security': 'max-age=31536000', 'WWW-Authenticate': 'Basic realm="Twilio API"', 'X-Cache': 'Error from cloudfront', 'Via': '1.1 66709b7391664c627ccebe2d9c55dd7e.cloudfront.net (CloudFront)', 'X-Amz-Cf-Pop': 'MAD51-C2', 'X-Amz-Cf-Id': '2LrJML-xMjqJhxtDVBQaYdvgqqTwYwZiR8wy00MOphVqYXRmxAMQvA==', 'X-Powered-By': 'AT-5000', 'X-Shenanigans': 'none', 'Vary': 'Origin'}
+2025-08-16 14:58:09,026 - ERROR - Tentative 2/3 échouée pour +221774603692: 
+[31m[49mHTTP Error[0m [37m[49mYour request was:[0m
+
+[36m[49mPOST /Accounts/ACabfcb37ffd779fca3dfdb47a028352a7/Messages.json[0m
+
+[37m[49mTwilio returned the following information:[0m
+
+[34m[49mUnable to create record: Authenticate[0m
+
+[37m[49mMore information may be available here:[0m
+
+[34m[49mhttps://www.twilio.com/docs/errors/20003[0m
+
+
+2025-08-16 14:59:09,028 - INFO - -- BEGIN Twilio API Request --
+2025-08-16 14:59:09,028 - INFO - POST Request: https://api.twilio.com/2010-04-01/Accounts/ACabfcb37ffd779fca3dfdb47a028352a7/Messages.json
+2025-08-16 14:59:09,030 - INFO - Headers:
+2025-08-16 14:59:09,031 - INFO - Content-Type : application/x-www-form-urlencoded
+2025-08-16 14:59:09,032 - INFO - User-Agent : twilio-python/9.3.7 (Windows AMD64) Python/3.13.2
+2025-08-16 14:59:09,032 - INFO - X-Twilio-Client : python-9.3.7
+2025-08-16 14:59:09,033 - INFO - Accept-Charset : utf-8
+2025-08-16 14:59:09,034 - INFO - Accept : application/json
+2025-08-16 14:59:09,035 - INFO - -- END Twilio API Request --
+2025-08-16 14:59:11,738 - INFO - Response Status Code: 401
+2025-08-16 14:59:11,739 - INFO - Response Headers: {'Content-Type': 'application/json', 'Content-Length': '107', 'Connection': 'keep-alive', 'Date': 'Sat, 16 Aug 2025 14:59:12 GMT', 'X-Twilio-Error-Code': '20003', 'Twilio-Request-Id': 'RQ3af767876195a55bab64a76ebb00beb0', 'Twilio-Request-Duration': '0.007', 'X-Home-Region': 'us1', 'X-API-Domain': 'api.twilio.com', 'Strict-Transport-Security': 'max-age=31536000', 'WWW-Authenticate': 'Basic realm="Twilio API"', 'X-Cache': 'Error from cloudfront', 'Via': '1.1 e4b8d81d5f13e1c05d52108e75ecf23c.cloudfront.net (CloudFront)', 'X-Amz-Cf-Pop': 'MAD51-C2', 'X-Amz-Cf-Id': 'xHf5GhF1awSBdyBqyUZyT6KTAiHry272YnX6HIlYTmRAcrdukJSnew==', 'X-Powered-By': 'AT-5000', 'X-Shenanigans': 'none', 'Vary': 'Origin'}
+2025-08-16 14:59:11,741 - ERROR - Tentative 3/3 échouée pour +221774603692: 
+[31m[49mHTTP Error[0m [37m[49mYour request was:[0m
+
+[36m[49mPOST /Accounts/ACabfcb37ffd779fca3dfdb47a028352a7/Messages.json[0m
+
+[37m[49mTwilio returned the following information:[0m
+
+[34m[49mUnable to create record: Authenticate[0m
+
+[37m[49mMore information may be available here:[0m
+
+[34m[49mhttps://www.twilio.com/docs/errors/20003[0m
+
+
+2025-08-16 14:59:11,742 - INFO - 📤 Test terminé: 0 alertes envoyées

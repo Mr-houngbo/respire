@@ -12,21 +12,17 @@ from config.settings import token,BASE_URL,VALEURS_LIMITE,location_ids,DATA_DIR,
 from components.ecole_ import section_en_savoir_plus_air
 from pathlib import Path
 from components.autorite_ import show_header
-from streamlit_autorefresh import st_autorefresh
 import warnings
 warnings.filterwarnings("ignore")
+from streamlit_autorefresh import st_autorefresh
+import json
+from sms_system import SMSAlertSystem
+
+
+
+
 # ...le reste de ton code...
 
-
-# CSS pour cacher la barre Streamlit
-hide_streamlit_style = """
-    <style>
-    #MainMenu {visibility: hidden;}
-    footer {visibility: hidden;}
-    header {visibility: hidden;}
-    </style>
-"""
-st.markdown(hide_streamlit_style, unsafe_allow_html=True)
 
 # Configuration générale de la page
 st.set_page_config(page_title="RESPiRE – Accueil", layout="wide", initial_sidebar_state="expanded")
@@ -245,12 +241,12 @@ if selected_main == "Accueil":
         # Liste de capteurs avec coordonnées
         
         locations = pd.read_csv("locations_info.csv")
-
-        # Déclenche un refresh automatique toutes les 60s
-        count = st_autorefresh(interval=60000, limit=10000, key="_fizzbuzzcounter")
         
+        # Déclenche un refresh automatique toutes les 60s
+        # count = st_autorefresh(interval=60000, limit=100, key="fizzbuzzcounter")
+
         # Recuperation des donnees actuelles de toutes les locations 
-        @st.cache_data(show_spinner=False,ttl=60) # expire au bout de 5 min
+        @st.cache_data(show_spinner=False,ttl=60) # expire au bout de 1 min
         def get_all_locations_data(locations_df, token):
             results = {}
             for _, loc in locations_df.iterrows():
@@ -272,9 +268,6 @@ if selected_main == "Accueil":
         
         
         # Carte centrée sur le Sénégal
-
-        # m = create_optimized_map(locations, data_by_location)
-        # st_folium(m, width="100%", height=600, returned_objects=[], use_container_width=True)
 
 
         display_map_with_school_selector(locations, data_by_location)
@@ -445,17 +438,40 @@ elif selected_main == "Sensibilisation":
 
 
 
-
-
-
-
-
-
-
-
-
-
-
+def main():
+    
+    # Vérifier déclenchement automatique via URL
+    query_params = st.query_params
+    
+    if "auto_trigger" in query_params:
+        secret = query_params.get("secret", "")
+        expected_secret = st.secrets.get("WEBHOOK_SECRET", "default_secret")
+        
+        if secret == expected_secret:
+            with st.spinner("🔄 Envoi des alertes automatiques..."):
+                sms_system = SMSAlertSystem()
+                results, sent_count = sms_system.check_and_send_automatic_alerts(
+                    "École Primaire Mamadou Calixte Dia"
+                )
+                
+                st.success(f"✅ Alertes automatiques envoyées: {sent_count} SMS")
+                st.json({
+                    "timestamp": datetime.now().isoformat(),
+                    "sent_count": sent_count,
+                    "summary": f"{sent_count} parents contactés"
+                })
+                
+                # Afficher les résultats détaillés
+                if results:
+                    st.subheader("📋 Détails des envois")
+                    for result in results:
+                        icon = "✅" if result['status'] == 'Envoyé' else "❌"
+                        st.write(f"{icon} {result['parent']} ({result['child']}) - {result['reason']}")
+                
+                return  # Arrêter ici pour l'auto-trigger
+    
+if __name__ == "__main__":
+    main()
 
 
 
@@ -474,6 +490,4 @@ elif selected_main == "Sensibilisation":
 
 #=========================== SECTION TOUT EN BAS RESERVEE AU FOOTER =================================
 
-
 show_footer()
-
