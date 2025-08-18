@@ -535,5 +535,4 @@ def test_professional_report():
         return None
 
 if __name__ == "__main__":
-
     test_professional_report()
