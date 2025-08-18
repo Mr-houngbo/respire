@@ -14,7 +14,7 @@ on:
         required: false
         default: '164928'
       sender_email:
-        description: 'Sender email address'
+        description: 'Sender email address (must be verified in SendGrid)'
         required: false
         default: 'houngbo.calixte.r@gmail.com'
 
@@ -51,14 +51,14 @@ jobs:
         if [ -f requirements.txt ]; then
           pip install -r requirements.txt
         else
-          pip install pandas streamlit python-dotenv
+          pip install pandas streamlit python-dotenv sendgrid
         fi
     
     - name: Verify secrets are available
       run: |
         echo "Checking secrets..."
-        if [ -z "${{ secrets.GMAIL_APP_PASSWORD }}" ]; then
-          echo "❌ GMAIL_APP_PASSWORD is not set"
+        if [ -z "${{ secrets.SENDGRID_API_KEY }}" ]; then
+          echo "❌ SENDGRID_API_KEY is not set"
           exit 1
         fi
         echo "✅ Secrets verification complete"
@@ -70,7 +70,7 @@ jobs:
       env:
         LOCATION_ID: ${{ github.event.inputs.location_id || '164928' }}
         SENDER_EMAIL: ${{ github.event.inputs.sender_email || 'houngbo.calixte.r@gmail.com' }}
-        GMAIL_APP_PASSWORD: ${{ secrets.GMAIL_APP_PASSWORD }}
+        SENDGRID_API_KEY: ${{ secrets.SENDGRID_API_KEY }}
       run: |
         echo "Starting air quality report process..."
         echo "Location ID: $LOCATION_ID"
