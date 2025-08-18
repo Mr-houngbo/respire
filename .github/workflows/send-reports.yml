@@ -4,9 +4,9 @@ name: Send Air Quality Reports
 on:
   # Déclencher automatiquement tous les lundis à 8h UTC
   schedule:
-    - cron: '0 8 * * 1'  # 0 8 * * 1 = 8h00 UTC tous les lundis
+    - cron: '0 8 * * 1'
   
-  # Permettre le déclenchement manuel depuis GitHub
+  # Déclencher manuellement depuis GitHub
   workflow_dispatch:
     inputs:
       location_id:
@@ -22,7 +22,7 @@ on:
   push:
     branches: [ main ]
     paths:
-      - 'src/**'  # Seulement si les fichiers source changent
+      - 'src/**'
       - '.github/workflows/**'
 
 jobs:
@@ -38,8 +38,7 @@ jobs:
       with:
         python-version: '3.11'
         cache: 'pip'
-        cache-dependency-path: |
-          requirements.txt
+        cache-dependency-path: requirements.txt
     
     - name: Install system dependencies
       run: |
@@ -52,34 +51,27 @@ jobs:
         if [ -f requirements.txt ]; then
           pip install -r requirements.txt
         else
-          pip install google-auth google-auth-oauthlib google-auth-httplib2 google-api-python-client pandas streamlit python-dotenv
+          pip install pandas streamlit python-dotenv
         fi
     
     - name: Verify secrets are available
-      env:
-        GOOGLE_CREDENTIALS_JSON: ${{ secrets.GOOGLE_CREDENTIALS_JSON }}
       run: |
         echo "Checking secrets..."
-        if [ -z "$GOOGLE_CREDENTIALS_JSON" ]; then
-          echo "❌ GOOGLE_CREDENTIALS_JSON is not set"
+        if [ -z "${{ secrets.GMAIL_APP_PASSWORD }}" ]; then
+          echo "❌ GMAIL_APP_PASSWORD is not set"
           exit 1
         fi
         echo "✅ Secrets verification complete"
     
     - name: Create data directory
-      run: |
-        mkdir -p data
-        # Si vous avez des fichiers CSV dans votre repo, ils seront déjà là
-        # Sinon, vous pouvez les télécharger ou les créer ici
+      run: mkdir -p data
     
     - name: Send air quality reports
       env:
-        GOOGLE_CREDENTIALS_JSON: ${{ secrets.GOOGLE_CREDENTIALS_JSON }}
         LOCATION_ID: ${{ github.event.inputs.location_id || '164928' }}
         SENDER_EMAIL: ${{ github.event.inputs.sender_email || 'houngbo.calixte.r@gmail.com' }}
+        GMAIL_APP_PASSWORD: ${{ secrets.GMAIL_APP_PASSWORD }}
       run: |
-        echo "$GOOGLE_CREDENTIALS_JSON" > credentials.json
-        export GOOGLE_APPLICATION_CREDENTIALS=$PWD/credentials.json
         echo "Starting air quality report process..."
         echo "Location ID: $LOCATION_ID"
         echo "Sender Email: $SENDER_EMAIL"
