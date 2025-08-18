@@ -58,15 +58,11 @@ jobs:
     - name: Verify secrets are available
       env:
         GOOGLE_CREDENTIALS_JSON: ${{ secrets.GOOGLE_CREDENTIALS_JSON }}
-        GOOGLE_TOKENS_JSON: ${{ secrets.GOOGLE_TOKENS_JSON }}
       run: |
         echo "Checking secrets..."
         if [ -z "$GOOGLE_CREDENTIALS_JSON" ]; then
           echo "❌ GOOGLE_CREDENTIALS_JSON is not set"
           exit 1
-        fi
-        if [ -z "$GOOGLE_TOKENS_JSON" ]; then
-          echo "⚠️ GOOGLE_TOKENS_JSON is not set - will need initial auth"
         fi
         echo "✅ Secrets verification complete"
     
@@ -79,16 +75,15 @@ jobs:
     - name: Send air quality reports
       env:
         GOOGLE_CREDENTIALS_JSON: ${{ secrets.GOOGLE_CREDENTIALS_JSON }}
-        GOOGLE_TOKENS_JSON: ${{ secrets.GOOGLE_TOKENS_JSON }}
         LOCATION_ID: ${{ github.event.inputs.location_id || '164928' }}
         SENDER_EMAIL: ${{ github.event.inputs.sender_email || 'houngbo.calixte.r@gmail.com' }}
-        CI: true
-        GITHUB_ACTIONS: true
       run: |
+        echo "$GOOGLE_CREDENTIALS_JSON" > credentials.json
+        export GOOGLE_APPLICATION_CREDENTIALS=$PWD/credentials.json
         echo "Starting air quality report process..."
         echo "Location ID: $LOCATION_ID"
         echo "Sender Email: $SENDER_EMAIL"
-        python send_report.py # Remplacez par le nom de votre script principal
+        python send_report.py
     
     - name: Upload logs on failure
       if: failure()
