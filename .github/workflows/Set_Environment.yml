@@ -1,0 +1,16 @@
+name: Set Environment
+
+on:
+  workflow_dispatch:  # déclenchement manuel
+
+jobs:
+  expose-secrets:
+    runs-on: ubuntu-latest
+    env:
+      API_TOKEN: ${{ secrets.API_TOKEN }}
+
+    steps:
+      - name: Show that env is set
+        run: |
+          echo "API_TOKEN is set"
+          echo "Value length: ${#API_TOKEN}"   # juste pour vérifier que ce n'est pas vide
