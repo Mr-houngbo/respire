@@ -1,4 +1,4 @@
-# RESPiRE - Dashboard de Surveillance et d'Alerte Qualité de l'Air
+# RESPiRE - Dashboard de Surveillance et d'Alerte Qualité de l'Air - HACKATHON KAIKAI 
 
 **RESPiRE** est une plateforme complète de suivi, d’analyse et d’alerte sur la qualité de l’air dans les écoles, pensée pour protéger la santé des enfants et informer les parents et responsables scolaires en temps réel.
 
@@ -12,7 +12,6 @@
 - **Alertes automatiques** par SMS et WhatsApp aux parents en cas de dépassement de seuils critiques.
 - **Gestion des contacts parents** (import, édition, visualisation).
 - **Programmation et historique des alertes**.
-- **Webhooks** pour intégration avec d’autres systèmes (API REST).
 - **Configuration avancée** (seuils, horaires de silence, providers SMS/WhatsApp).
 
 ---
@@ -70,7 +69,6 @@ L’interface web s’ouvre automatiquement dans votre navigateur.
 
 ## 🔗 Intégration & Automatisation
 
-- **Webhooks** : Recevez ou envoyez des alertes via API REST (voir exemples dans le code).
 - **Scheduler GitHub Actions** : Déclenchez des alertes automatiquement à des horaires définis.
 
 ---
@@ -104,8 +102,8 @@ respire/
 
 ## 👥 Équipe & Contact
 
-- Projet développé lors du Hackathon KAIKAI 2025.
-- Contact : [Votre nom ou équipe] - [Votre email]
+- Projet développé par l'équipe Breath4life lors du Hackathon KAIKAI 2025.
+- Contact : [Breath4life] - [houngbo.calixte.r@gmail.com]
 
 ---
 
@@ -115,4 +113,5 @@ Ce projet est open-source sous licence MIT.
 
 ---
 
-**Protégeons la santé des enfants, respirons
+
+**Protégeons la santé des enfants, respirons**
