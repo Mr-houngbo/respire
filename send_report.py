@@ -11,8 +11,15 @@ from google.auth.transport.requests import Request
 from googleapiclient.discovery import build
 import pandas as pd
 from report_generator import *
+from google.auth import default
+
+
 # Scopes Gmail
 SCOPES = ['https://www.googleapis.com/auth/gmail.send']
+
+
+
+creds, project = default()
 
 def get_authority_contacts(csv_path="data/autorite.csv"):
     """
@@ -239,4 +246,5 @@ if __name__ == "__main__":
 # 3. La fonction generate_report() doit être implémentée séparément
 #
 # 4. En production, gérez les erreurs d'authentification de manière appropriée
+
 
