@@ -10,7 +10,7 @@ from google_auth_oauthlib.flow import InstalledAppFlow
 from google.auth.transport.requests import Request
 from googleapiclient.discovery import build
 import pandas as pd
-
+from report_generator import *
 # Scopes Gmail
 SCOPES = ['https://www.googleapis.com/auth/gmail.send']
 
@@ -48,14 +48,14 @@ def load_token_from_env():
     Charge le token depuis les variables d'environnement.
     Retourne un dictionnaire de token ou None.
     """
-    token_json = os.getenv('GOOGLE_TOKEN_JSON')
+    token_json = os.getenv('GOOGLE_TOKENS_JSON')
     if not token_json:
         return None
     
     try:
         return json.loads(token_json)
     except json.JSONDecodeError:
-        print("Warning: GOOGLE_TOKEN_JSON contient un JSON invalide")
+        print("Warning: GOOGLE_TOKENS_JSON contient un JSON invalide")
         return None
 
 def save_token_to_env_format(creds):
@@ -167,7 +167,7 @@ def envoyer_rapport_aux_autorites(location_id, service, sender):
             email = contact["email"]
 
             # Générer le rapport (fonction à implémenter)
-            pdf_path = generate_report(location_id)
+            pdf_path = test_professional_report()
 
             subject = "Rapport Qualité de l'air - École"
             body = (
@@ -239,3 +239,4 @@ if __name__ == "__main__":
 # 3. La fonction generate_report() doit être implémentée séparément
 #
 # 4. En production, gérez les erreurs d'authentification de manière appropriée
+
