@@ -1,7 +1,11 @@
 import pandas as pd 
 import os
 
-token = "77a25676-a9ec-4a99-9137-f33e6776b590"
+# Le secret devient une variable d'environnement
+token = os.getenv('API_TOKEN')
+
+if not token:
+    raise ValueError("API_TOKEN n'est pas défini")
 
 
 BASE_URL = "https://api.airgradient.com/public/api/v1"
@@ -60,6 +64,7 @@ locations = pd.read_csv("locations_info.csv")
 location_ids = locations["location_id"]
 school_names = locations["name"]
 logo_paths = locations["logo_path"]
+
 
 
 
