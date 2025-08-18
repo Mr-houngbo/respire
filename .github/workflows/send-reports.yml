@@ -88,7 +88,7 @@ jobs:
         echo "Starting air quality report process..."
         echo "Location ID: $LOCATION_ID"
         echo "Sender Email: $SENDER_EMAIL"
-        python app.py  # Remplacez par le nom de votre script principal
+        python send_report.py # Remplacez par le nom de votre script principal
     
     - name: Upload logs on failure
       if: failure()
