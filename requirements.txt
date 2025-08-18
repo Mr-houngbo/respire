@@ -16,9 +16,6 @@ streamlit_folium
 Pillow>=10.0.0
 matplotlib
 fpdf
-google-api-python-client
-google-auth-httplib2
-google-auth-oauthlib
 pytest
 joblib
 scikit-learn
@@ -27,8 +24,11 @@ streamlit-autorefresh
 schedule
 python-dotenv
 seaborn
+sendgrid
+
 
 # python -m tests.test_api_handler pour executer des fonctions , modules depuis la racine .
+
 
 
 
