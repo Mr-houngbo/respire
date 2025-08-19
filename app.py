@@ -314,7 +314,7 @@ elif selected_main == "Parents":
     from components import parent
     parent.show()
 
-elif selected_main == "Autorité":
+elif selected_main == "Autorités":
     from components import autorite
     
     show_header()
@@ -487,5 +487,6 @@ main()
 
 
 show_footer()
+
 
 
