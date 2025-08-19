@@ -1,5 +1,3 @@
-
-````markdown
 # RESPiRE - Dashboard de Surveillance et d’Alerte Qualité de l’Air 🌍💨  
 
 ![Python](https://img.shields.io/badge/Python-3.10+-blue.svg)  
@@ -39,7 +37,6 @@
    ```bash
    git clone https://github.com/Mr-houngbo/respire.git
    cd respire
-````
 
 2. **Créer un environnement virtuel**
 
@@ -159,3 +156,4 @@ This README is also available in [English](README.en.md).
 **Protégeons la santé des enfants, respirons.** 💙🌱
 
 ```
+
