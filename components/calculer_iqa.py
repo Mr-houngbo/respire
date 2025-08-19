@@ -4,22 +4,13 @@ import os
 from urllib.parse import urlencode
 import requests
 from datetime import datetime
+from config.settings import token,BASE_URL,VALEURS_LIMITE,DATA_DIR,location_ids
 
-# Valeurs limites (à ajuster selon normes locales)
-VALEURS_LIMITE = {
-    "rco2_corrected": 1000,    # ppm - Qualité d'air intérieur acceptable
-    "tvoc": 500,               # µg/m³ - Limite indicative pour COV
-    "pm01_corrected": 15,      # µg/m³ - PM1 (proche de PM2.5 mais plus stricte)
-    "pm02_corrected": 25,      # µg/m³ - PM2.5 (norme OMS)
-    "pm10_corrected": 50,      # µg/m³ - PM10 (norme OMS)
-    "noxIndex": 100       # µg/m³ - Limite pour NOx
-}
+
 
 #=============================================================================================================
 
-BASE_URL = "https://api.airgradient.com/public/api/v1"
 DATA_DIR = os.path.join(os.path.dirname(__file__), '..', 'data/now')
-token = "77a25676-a9ec-4a99-9137-f33e6776b590"
 
 #=============================================================================================================
 
@@ -95,11 +86,7 @@ def calculer_iqa(df: pd.DataFrame):
 
 
 #=============================================================================================================
-location_id = "164928"
-token = "77a25676-a9ec-4a99-9137-f33e6776b590"
 
-
-print(f" IQA = {calculer_iqa(fetch_current_data(location_id,token))}")
 
 
 
@@ -168,4 +155,5 @@ def calculer_iqa(df: pd.DataFrame):
     iqa = iqa_values[pollutant_principal]
 
     return round(iqa), pollutant_principal
+
 """
