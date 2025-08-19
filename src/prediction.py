@@ -14,7 +14,6 @@ from config.settings import token,BASE_URL,VALEURS_LIMITE,DATA_DIR,location_ids
 
 DATA_DIR = "data"
 location_id = 164928
-token = "77a25676-a9ec-4a99-9137-f33e6776b590"
 
 API_TO_MODEL_COLS = {
     'pm02_corrected': 'PM2.5 (μg/m³) corrected',
@@ -276,3 +275,4 @@ def pipeline_iqa(location_ids: list, token: str, days: int = 100) -> dict:
 
 
 # pipeline_iqa(location_ids, token, days=100)
+
