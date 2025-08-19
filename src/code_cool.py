@@ -222,7 +222,6 @@ import pandas as pd
 
 
 location_id = "164928"
-token = "77a25676-a9ec-4a99-9137-f33e6776b590"
 
 
 def show():
@@ -683,4 +682,5 @@ def show_header(nom_ecole, logo_path: str = None):
         
         # Ligne décorative animée
         st.markdown('<div class="decorative-line"></div>', unsafe_allow_html=True)
+
 
