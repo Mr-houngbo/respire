@@ -12,6 +12,8 @@ import numpy as np
 import tempfile
 from typing import Dict, List, Tuple, Optional
 import seaborn as sns
+from config.settings import token,BASE_URL,VALEURS_LIMITE,DATA_DIR,location_ids
+
 
 # Configuration pour éviter les warnings
 import warnings
@@ -20,22 +22,6 @@ warnings.filterwarnings("ignore")
 # Configuration matplotlib pour un rendu professionnel
 plt.style.use('seaborn-v0_8')
 sns.set_palette("husl")
-
-token = "77a25676-a9ec-4a99-9137-f33e6776b590"
-BASE_URL = "https://api.airgradient.com/public/api/v1"
-
-# Valeurs limites et couleurs associées
-VALEURS_LIMITE = {
-    "pm03_count": 100000,
-    "pm01_corrected": 15,
-    "pm02_corrected": 25,
-    "pm10_corrected": 50,
-    "rco2_corrected": 1000,
-    "atmp_corrected": 27,
-    "rhum_corrected": 60,
-    "tvoc": 500,
-    "noxIndex": 100
-}
 
 POLLUANTS_NOMS = {
     "pm02_corrected": "PM2.5",
