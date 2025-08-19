@@ -9,6 +9,7 @@ import os
 from datetime import datetime, timedelta
 import joblib
 import numpy as np
+import re
 from config.settings import token,BASE_URL,VALEURS_LIMITE,DATA_DIR,location_ids
 import warnings
 warnings.filterwarnings("ignore")
@@ -332,18 +333,63 @@ def _rename_api_columns(df_daily: pd.DataFrame) -> pd.DataFrame:
 
 def _make_multiday_preds(model, last_row: pd.DataFrame, horizon: int = 5) -> list:
     """
-    Prédictions auto-régressives sur plusieurs jours.
-    - iqa_lag_1 devient la prédiction précédente
-    - les exogènes lag_1 restent persistantes (valeur constante)
+    Auto-régressif générique :
+    - Met à jour tous les iqa_lag_k (k>=1) par décalage: lag_k <- ancien lag_(k-1), lag_1 <- y_hat
+    - Pour les exogènes *_lag_k : persistance simple (on recopie lag_k <- lag_k) ou on décale si plusieurs k.
+      Ici: si plusieurs niveaux existent (lag_1..lag_n), on décale aussi.
     """
-    step_feats = last_row.copy()
+    import re
+
+    step = last_row.copy()
+    cols = list(step.columns)
+
+    # Grouper lags IQA et exogènes
+    iqa_lags = sorted(
+        [(c, int(re.match(r'^iqa_lag_(\d+)$', c).group(1)))
+         for c in cols if re.match(r'^iqa_lag_(\d+)$', c)],
+        key=lambda x: x[1]
+    )
+
+    exog_groups = {}  # base -> [(col, k), ...]
+    for c in cols:
+        m = re.match(r'^(.*)_lag_(\d+)$', c)
+        if m and not c.startswith('iqa_lag_'):
+            base, k = m.group(1), int(m.group(2))
+            exog_groups.setdefault(base, []).append((c, k))
+    for base in exog_groups:
+        exog_groups[base].sort(key=lambda x: x[1])
+
     preds = []
     for _ in range(horizon):
-        y_hat = float(model.predict(step_feats)[0])
+        y_hat = float(model.predict(step)[0])
         preds.append(y_hat)
-        # MAJ iqa_lag_1 avec la dernière prédiction
-        step_feats['iqa_lag_1'] = y_hat
-        # Exogènes: persistance -> ne change pas
+
+        # shift iqa_lag_k: du plus grand vers le plus petit
+        for col, k in sorted(iqa_lags, key=lambda x: -x[1]):
+            if k == 1:
+                step[col] = y_hat
+            else:
+                # set lag_k <- ancien lag_(k-1)
+                prev_col = f"iqa_lag_{k-1}"
+                if prev_col in step.columns:
+                    step[col] = step[prev_col].values
+                else:
+                    step[col] = step[col].values  # fallback no-op
+
+        # exogènes: si plusieurs niveaux de lag sont présents, on décale aussi
+        for base, lst in exog_groups.items():
+            # du plus grand vers le plus petit
+            for col, k in sorted(lst, key=lambda x: -x[1]):
+                if k == 1:
+                    # persistance: on garde la même valeur (lag_1 ne change pas)
+                    step[col] = step[col].values
+                else:
+                    prev_col = f"{base}_lag_{k-1}"
+                    if prev_col in step.columns:
+                        step[col] = step[prev_col].values
+                    else:
+                        step[col] = step[col].values  # no-op
+
     return preds
 
 # ---------------------------
@@ -422,13 +468,20 @@ def fetch_last_days_for_iqa_prediction(location_id: int, token: str, days: int =
 
 # === PATCH 3/4 — _build_last_feature_row_for_iqa_j1 : aligne EXACTEMENT sur les features attendues par le modèle
 def _get_expected_features_from_model(model) -> list:
-    """Retourne la liste des features attendues par le modèle (ordre exact)."""
     if hasattr(model, "feature_names_in_"):
         return list(model.feature_names_in_)
     try:
         return list(model.get_booster().feature_names)
     except Exception:
-        raise ValueError("Impossible de récupérer les noms de features du modèle (feature_names_in_ / booster).")
+        raise ValueError("Impossible de récupérer les noms de features du modèle.")
+
+def _safe_get_kth_past_value_series(series: pd.Series, k: int) -> float:
+    """Renvoie la valeur à J-k (k>=1) si disponible, sinon fallback (dernier ou 0.0)."""
+    s = series.dropna()
+    if len(s) >= k:
+        return float(s.iloc[-k])
+    return float(s.iloc[-1]) if len(s) else 0.0
+
 
 def _safe_get_last_value(df_idx_dt: pd.DataFrame, col: str) -> float:
     """Dernière valeur non-NaN; 0.0 si absente."""
@@ -460,25 +513,36 @@ def _safe_get_prev_value_iqa(iqa_df: pd.DataFrame) -> float:
 
 def _build_last_feature_row_for_iqa_j1(model, daily_feats: pd.DataFrame, daily_iqa: pd.DataFrame) -> pd.DataFrame:
     """
-    Construit UNE ligne de features alignée EXACTEMENT sur ce que le modèle attend :
-      - 'iqa_lag_1' := IQA J-1 (daily_iqa)
-      - '<feature>_lag_1' := valeur capteur J-1 (daily_feats)
-      - '<feature>' (sans suffixe) := valeur capteur J (daily_feats)
+    Construit UNE ligne alignée EXACTEMENT sur les features attendues par le modèle.
+    - iqa_lag_k  : IQA à J-k (k>=1)
+    - X_lag_k    : feature capteur X à J-k
+    - X          : feature capteur X à J (dernier)
     """
     expected = _get_expected_features_from_model(model)
 
-    # daily_feats est indexé par '__day__' (datetime). On s'assure du tri.
-    feats = daily_feats.copy().sort_index()
+    feats = daily_feats.copy().sort_index()               # index datetime (__day__)
+    iqa_df = daily_iqa.copy()
+    iqa_df['date'] = pd.to_datetime(iqa_df['date'])
+    iqa_df = iqa_df.sort_values('date')
+    iqa_series = iqa_df['iqa']
 
     values = []
     for feat in expected:
-        if feat == 'iqa_lag_1':
-            values.append(_safe_get_prev_value_iqa(daily_iqa))
-        elif feat.endswith('_lag_1'):
-            base = feat[:-6]  # retire "_lag_1"
-            values.append(_safe_get_prev_value_dfidx(feats, base))
+        m_iqa = re.match(r'^iqa_lag_(\d+)$', feat)
+        m_lag = re.match(r'^(.*)_lag_(\d+)$', feat)
+
+        if m_iqa:
+            k = int(m_iqa.group(1))
+            values.append(_safe_get_kth_past_value_series(iqa_series, k))
+        elif m_lag:
+            base = m_lag.group(1)
+            k = int(m_lag.group(2))
+            col_series = feats[base] if base in feats.columns else pd.Series(dtype=float)
+            values.append(_safe_get_kth_past_value_series(col_series, k))
         else:
-            values.append(_safe_get_last_value(feats, feat))
+            # feature brute (valeur du jour J)
+            col_series = feats[feat] if feat in feats.columns else pd.Series(dtype=float)
+            values.append(_safe_get_kth_past_value_series(col_series, 1))  # J (dernier)
 
     return pd.DataFrame([values], columns=expected)
 
@@ -552,5 +616,6 @@ def show_iqa_prediction_section(location_id: int, token: str):
 #     show_iqa_prediction_section(location_id=164928, token="VOTRE_TOKEN")
 #     ...
 # --- PATCH: remplacer les 2 fonctions ci-dessous dans iqa_prediction_dashboard.py ---
+
 
 
