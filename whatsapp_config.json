@@ -1,7 +1,5 @@
 {
   "whatsapp_provider": "twilio",
-  "twilio_account_sid": "ACabfcb37ffd779fca3dfdb47a028352a7",
-  "twilio_whatsapp_number": "whatsapp:+15557888072",
   "meta_access_token": "",
   "meta_phone_number_id": "",
   "max_messages_per_day": 10,
@@ -15,3 +13,4 @@
   "send_location": false
 
 }
+
