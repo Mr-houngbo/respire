@@ -164,8 +164,8 @@ def predict():
     last_days_df = get_last_n_lags(location_id, token)
     prediction_df = predict_j_plus_1(last_days_df)
 
-    st.subheader(" Données utilisées")
-    st.dataframe(last_days_df)
+    with st.expander(" Données utilisées", expanded=False):        
+        st.dataframe(last_days_df)
 
     st.subheader(" Prédictions J+1")
     st.dataframe(prediction_df.style.format("{:.2f}"))
@@ -272,6 +272,7 @@ def pipeline_iqa(location_ids: list, token: str, days: int = 100) -> dict:
         df_iqa = calculer_iqa_journalier(df_full, loc_id)
         resultats[loc_id] = df_iqa
     return resultats
+
 
 
 # pipeline_iqa(location_ids, token, days=100)
