@@ -43,6 +43,8 @@ def show(location_id,logo_path,nom_ecole):
 
     predict()
 
+    show_iqa_prediction_section(164928, token)
+
 
 
 
@@ -69,5 +71,6 @@ def show(location_id,logo_path,nom_ecole):
 
 
 #=========================== SECTION TOUT EN BAS RESERVEE AU FOOTER =================================
+
 
 # show_footer()
