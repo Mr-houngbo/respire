@@ -137,7 +137,7 @@ with st.sidebar:
     # Menu principal avec style personnalisé
     selected_main = option_menu(
         menu_title=None,  # On enlève le titre car on en a mis un stylisé
-        options = ["Accueil", "Eleves", "Parents", "Autorité", "Sensibilisation"],
+        options = ["Accueil", "Eleves", "Parents", "Autorités", "Sensibilisation"],
         icons = ["house-fill", "building", "people-fill", "shield-fill", "camera-video-fill"],
         default_index=0,
         orientation="vertical",
@@ -487,4 +487,5 @@ main()
 
 
 show_footer()
+
 
