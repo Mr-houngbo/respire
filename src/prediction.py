@@ -698,6 +698,8 @@ from sklearn.metrics import mean_squared_error, mean_absolute_error, r2_score
 # ================== 1) Charger le modèle entraîné ==================
 MODEL_PATH = "models/xgb_iqa_all_features.pkl"
 model_ = joblib.load(MODEL_PATH)
+FEATURES = joblib.load("models/features.pkl")
+
 
 # Colonnes utiles à garder (adapter si besoin)
 COLS_TO_DROP = [
@@ -746,48 +748,48 @@ def make_lags(df_in: pd.DataFrame, target: str, exog: list,
 def predict_iqa(df: pd.DataFrame, target="iqa", n_lags_target=7, n_lags_exog=1, n_days=5):
     """
     Retourne les prédictions J+1 → J+5 de l'IQA.
+    Gère l'alignement des features avec celles sauvegardées à l'entraînement.
     """
+    # Colonnes exogènes (hors date et target)
     exog_cols = [c for c in df.columns if c not in ["date", target]]
     df_lags = make_lags(df, target, exog_cols, n_lags_target, n_lags_exog).dropna()
 
-    # Vérification avant d'aller plus loin
+    # Vérification : assez de données ?
     if df_lags.empty:
         raise ValueError("❌ Pas assez de données pour créer les lags et prédire l’IQA.")
 
-    
-    
-    # Features attendues
-    features = [c for c in df_lags.columns if c not in ["date", target]]
-
-    if not features:
-        raise ValueError("❌ Aucune variable explicative disponible pour la prédiction.")
+    # Forcer l’ordre + alignement colonnes
+    X = df_lags.reindex(columns=FEATURES, fill_value=0)
 
     # Prendre la dernière ligne connue
-    last_row = df_lags[features].iloc[[-1]]
+    last_row = X.iloc[[-1]]
 
     preds = []
     step_feats = last_row.copy()
 
     iqa_lag_cols = [f"{target}_lag_{k}" for k in range(1, n_lags_target + 1)]
-    exog_lag_cols = [f"{col}_lag_{1}" for col in exog_cols]
+    exog_lag_cols = [f"{col}_lag_{1}" for col in exog_cols if f"{col}_lag_{1}" in FEATURES]
 
     for _ in range(n_days):
+        # ✅ prédiction avec colonnes bien alignées
         y_hat = float(model_.predict(step_feats)[0])
         preds.append(y_hat)
 
-        # MAJ lags cible
-        iqa_vals = step_feats[iqa_lag_cols].to_numpy().ravel()
-        iqa_vals = np.roll(iqa_vals, 1)
-        iqa_vals[0] = y_hat
-        step_feats[iqa_lag_cols] = iqa_vals
+        # MAJ des lags cible
+        if all(c in step_feats.columns for c in iqa_lag_cols):
+            iqa_vals = step_feats[iqa_lag_cols].to_numpy().ravel()
+            iqa_vals = np.roll(iqa_vals, 1)
+            iqa_vals[0] = y_hat
+            step_feats.loc[:, iqa_lag_cols] = iqa_vals
 
-        # MAJ lags exogènes (persistance)
-        if len(exog_lag_cols) > 0:
+        # MAJ des lags exogènes (persistance)
+        if exog_lag_cols:
             exog_vals = step_feats[exog_lag_cols].to_numpy().ravel()
             exog_vals = np.roll(exog_vals, 1)
-            step_feats[exog_lag_cols] = exog_vals
+            step_feats.loc[:, exog_lag_cols] = exog_vals
 
     return preds
+
 
 
 
@@ -865,6 +867,7 @@ def predict_iqa_esmt():
     
     
     
+
 
 
 
