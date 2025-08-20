@@ -689,7 +689,7 @@ def show_animation(video_url: str = None):
     
     if video_url:
         # Colonnes pour encadrer la vidéo
-        col1, col2, col3 = st.columns([1, 6, 1])
+        col1, col2, col3 = st.columns([1, 7, 1])
         
        
         with col2:
@@ -711,7 +711,7 @@ def show_animation(video_url: str = None):
                         border: 3px solid #667eea;
                     ">
                         <iframe width="100%" height="505" 
-                                src="https://www.youtube.com/embed/{video_id}" 
+                                src="https://github.com/Mr-houngbo/respire/releases/download/v0.1-video/presentation.mp4"
                                 style="border-radius: 10px;"
                                 frameborder="0" 
                                 allowfullscreen>
@@ -944,3 +944,4 @@ def show_animation(video_url: str = None):
         </div>
         """, unsafe_allow_html=True)
 #=============================================================================================================
+
