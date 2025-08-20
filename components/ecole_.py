@@ -731,16 +731,16 @@ def show_animation(video_url: str = None):
                     </div>
                     """
     
-            # ---- FICHIER DIRECT (mp4/webm) : on utilise <video> avec poster ----
-            poster_attr = f' poster="{poster}"' if poster else ""
-            return f"""
-            <div style="background: white; padding: 16px; border-radius: 14px; box-shadow: 0 10px 30px rgba(0,0,0,0.08); border: 2px solid #667eea;">
-                <video width="100%" height="auto" controls playsinline preload="metadata"{poster_attr} style="border-radius:10px;">
-                <source src="{url}" type="video/mp4">
-                Votre navigateur ne supporte pas la lecture de cette vidéo.
-                </video>
-            </div>
-            """
+                # ---- FICHIER DIRECT (mp4/webm) : on utilise <video> avec poster ----
+                poster_attr = f' poster="{poster}"' if poster else ""
+                return f"""
+                <div style="background: white; padding: 16px; border-radius: 14px; box-shadow: 0 10px 30px rgba(0,0,0,0.08); border: 2px solid #667eea;">
+                    <video width="100%" height="auto" controls playsinline preload="metadata"{poster_attr} style="border-radius:10px;">
+                    <source src="{url}" type="video/mp4">
+                    Votre navigateur ne supporte pas la lecture de cette vidéo.
+                    </video>
+                </div>
+                """
 
             # on passe thumbnail_url si présent (sinon None)
             st.markdown(get_video_html(video_url, thumbnail_url or None), unsafe_allow_html=True)
@@ -814,3 +814,4 @@ def show_animation(video_url: str = None):
     
     
 #=============================================================================================================
+
