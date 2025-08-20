@@ -697,7 +697,7 @@ from sklearn.metrics import mean_squared_error, mean_absolute_error, r2_score
 
 # ================== 1) Charger le modèle entraîné ==================
 MODEL_PATH = "models/xgb_iqa_all_features.pkl"
-model = joblib.load(MODEL_PATH)
+model_ = joblib.load(MODEL_PATH)
 
 # Colonnes utiles à garder (adapter si besoin)
 COLS_TO_DROP = [
@@ -763,7 +763,7 @@ def predict_iqa(df: pd.DataFrame, target="iqa", n_lags_target=7, n_lags_exog=1, 
     exog_lag_cols = [f"{col}_lag_{1}" for col in exog_cols]
 
     for _ in range(n_days):
-        y_hat = float(model.predict(step_feats)[0])
+        y_hat = float(model_.predict(step_feats)[0])
         preds.append(y_hat)
 
         # MAJ lags cible
@@ -832,6 +832,7 @@ def predict_iqa_esmt():
     
     
     
+
 
 
 
