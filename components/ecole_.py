@@ -690,7 +690,6 @@ def show_animation(video_url: str = None):
     """, unsafe_allow_html=True)
     
 
-    thumbnail_url = "assets/images/thumbnails_presentation.png"
 
     if video_url:
         
@@ -815,4 +814,5 @@ def show_animation(video_url: str = None):
     
     
 #=============================================================================================================
+
 
