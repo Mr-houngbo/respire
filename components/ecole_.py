@@ -743,7 +743,7 @@ def show_animation(video_url: str = None):
                 """
 
             # on passe thumbnail_url si présent (sinon None)
-            st.markdown(get_video_html(video_url, thumbnail_url or None), unsafe_allow_html=True)
+            st.markdown(get_video_html(video_url,None), unsafe_allow_html=True)
             st.markdown("<div style='height:24px'></div>", unsafe_allow_html=True)
 
        
@@ -814,5 +814,6 @@ def show_animation(video_url: str = None):
     
     
 #=============================================================================================================
+
 
 
