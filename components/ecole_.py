@@ -688,60 +688,60 @@ def show_animation(video_url: str = None):
     """, unsafe_allow_html=True)
     
 
-thumbnail_url = "assets/images/thumbnails_presentation.png"
+    thumbnail_url = "assets/images/thumbnails_presentation.png"
 
-if video_url:
-    col1, col2, col3 = st.columns([1, 7, 1])
-    with col2:
-        import re
-
-        def extract_youtube_id(url: str) -> str | None:
-            # gère https://youtu.be/ID, https://www.youtube.com/watch?v=ID, & t=, etc.
-            m = re.search(r"(?:youtu\.be/|v=)([A-Za-z0-9_-]{6,})", url)
-            return m.group(1) if m else None
-
-        def default_youtube_thumb(vid: str) -> str:
-            # essaie maxres, sinon hq
-            return f"https://img.youtube.com/vi/{vid}/maxresdefault.jpg"
-
-        def get_video_html(url: str, poster: str | None = None) -> str:
-            yt_id = extract_youtube_id(url)
-
-            # ---- YOUTUBE : iframe (le poster est géré par YouTube, mais on peut afficher une image cliquable si besoin) ----
-            if yt_id:
-                # si pas de thumbnail fourni, on prend celui de YouTube
-                poster_final = poster or default_youtube_thumb(yt_id)
-                # miniature cliquable -> remplace par iframe au clic (lazy)
-                return f"""
-                <div style="background: white; padding: 16px; border-radius: 14px; box-shadow: 0 10px 30px rgba(0,0,0,0.08); border: 2px solid #667eea;">
-                  <div id="yt-wrapper" style="position:relative; width:100%; padding-top:56.25%; border-radius:12px; overflow:hidden; background:#000;">
-                    <img id="yt-poster" src="{poster_final}" alt="thumbnail" 
-                         style="position:absolute; top:0; left:0; width:100%; height:100%; object-fit:cover; cursor:pointer;">
-                    <div onclick="var p=document.getElementById('yt-player'); p.innerHTML='<iframe src=\\'https://www.youtube.com/embed/{yt_id}?autoplay=1\\' frameborder=\\'0\\' allow=\\'autoplay; encrypted-media\\' allowfullscreen style=\\'position:absolute;top:0;left:0;width:100%;height:100%\\'></iframe>'; this.parentElement.querySelector('#yt-poster').style.display='none'; this.style.display='none';" 
-                         style="position:absolute; top:0; left:0; width:100%; height:100%; display:flex; align-items:center; justify-content:center; cursor:pointer;">
-                      <div style="width:78px; height:78px; border-radius:50%; background:rgba(0,0,0,0.55); display:flex; align-items:center; justify-content:center;">
-                        <svg viewBox="0 0 68 48" width="48"><path d="M66.52 7.58a8 8 0 0 0-5.64-5.66C55.55 0 34 0 34 0S12.45 0 7.12 1.92a8 8 0 0 0-5.64 5.66A83.1 83.1 0 0 0 0 24a83.1 83.1 0 0 0 1.48 16.42 8 8 0 0 0 5.64 5.66C12.45 48 34 48 34 48s21.55 0 26.88-1.92a8 8 0 0 0 5.64-5.66A83.1 83.1 0 0 0 68 24a83.1 83.1 0 0 0-1.48-16.42z" fill="#f00"/><path d="M45 24 27 14v20" fill="#fff"/></svg>
+    if video_url:
+        col1, col2, col3 = st.columns([1, 7, 1])
+        with col2:
+            import re
+    
+            def extract_youtube_id(url: str) -> str | None:
+                # gère https://youtu.be/ID, https://www.youtube.com/watch?v=ID, & t=, etc.
+                m = re.search(r"(?:youtu\.be/|v=)([A-Za-z0-9_-]{6,})", url)
+                return m.group(1) if m else None
+    
+            def default_youtube_thumb(vid: str) -> str:
+                # essaie maxres, sinon hq
+                return f"https://img.youtube.com/vi/{vid}/maxresdefault.jpg"
+    
+            def get_video_html(url: str, poster: str | None = None) -> str:
+                yt_id = extract_youtube_id(url)
+    
+                # ---- YOUTUBE : iframe (le poster est géré par YouTube, mais on peut afficher une image cliquable si besoin) ----
+                if yt_id:
+                    # si pas de thumbnail fourni, on prend celui de YouTube
+                    poster_final = poster or default_youtube_thumb(yt_id)
+                    # miniature cliquable -> remplace par iframe au clic (lazy)
+                    return f"""
+                    <div style="background: white; padding: 16px; border-radius: 14px; box-shadow: 0 10px 30px rgba(0,0,0,0.08); border: 2px solid #667eea;">
+                      <div id="yt-wrapper" style="position:relative; width:100%; padding-top:56.25%; border-radius:12px; overflow:hidden; background:#000;">
+                        <img id="yt-poster" src="{poster_final}" alt="thumbnail" 
+                             style="position:absolute; top:0; left:0; width:100%; height:100%; object-fit:cover; cursor:pointer;">
+                        <div onclick="var p=document.getElementById('yt-player'); p.innerHTML='<iframe src=\\'https://www.youtube.com/embed/{yt_id}?autoplay=1\\' frameborder=\\'0\\' allow=\\'autoplay; encrypted-media\\' allowfullscreen style=\\'position:absolute;top:0;left:0;width:100%;height:100%\\'></iframe>'; this.parentElement.querySelector('#yt-poster').style.display='none'; this.style.display='none';" 
+                             style="position:absolute; top:0; left:0; width:100%; height:100%; display:flex; align-items:center; justify-content:center; cursor:pointer;">
+                          <div style="width:78px; height:78px; border-radius:50%; background:rgba(0,0,0,0.55); display:flex; align-items:center; justify-content:center;">
+                            <svg viewBox="0 0 68 48" width="48"><path d="M66.52 7.58a8 8 0 0 0-5.64-5.66C55.55 0 34 0 34 0S12.45 0 7.12 1.92a8 8 0 0 0-5.64 5.66A83.1 83.1 0 0 0 0 24a83.1 83.1 0 0 0 1.48 16.42 8 8 0 0 0 5.64 5.66C12.45 48 34 48 34 48s21.55 0 26.88-1.92a8 8 0 0 0 5.64-5.66A83.1 83.1 0 0 0 68 24a83.1 83.1 0 0 0-1.48-16.42z" fill="#f00"/><path d="M45 24 27 14v20" fill="#fff"/></svg>
+                          </div>
+                        </div>
+                        <div id="yt-player" style="position:absolute; top:0; left:0; width:100%; height:100%;"></div>
                       </div>
                     </div>
-                    <div id="yt-player" style="position:absolute; top:0; left:0; width:100%; height:100%;"></div>
-                  </div>
+                    """
+    
+                # ---- FICHIER DIRECT (mp4/webm) : on utilise <video> avec poster ----
+                poster_attr = f' poster="{poster}"' if poster else ""
+                return f"""
+                <div style="background: white; padding: 16px; border-radius: 14px; box-shadow: 0 10px 30px rgba(0,0,0,0.08); border: 2px solid #667eea;">
+                  <video width="100%" height="auto" controls playsinline preload="metadata"{poster_attr} style="border-radius:10px;">
+                    <source src="{url}" type="video/mp4">
+                    Votre navigateur ne supporte pas la lecture de cette vidéo.
+                  </video>
                 </div>
                 """
 
-            # ---- FICHIER DIRECT (mp4/webm) : on utilise <video> avec poster ----
-            poster_attr = f' poster="{poster}"' if poster else ""
-            return f"""
-            <div style="background: white; padding: 16px; border-radius: 14px; box-shadow: 0 10px 30px rgba(0,0,0,0.08); border: 2px solid #667eea;">
-              <video width="100%" height="auto" controls playsinline preload="metadata"{poster_attr} style="border-radius:10px;">
-                <source src="{url}" type="video/mp4">
-                Votre navigateur ne supporte pas la lecture de cette vidéo.
-              </video>
-            </div>
-            """
-
-        # on passe thumbnail_url si présent (sinon None)
-        st.markdown(get_video_html(video_url, thumbnail_url or None), unsafe_allow_html=True)
-        st.markdown("<div style='height:24px'></div>", unsafe_allow_html=True)
+                # on passe thumbnail_url si présent (sinon None)
+                st.markdown(get_video_html(video_url, thumbnail_url or None), unsafe_allow_html=True)
+                st.markdown("<div style='height:24px'></div>", unsafe_allow_html=True)
 
        
        
@@ -811,6 +811,7 @@ if video_url:
     
     
 #=============================================================================================================
+
 
 
 
