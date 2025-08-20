@@ -9,7 +9,6 @@ import os
 from datetime import datetime, timedelta
 import joblib
 import numpy as np
-import re
 from config.settings import token,BASE_URL,VALEURS_LIMITE,DATA_DIR,location_ids
 import warnings
 warnings.filterwarnings("ignore")
@@ -40,48 +39,61 @@ target_columns = joblib.load("models/target_columns.pkl")
 n_lags = joblib.load("models/n_lags.pkl")
 
 
-def predict_j_plus_1(last_days_df):
-    
+
+def compute_heat_index(temp_c, rh):
+    """
+    Calcule le Heat Index (°C) à partir de la température (°C) et de l'humidité relative (%).
+    """
+    # conversion °C -> °F
+    T = (temp_c * 9/5) + 32
+    R = rh
+
+    HI = (-42.379 + 2.04901523*T + 10.14333127*R
+          - 0.22475541*T*R - 0.00683783*T*T - 0.05481717*R*R
+          + 0.00122874*T*T*R + 0.00085282*T*R*R - 0.00000199*T*T*R*R)
+
+    # reconversion en °C
+    return (HI - 32) * 5/9
+
+
+
+def predict_j_plus_1(last_days_df: pd.DataFrame) -> pd.DataFrame:
+    """
+    Prédit les valeurs du jour suivant à partir des n_lags derniers jours.
+    last_days_df : DataFrame avec exactement n_lags jours, colonnes = target_columns
+    """
     if last_days_df.empty:
-        raise ValueError("Les données d'entrée pour la prédiction sont vides. Vérifiez la récupération des données.")
-   
-    if len(last_days_df) != n_lags:
-        raise ValueError(f"Il faut exactement {n_lags} jours d'historique.")
+        raise ValueError("Les données d'entrée sont vides.")
 
-    # On s'assure que toutes les colonnes cibles sont présentes
-    for col in target_columns:
-        if col not in last_days_df.columns:
-            last_days_df[col] = np.nan  # ou 0 si tu préfères
-
-    # On garde l'ordre des colonnes comme dans target_columns
-    last_days_df = last_days_df[target_columns]
-
-    # Construction des features et noms de features
-    features = []
+    # Construction des features
+    features, feature_names = [], []
     for i in range(n_lags, 0, -1):
         features.extend(last_days_df.iloc[-i].values)
-
-    feature_names = []
-    for i in range(n_lags, 0, -1):
         feature_names.extend([f"{col}(t-{i})" for col in target_columns])
 
     features_df = pd.DataFrame([features], columns=feature_names)
+
+    # Scaling et prédiction
     features_scaled = scaler_X.transform(features_df)
     pred_scaled = model.predict(features_scaled)
     pred = scaler_y.inverse_transform(pred_scaled)
 
-    return pd.DataFrame(
-        pred,
-        columns=target_columns,
-        index=[last_days_df.index[-1] + pd.Timedelta(days=1)]
-    )
+    # Index = dernier jour + 1
+    last_date = pd.to_datetime(last_days_df.index[-1])
+    next_date = last_date + pd.Timedelta(days=1)
 
+    return pd.DataFrame(pred, columns=target_columns, index=[next_date])
 
-def get_last_n_lags(location_id: int, token: str) -> pd.DataFrame:
+   
+def get_last_n_lags(location_id: int, token: str, n_lags: int = None) -> pd.DataFrame:
+    
     """
     Récupère les n_lags dernières lignes formatées pour la prédiction J+1.
     """
     
+    if n_lags is None:
+        n_lags = joblib.load("models/n_lags.pkl")
+
     # Dates pour la requête API
     to_date = datetime.utcnow()
     from_date = to_date - timedelta(days=n_lags + 2)  # marge pour s'assurer d'avoir n_lags jours complets
@@ -106,8 +118,7 @@ def get_last_n_lags(location_id: int, token: str) -> pd.DataFrame:
     df['timestamp'] = pd.to_datetime(df['timestamp'])
     df['date'] = df['timestamp'].dt.date
     
-    
-    
+        
     cols_a_supprimer = [
     "locationId",
     "locationName",
@@ -130,9 +141,15 @@ def get_last_n_lags(location_id: int, token: str) -> pd.DataFrame:
     
     # Groupby par jour (moyenne des valeurs de chaque jour)
     df_daily = df.groupby('date').mean(numeric_only=True)
+    df_daily = df_daily.dropna()  # supprime les jours incomplets
+
     # On garde la date comme index
     df_daily.index = pd.to_datetime(df_daily.index)
     
+    #file_path = os.path.join(DATA_DIR, f"Donnees brutes par jour for -{location_id}.csv")  it was pour voir les donnees et colonnes recues de l'api
+    #df_daily.to_csv(file_path)  
+    
+     
     # Renommage des colonnes API vers celles attendues par le modèle
     df_daily = df_daily.rename(columns=API_TO_MODEL_COLS)
     
@@ -147,12 +164,33 @@ def get_last_n_lags(location_id: int, token: str) -> pd.DataFrame:
     # Index = datetime
     df_last.index.name = 'timestamp'
     
-    
+        
+    if len(df_last) != n_lags:
+        raise ValueError(f"Il faut exactement {n_lags} jours d'historique (actuel = {len(last_days_df)}).")
 
+    # S'assurer que toutes les colonnes sont présentes
+    for col in target_columns:
+        if col not in df_last.columns:
+            df_last[col] = 0
+
+    # Réordonner les colonnes
+    df_last = df_last[target_columns]
+
+    # === Après ton groupby/join sur df_daily ===
+    if "Temperature (°C) corrected" in df_last.columns and "Humidity (%) corrected" in df_last.columns:
+        df_last["Heat Index (°C)"] = df_last.apply(
+            lambda row: compute_heat_index(row["Temperature (°C) corrected"], row["Humidity (%) corrected"]),
+            axis=1
+        )
+    
+    # Remplir les valeurs manquantes éventuelles
+    df_last = df_last.interpolate().bfill().ffill()
+    
     # Sauvegarde optionnelle
     os.makedirs(DATA_DIR, exist_ok=True)
     file_path = os.path.join(DATA_DIR, f"last-{n_lags}-jours-{location_id}.csv")
     df_last.to_csv(file_path)
+    
 
     return df_last
 
@@ -163,7 +201,7 @@ def predict():
 
     # Récupération des dernières données
     
-    last_days_df = get_last_n_lags(location_id, token)
+    last_days_df = get_last_n_lags(location_id,token,n_lags)
     prediction_df = predict_j_plus_1(last_days_df)
 
     with st.expander(" Données utilisées", expanded=False):        
@@ -333,63 +371,18 @@ def _rename_api_columns(df_daily: pd.DataFrame) -> pd.DataFrame:
 
 def _make_multiday_preds(model, last_row: pd.DataFrame, horizon: int = 5) -> list:
     """
-    Auto-régressif générique :
-    - Met à jour tous les iqa_lag_k (k>=1) par décalage: lag_k <- ancien lag_(k-1), lag_1 <- y_hat
-    - Pour les exogènes *_lag_k : persistance simple (on recopie lag_k <- lag_k) ou on décale si plusieurs k.
-      Ici: si plusieurs niveaux existent (lag_1..lag_n), on décale aussi.
+    Prédictions auto-régressives sur plusieurs jours.
+    - iqa_lag_1 devient la prédiction précédente
+    - les exogènes lag_1 restent persistantes (valeur constante)
     """
-    import re
-
-    step = last_row.copy()
-    cols = list(step.columns)
-
-    # Grouper lags IQA et exogènes
-    iqa_lags = sorted(
-        [(c, int(re.match(r'^iqa_lag_(\d+)$', c).group(1)))
-         for c in cols if re.match(r'^iqa_lag_(\d+)$', c)],
-        key=lambda x: x[1]
-    )
-
-    exog_groups = {}  # base -> [(col, k), ...]
-    for c in cols:
-        m = re.match(r'^(.*)_lag_(\d+)$', c)
-        if m and not c.startswith('iqa_lag_'):
-            base, k = m.group(1), int(m.group(2))
-            exog_groups.setdefault(base, []).append((c, k))
-    for base in exog_groups:
-        exog_groups[base].sort(key=lambda x: x[1])
-
+    step_feats = last_row.copy()
     preds = []
     for _ in range(horizon):
-        y_hat = float(model.predict(step)[0])
+        y_hat = float(model.predict(step_feats)[0])
         preds.append(y_hat)
-
-        # shift iqa_lag_k: du plus grand vers le plus petit
-        for col, k in sorted(iqa_lags, key=lambda x: -x[1]):
-            if k == 1:
-                step[col] = y_hat
-            else:
-                # set lag_k <- ancien lag_(k-1)
-                prev_col = f"iqa_lag_{k-1}"
-                if prev_col in step.columns:
-                    step[col] = step[prev_col].values
-                else:
-                    step[col] = step[col].values  # fallback no-op
-
-        # exogènes: si plusieurs niveaux de lag sont présents, on décale aussi
-        for base, lst in exog_groups.items():
-            # du plus grand vers le plus petit
-            for col, k in sorted(lst, key=lambda x: -x[1]):
-                if k == 1:
-                    # persistance: on garde la même valeur (lag_1 ne change pas)
-                    step[col] = step[col].values
-                else:
-                    prev_col = f"{base}_lag_{k-1}"
-                    if prev_col in step.columns:
-                        step[col] = step[prev_col].values
-                    else:
-                        step[col] = step[col].values  # no-op
-
+        # MAJ iqa_lag_1 avec la dernière prédiction
+        step_feats['iqa_lag_1'] = y_hat
+        # Exogènes: persistance -> ne change pas
     return preds
 
 # ---------------------------
@@ -468,20 +461,13 @@ def fetch_last_days_for_iqa_prediction(location_id: int, token: str, days: int =
 
 # === PATCH 3/4 — _build_last_feature_row_for_iqa_j1 : aligne EXACTEMENT sur les features attendues par le modèle
 def _get_expected_features_from_model(model) -> list:
+    """Retourne la liste des features attendues par le modèle (ordre exact)."""
     if hasattr(model, "feature_names_in_"):
         return list(model.feature_names_in_)
     try:
         return list(model.get_booster().feature_names)
     except Exception:
-        raise ValueError("Impossible de récupérer les noms de features du modèle.")
-
-def _safe_get_kth_past_value_series(series: pd.Series, k: int) -> float:
-    """Renvoie la valeur à J-k (k>=1) si disponible, sinon fallback (dernier ou 0.0)."""
-    s = series.dropna()
-    if len(s) >= k:
-        return float(s.iloc[-k])
-    return float(s.iloc[-1]) if len(s) else 0.0
-
+        raise ValueError("Impossible de récupérer les noms de features du modèle (feature_names_in_ / booster).")
 
 def _safe_get_last_value(df_idx_dt: pd.DataFrame, col: str) -> float:
     """Dernière valeur non-NaN; 0.0 si absente."""
@@ -513,36 +499,25 @@ def _safe_get_prev_value_iqa(iqa_df: pd.DataFrame) -> float:
 
 def _build_last_feature_row_for_iqa_j1(model, daily_feats: pd.DataFrame, daily_iqa: pd.DataFrame) -> pd.DataFrame:
     """
-    Construit UNE ligne alignée EXACTEMENT sur les features attendues par le modèle.
-    - iqa_lag_k  : IQA à J-k (k>=1)
-    - X_lag_k    : feature capteur X à J-k
-    - X          : feature capteur X à J (dernier)
+    Construit UNE ligne de features alignée EXACTEMENT sur ce que le modèle attend :
+      - 'iqa_lag_1' := IQA J-1 (daily_iqa)
+      - '<feature>_lag_1' := valeur capteur J-1 (daily_feats)
+      - '<feature>' (sans suffixe) := valeur capteur J (daily_feats)
     """
     expected = _get_expected_features_from_model(model)
 
-    feats = daily_feats.copy().sort_index()               # index datetime (__day__)
-    iqa_df = daily_iqa.copy()
-    iqa_df['date'] = pd.to_datetime(iqa_df['date'])
-    iqa_df = iqa_df.sort_values('date')
-    iqa_series = iqa_df['iqa']
+    # daily_feats est indexé par '__day__' (datetime). On s'assure du tri.
+    feats = daily_feats.copy().sort_index()
 
     values = []
     for feat in expected:
-        m_iqa = re.match(r'^iqa_lag_(\d+)$', feat)
-        m_lag = re.match(r'^(.*)_lag_(\d+)$', feat)
-
-        if m_iqa:
-            k = int(m_iqa.group(1))
-            values.append(_safe_get_kth_past_value_series(iqa_series, k))
-        elif m_lag:
-            base = m_lag.group(1)
-            k = int(m_lag.group(2))
-            col_series = feats[base] if base in feats.columns else pd.Series(dtype=float)
-            values.append(_safe_get_kth_past_value_series(col_series, k))
+        if feat == 'iqa_lag_1':
+            values.append(_safe_get_prev_value_iqa(daily_iqa))
+        elif feat.endswith('_lag_1'):
+            base = feat[:-6]  # retire "_lag_1"
+            values.append(_safe_get_prev_value_dfidx(feats, base))
         else:
-            # feature brute (valeur du jour J)
-            col_series = feats[feat] if feat in feats.columns else pd.Series(dtype=float)
-            values.append(_safe_get_kth_past_value_series(col_series, 1))  # J (dernier)
+            values.append(_safe_get_last_value(feats, feat))
 
     return pd.DataFrame([values], columns=expected)
 
@@ -619,3 +594,74 @@ def show_iqa_prediction_section(location_id: int, token: str):
 
 
 
+
+
+
+
+
+
+
+
+
+#=============================================================================================================
+#=============================================================================================================
+
+#                                                  SECTION COMPREHENSION PREDICTION J+1
+#=============================================================================================================
+#=============================================================================================================
+
+DATA_DIR = "data"
+
+#=============================================================================================================
+@st.cache_data(ttl=60)  # expire au bout de 1 minute
+def get_last_days_aggregated(location_id: int, token: str, n_lags: int = 5) -> pd.DataFrame:
+    """
+    Récupère les données brutes (5 min) des 7 derniers jours via l'API,
+    les agrège par jour, et retourne exactement n_lags jours sous forme de DataFrame
+    (colonnes = target_columns utilisées pour le modèle).
+    """
+    base_url = "https://api.airgradient.com/public/api/v1/locations"
+    to_date = datetime.utcnow()
+    from_date = to_date - timedelta(days=7)
+
+    url = f"{base_url}/{location_id}/measures/past"
+    params = {
+        "token": token,
+        "from": from_date.strftime('%Y%m%dT%H%M%SZ'),
+        "to": to_date.strftime('%Y%m%dT%H%M%SZ'),
+    }
+
+    response = requests.get(url, params=params)
+
+    if response.status_code != 200:
+        st.error(f"Erreur API : {response.status_code}")
+        return pd.DataFrame()
+
+    # === 1. Convertir en DataFrame
+    data = response.json()
+    df = pd.DataFrame(data)
+    df['timestamp'] = pd.to_datetime(df['timestamp'])
+
+    # Sauvegarde brute
+    file_path = os.path.join(DATA_DIR, f"data-7-jours-{location_id}.csv")
+    df.to_csv(file_path, index=False)
+
+    # === 2. Agrégation par jour
+    df.set_index("timestamp", inplace=True)
+
+    # moyenne journalière
+    daily_df = df.resample("D").mean()
+
+    # === 3. Garder uniquement les colonnes utiles
+    target_columns = joblib.load("target_columns.pkl")
+    daily_df = daily_df[target_columns]
+
+    # === 4. Supprimer les jours incomplets si NaN
+    daily_df = daily_df.dropna()
+
+    # === 5. Ne garder que les n_lags derniers jours
+    last_days = daily_df.tail(n_lags)
+
+    return last_days
+#=============================================================================================================
+#=============================================================================================================
