@@ -750,8 +750,17 @@ def predict_iqa(df: pd.DataFrame, target="iqa", n_lags_target=7, n_lags_exog=1, 
     exog_cols = [c for c in df.columns if c not in ["date", target]]
     df_lags = make_lags(df, target, exog_cols, n_lags_target, n_lags_exog).dropna()
 
+    # Vérification avant d'aller plus loin
+    if df_lags.empty:
+        raise ValueError("❌ Pas assez de données pour créer les lags et prédire l’IQA.")
+
+    
+    
     # Features attendues
     features = [c for c in df_lags.columns if c not in ["date", target]]
+
+    if not features:
+        raise ValueError("❌ Aucune variable explicative disponible pour la prédiction.")
 
     # Prendre la dernière ligne connue
     last_row = df_lags[features].iloc[[-1]]
@@ -779,6 +788,7 @@ def predict_iqa(df: pd.DataFrame, target="iqa", n_lags_target=7, n_lags_exog=1, 
             step_feats[exog_lag_cols] = exog_vals
 
     return preds
+
 
 
 # ================== 5) Wrapper Streamlit ==================
@@ -855,6 +865,7 @@ def predict_iqa_esmt():
     
     
     
+
 
 
 
