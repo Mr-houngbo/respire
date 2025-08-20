@@ -665,3 +665,173 @@ def get_last_days_aggregated(location_id: int, token: str, n_lags: int = 5) -> p
     return last_days
 #=============================================================================================================
 #=============================================================================================================
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+#=============================================================================================================
+#                                                  SECTION AMELIORATION  PREDICTION J+1 A J+5 IQA 
+#=============================================================================================================
+
+
+
+# predict_pipeline.py
+
+import pandas as pd
+import numpy as np
+import joblib
+from sklearn.metrics import mean_squared_error, mean_absolute_error, r2_score
+
+# ================== 1) Charger le modèle entraîné ==================
+MODEL_PATH = "models/xgb_iqa_all_features.pkl"
+model = joblib.load(MODEL_PATH)
+
+# Colonnes utiles à garder (adapter si besoin)
+COLS_TO_DROP = [
+    "Location ID", "Location Name", "Location Group", "Location Type",
+    "Sensor ID", "Place Open", "UTC Date/Time", "# of aggregated records"
+]
+
+
+# ================== 2) Préparation des données ==================
+def prepare_data(df_iqa: pd.DataFrame, df_polluants: pd.DataFrame) -> pd.DataFrame:
+    """
+    Merge IQA + Polluants, nettoyage, fréquence journalière, interpolation.
+    """
+    # Merge
+    df = pd.merge(df_iqa, df_polluants, on="date", how="inner")
+
+    # Supprimer colonnes inutiles
+    df = df.drop(columns=[c for c in COLS_TO_DROP if c in df.columns], errors="ignore")
+
+    # Convertir date
+    df["date"] = pd.to_datetime(df["date"])
+    df = df.set_index("date").asfreq("D")
+
+    # Interpolation simple
+    for c in df.columns:
+        df[c] = df[c].interpolate().bfill().ffill()
+
+    return df.reset_index()
+
+
+# ================== 3) Création des lags ==================
+def make_lags(df_in: pd.DataFrame, target: str, exog: list,
+              n_t: int = 7, n_x: int = 1) -> pd.DataFrame:
+    df_out = df_in.copy()
+    # lags de la cible
+    for k in range(1, n_t + 1):
+        df_out[f'{target}_lag_{k}'] = df_out[target].shift(k)
+    # lags des exogènes
+    for col in exog:
+        for k in range(1, n_x + 1):
+            df_out[f'{col}_lag_{k}'] = df_out[col].shift(k)
+    return df_out
+
+
+# ================== 4) Fonction de prédiction ==================
+def predict_iqa(df: pd.DataFrame, target="iqa", n_lags_target=7, n_lags_exog=1, n_days=5):
+    """
+    Retourne les prédictions J+1 → J+5 de l'IQA.
+    """
+    exog_cols = [c for c in df.columns if c not in ["date", target]]
+    df_lags = make_lags(df, target, exog_cols, n_lags_target, n_lags_exog).dropna()
+
+    # Features attendues
+    features = [c for c in df_lags.columns if c not in ["date", target]]
+
+    # Prendre la dernière ligne connue
+    last_row = df_lags[features].iloc[[-1]]
+
+    preds = []
+    step_feats = last_row.copy()
+
+    iqa_lag_cols = [f"{target}_lag_{k}" for k in range(1, n_lags_target + 1)]
+    exog_lag_cols = [f"{col}_lag_{1}" for col in exog_cols]
+
+    for _ in range(n_days):
+        y_hat = float(model.predict(step_feats)[0])
+        preds.append(y_hat)
+
+        # MAJ lags cible
+        iqa_vals = step_feats[iqa_lag_cols].to_numpy().ravel()
+        iqa_vals = np.roll(iqa_vals, 1)
+        iqa_vals[0] = y_hat
+        step_feats[iqa_lag_cols] = iqa_vals
+
+        # MAJ lags exogènes (persistance)
+        if len(exog_lag_cols) > 0:
+            exog_vals = step_feats[exog_lag_cols].to_numpy().ravel()
+            exog_vals = np.roll(exog_vals, 1)
+            step_feats[exog_lag_cols] = exog_vals
+
+    return preds
+
+
+# ================== 5) Wrapper Streamlit ==================
+def run_prediction_pipeline(df_iqa, df_polluants, n_days=5):
+    """
+    Fonction principale : reçoit deux DataFrames, retourne un DataFrame prédictions + explication.
+    """
+    df = prepare_data(df_iqa, df_polluants)
+    preds = predict_iqa(df, n_days=n_days)
+
+    # Créer DataFrame résultats
+    future_dates = pd.date_range(start=df["date"].max() + pd.Timedelta(days=1), periods=n_days, freq="D")
+    df_preds = pd.DataFrame({"date": future_dates, "iqa_pred": np.round(preds, 2)})
+
+    # Texte explicatif sur la précision
+    explanation = (
+        "ℹ️ Modèle XGBoost entraîné sur les données historiques de la station.\n"
+        "Précision moyenne sur test : RMSE ≈ 1.96, MAE ≈ 1.76, R² ≈ 0.52.\n"
+        "Les prévisions à 5 jours doivent être interprétées comme des tendances."
+    )
+
+    return df_preds, explanation
+
+
+def predict_iqa_esmt():
+
+    
+    st.header("📈 Prévisions IQA ESMT  J+1 → J+5")
+
+    
+    df_raw = get_full_history(location_id, token, days=7)
+    df_iqa = calculer_iqa_journalier(df_raw, location_id)
+
+    df_polluants = get_full_history(location_id, token, days=2)  
+    df_polluants['date'] = df_polluants['timestamp'].dt.date
+    df_polluants = df_polluants.groupby('date').mean().reset_index()
+
+
+ 
+    df_preds, explanation = run_prediction_pipeline(df_iqa, df_polluants, n_days=5)
+    st.dataframe(df_preds)
+    with st.expander("📄 Explication des prévisions"):
+        st.markdown(explanation)
+    st.subheader("Graphique des prévisions IQA")
+    fig = px.line(df_preds, x="date", y="iqa_pred", markers =True,
+                  title="Prévisions IQA ESMT J+1 → J+5",
+                    labels={"iqa_pred": "IQA prédit", "date": "Date"})
+    st.plotly_chart(fig, use_container_width=True)
+    
+    
+    
+    
+    
+
+
+
