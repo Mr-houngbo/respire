@@ -45,6 +45,11 @@ def show(location_id,logo_path,nom_ecole):
 
     show_iqa_prediction_section(164928, token)
 
+    
+    #show_iqa_prediction_section(164928, token)
+    
+    predict_iqa_esmt
+
 
 
 
@@ -74,3 +79,4 @@ def show(location_id,logo_path,nom_ecole):
 
 
 # show_footer()
+
