@@ -711,7 +711,7 @@ def show_animation(video_url: str = None):
                         border: 3px solid #667eea;
                     ">
                         <iframe width="100%" height="505" 
-                                src="https://github.com/Mr-houngbo/respire/releases/download/v0.1-video/presentation.mp4"
+                                src="https://www.youtube.com/embed/{video_id}"
                                 style="border-radius: 10px;"
                                 frameborder="0" 
                                 allowfullscreen>
@@ -821,127 +821,7 @@ def show_animation(video_url: str = None):
             </div>
             """, height=150)
     
-    else:
-        # Alternative sans vidéo - version améliorée
-        col1, col2 = st.columns([3, 2])
-        
-        with col1:
-            # Image avec overlay informatif
-            st.markdown("""
-            <div style="
-                position: relative;
-                border-radius: 15px;
-                overflow: hidden;
-                box-shadow: 0 10px 30px rgba(0,0,0,0.2);
-                border: 3px solid #667eea;
-            ">
-            """, unsafe_allow_html=True)
-            
-            st.image(
-                "assets/images/bad_air_quality.png",
-                caption="",
-                use_container_width=True
-            )
-            
-            st.markdown("""
-            <div style="
-                position: absolute;
-                bottom: 0;
-                left: 0;
-                right: 0;
-                background: linear-gradient(transparent, rgba(0,0,0,0.8));
-                color: white;
-                padding: 20px;
-                text-align: center;
-            ">
-                <h3 style="margin: 0; font-size: 18px;">🔍 L'air invisible</h3>
-                <p style="margin: 5px 0 0 0; font-size: 14px;">
-                    Même quand l'air paraît propre... il peut cacher des choses invisibles !
-                </p>
-            </div>
-            </div>
-            """, unsafe_allow_html=True)
-        
-        with col2:
-            # Panneau éducatif interactif
-            components.html("""
-            <div style='
-                background: #f8f9ff;
-                border: 2px solid #667eea;
-                border-radius: 15px;
-                padding: 25px;
-                font-family: "Source Sans Pro", sans-serif;
-                height: 400px;
-                overflow-y: auto;
-            '>
-                <h3 style='color: #667eea; text-align: center; margin-bottom: 20px; margin-top: 0;'>
-                    🧪 Les secrets de l'air pollué
-                </h3>
-                
-                <div style='margin: 20px 0;'>
-                    <div style='display: flex; align-items: center; margin: 15px 0; padding: 10px; background: #e8f5e8; border-radius: 8px;'>
-                        <span style='font-size: 25px; margin-right: 15px;'>🏭</span>
-                        <div>
-                            <strong style='color: #333;'>Les usines</strong><br>
-                            <small style='color: #666;'>Rejettent des fumées toxiques</small>
-                        </div>
-                    </div>
-                    
-                    <div style='display: flex; align-items: center; margin: 15px 0; padding: 10px; background: #fff8e1; border-radius: 8px;'>
-                        <span style='font-size: 25px; margin-right: 15px;'>🚗</span>
-                        <div>
-                            <strong style='color: #333;'>Les voitures</strong><br>
-                            <small style='color: #666;'>Produisent des gaz d'échappement</small>
-                        </div>
-                    </div>
-                    
-                    <div style='display: flex; align-items: center; margin: 15px 0; padding: 10px; background: #ffebee; border-radius: 8px;'>
-                        <span style='font-size: 25px; margin-right: 15px;'>🔥</span>
-                        <div>
-                            <strong style='color: #333;'>Les feux</strong><br>
-                            <small style='color: #666;'>Brûlent et créent de la fumée</small>
-                        </div>
-                    </div>
-                    
-                    <div style='display: flex; align-items: center; margin: 15px 0; padding: 10px; background: #f3e5f5; border-radius: 8px;'>
-                        <span style='font-size: 25px; margin-right: 15px;'>💨</span>
-                        <div>
-                            <strong style='color: #333;'>Le vent</strong><br>
-                            <small style='color: #666;'>Transporte la pollution partout</small>
-                        </div>
-                    </div>
-                </div>
-                
-                <div style='
-                    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-                    color: white;
-                    padding: 15px;
-                    border-radius: 10px;
-                    text-align: center;
-                    margin-top: 20px;
-                '>
-                    <strong>💡 Le savais-tu ?</strong><br>
-                    <small>Certaines particules sont 100 fois plus petites qu'un cheveu !</small>
-                </div>
-            </div>
-            """, height=420)
-        
-        # Appel à l'action pour regarder une vraie vidéo
-        st.markdown("---")
-        st.markdown("""
-        <div style="
-            background: linear-gradient(135deg, #ff9a9e 0%, #fecfef 100%);
-            padding: 20px;
-            border-radius: 15px;
-            text-align: center;
-            margin: 20px 0;
-            box-shadow: 0 8px 25px rgba(255, 154, 158, 0.3);
-        ">
-            <h3 style="color: white; margin: 0 0 10px 0;">🎥 Envie d'en voir plus ?</h3>
-            <p style="color: rgba(255,255,255,0.9); margin: 0;">
-                Demande à ton professeur de te montrer une vraie vidéo sur la pollution de l'air !
-            </p>
-        </div>
-        """, unsafe_allow_html=True)
+    
 #=============================================================================================================
+
 
