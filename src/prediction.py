@@ -803,6 +803,22 @@ def run_prediction_pipeline(df_iqa, df_polluants, n_days=5):
     return df_preds, explanation
 
 
+def aggregate_polluants_daily(df):
+    """Agrège les polluants par jour (moyenne uniquement des colonnes numériques)."""
+    if df.empty:
+        return pd.DataFrame()
+    
+    df['date'] = df['timestamp'].dt.date
+    
+    # Garder uniquement les colonnes numériques
+    num_cols = df.select_dtypes(include=[np.number]).columns.tolist()
+    if "date" not in num_cols:
+        num_cols = ["date"] + num_cols
+    
+    df_daily = df.groupby("date")[num_cols].mean().reset_index()
+    return df_daily 
+
+
 def predict_iqa_esmt():
 
     
@@ -813,8 +829,7 @@ def predict_iqa_esmt():
     df_iqa = calculer_iqa_journalier(df_raw, location_id)
 
     df_polluants = get_full_history(location_id, token, days=2)  
-    df_polluants['date'] = df_polluants['timestamp'].dt.date
-    df_polluants = df_polluants.groupby('date').mean().reset_index()
+    df_polluants = aggregate_polluants_daily(df_polluants)
 
 
  
@@ -832,6 +847,7 @@ def predict_iqa_esmt():
     
     
     
+
 
 
 
