@@ -842,7 +842,7 @@ def predict_iqa_esmt():
     df_raw = get_full_history(location_id, token, days=7)
     df_iqa = calculer_iqa_journalier(df_raw, location_id)
 
-    df_polluants = get_full_history(location_id, token, days=2)
+    df_polluants = get_full_history(location_id, token, days=15)
     
     print(df_polluants.dtypes)
     print(df_polluants.head())
@@ -865,6 +865,7 @@ def predict_iqa_esmt():
     
     
     
+
 
 
 
