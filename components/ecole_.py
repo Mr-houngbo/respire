@@ -633,7 +633,8 @@ def show_air_quality(location_id, token):
         </div>
         """, height=400)
     
-#=============================================================================================================
+#==============================================================================================================
+
 
 def show_animation(video_url: str = None):
     """
@@ -691,7 +692,9 @@ def show_animation(video_url: str = None):
     thumbnail_url = "assets/images/thumbnails_presentation.png"
 
     if video_url:
+        
         col1, col2, col3 = st.columns([1, 7, 1])
+        
         with col2:
             import re
     
@@ -728,20 +731,20 @@ def show_animation(video_url: str = None):
                     </div>
                     """
     
-                # ---- FICHIER DIRECT (mp4/webm) : on utilise <video> avec poster ----
-                poster_attr = f' poster="{poster}"' if poster else ""
-                return f"""
-                <div style="background: white; padding: 16px; border-radius: 14px; box-shadow: 0 10px 30px rgba(0,0,0,0.08); border: 2px solid #667eea;">
-                  <video width="100%" height="auto" controls playsinline preload="metadata"{poster_attr} style="border-radius:10px;">
-                    <source src="{url}" type="video/mp4">
-                    Votre navigateur ne supporte pas la lecture de cette vidéo.
-                  </video>
-                </div>
-                """
+            # ---- FICHIER DIRECT (mp4/webm) : on utilise <video> avec poster ----
+            poster_attr = f' poster="{poster}"' if poster else ""
+            return f"""
+            <div style="background: white; padding: 16px; border-radius: 14px; box-shadow: 0 10px 30px rgba(0,0,0,0.08); border: 2px solid #667eea;">
+                <video width="100%" height="auto" controls playsinline preload="metadata"{poster_attr} style="border-radius:10px;">
+                <source src="{url}" type="video/mp4">
+                Votre navigateur ne supporte pas la lecture de cette vidéo.
+                </video>
+            </div>
+            """
 
-                # on passe thumbnail_url si présent (sinon None)
-                st.markdown(get_video_html(video_url, thumbnail_url or None), unsafe_allow_html=True)
-                st.markdown("<div style='height:24px'></div>", unsafe_allow_html=True)
+            # on passe thumbnail_url si présent (sinon None)
+            st.markdown(get_video_html(video_url, thumbnail_url or None), unsafe_allow_html=True)
+            st.markdown("<div style='height:24px'></div>", unsafe_allow_html=True)
 
        
        
@@ -811,7 +814,3 @@ def show_animation(video_url: str = None):
     
     
 #=============================================================================================================
-
-
-
-
