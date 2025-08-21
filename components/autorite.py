@@ -14,6 +14,9 @@ def show(location_id,logo_path,nom_ecole):
     df = pd.DataFrame([df])
     iqa = calculer_iqa(df)
 
+    # Exemple : bouton Streamlit
+    if st.button(f"Prédire J+1 pour {nom_ecole}"):
+        show_prediction(location_id)
         
     st.markdown("""
             <div>
@@ -42,12 +45,10 @@ def show(location_id,logo_path,nom_ecole):
 
 
     predict()
-
-    #show_iqa_prediction_section(164928, token)
     
     predict_iqa_esmt()
 
-
+    
 
 
 
@@ -76,5 +77,6 @@ def show(location_id,logo_path,nom_ecole):
 
 
 # show_footer()
+
 
 
