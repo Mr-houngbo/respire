@@ -592,7 +592,7 @@ def predict_others_iqa(location_id: int, n_lags: int = 7) -> float:
     
     # 1. Récupérer les IQA des 10 derniers jours
     df = get_full_history(location_id, token, days=10)
-    df = calculer_iqa_journalier(df_raw, location_id)
+    df = calculer_iqa_journalier(df, location_id)
     df = df.sort_values("date").reset_index(drop=True)
     
 
@@ -625,6 +625,7 @@ def show_prediction(location_id: int):
         st.success(f"📅 Prévision IQA pour demain (Location {location_id}) : **{pred:.2f}**")
     except Exception as e:
         st.error(f"Erreur : {str(e)}")
+
 
 
 
