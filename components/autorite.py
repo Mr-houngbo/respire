@@ -3,7 +3,7 @@ from src.footer import show_footer
 from components.autorite_ import *
 from config.settings import token,sender
 from src.prediction import *
-
+from src.functions import fetch_current_data,calculer_iqa
 
 def show(location_id,logo_path,nom_ecole): 
 
@@ -82,6 +82,7 @@ def show(location_id,logo_path,nom_ecole):
 
 
 # show_footer()
+
 
 
 
