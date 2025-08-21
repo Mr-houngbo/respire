@@ -13,6 +13,7 @@ import tempfile
 from typing import Dict, List, Tuple, Optional
 import seaborn as sns
 from config.settings import token,BASE_URL,VALEURS_LIMITE,DATA_DIR,location_ids
+import streamlit as st 
 
 
 # Configuration pour éviter les warnings
@@ -67,7 +68,12 @@ def get_measures_range(location_id: int, token: str, from_date: datetime, to_dat
         "to": to_date.strftime('%Y%m%dT%H%M%SZ'),
     }
 
-    response = requests.get(url, params=params)
+
+    headers = {"Authorization": f"Bearer {token}"}
+    response = requests.get(url, params=params, headers=headers, timeout=15)
+
+    
+    # response = requests.get(url, params=params)
     if response.status_code == 200:
         data = response.json()
         df = pd.DataFrame(data)
@@ -163,9 +169,15 @@ class RespireReportGenerator:
         endpoint = f"/locations/{_location_id}/measures/current"
         params = {"token": _token}
         full_url = f"{BASE_URL}{endpoint}?{urlencode(params)}"
+
+
+        headers = {"Authorization": f"Bearer {_token}"}
+        
+
         
         try:
-            response = requests.get(full_url)
+            #response = requests.get(full_url)
+            response = requests.get(full_url, params=params, headers=headers, timeout=15)
             response.raise_for_status()
             data = response.json()
             
@@ -500,7 +512,8 @@ def generate_professional_report(location_id: str, token: str) -> str:
     logo_path = generator.creer_logo_respire()
     gauge_path = generator.creer_gauge_iqa(iqa_value, status_color)
     dashboard_path = generator.creer_dashboard_polluants(current_data)
-    evolution_path = generator.creer_evolution_temporelle(iqa_value)
+    evolution_path = generator.creer_evolution_temporelle(location_id, token)
+
     
     # 3. Génération du PDF professionnel
     pdf = ProfessionalPDFReport()
