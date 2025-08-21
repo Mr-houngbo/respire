@@ -47,6 +47,111 @@ COLORS = {
 
 location_id = "164928"
 
+
+
+
+
+
+#=============================================================================================================
+@st.cache_data(ttl=300)
+def get_measures_range(location_id: int, token: str, from_date: datetime, to_date: datetime) -> pd.DataFrame:
+    """
+    Récupère les données pour un `location_id` donné entre from_date et to_date (max 10 jours API).
+    """
+    base_url = "https://api.airgradient.com/public/api/v1/locations"
+    url = f"{base_url}/{location_id}/measures/past"
+
+    params = {
+        "token": token,
+        "from": from_date.strftime('%Y%m%dT%H%M%SZ'),
+        "to": to_date.strftime('%Y%m%dT%H%M%SZ'),
+    }
+
+    response = requests.get(url, params=params)
+    if response.status_code == 200:
+        data = response.json()
+        df = pd.DataFrame(data)
+        if not df.empty:
+            df['timestamp'] = pd.to_datetime(df['timestamp'])
+        return df
+    else:
+        st.error(f"Erreur API : {response.status_code} pour location {location_id}")
+        return pd.DataFrame()
+
+#=============================================================================================================
+def get_full_history(location_id: int, token: str, days: int = 100) -> pd.DataFrame:
+    """
+    Récupère toutes les données d'une location_id sur 'days' jours,
+    en faisant des requêtes API par tranches de 10 jours.
+    """
+    all_data = []
+    to_date = datetime.utcnow()
+
+    while days > 0:
+        chunk_days = min(days, 10)
+        from_date = to_date - timedelta(days=chunk_days)
+
+        df_chunk = get_measures_range(location_id, token, from_date, to_date)
+        if df_chunk.empty:
+            break
+
+        all_data.append(df_chunk)
+        days -= chunk_days
+        to_date = from_date  # on recule la fenêtre
+
+    if all_data:
+        df_full = pd.concat(all_data, ignore_index=True).drop_duplicates()
+        file_path = os.path.join(DATA_DIR, f"full-data-{days}-jours-{location_id}.csv")
+        df_full.to_csv(file_path, index=False)
+        return df_full
+    else:
+        return pd.DataFrame()
+
+#=============================================================================================================
+def calculer_iqa_journalier(df: pd.DataFrame, location_id: int) -> pd.DataFrame:
+    """
+    Calcule l’IQA journalier pour un DataFrame complet.
+    """
+    if df.empty:
+        return pd.DataFrame()
+
+    iqa_jours = []
+    df['date'] = df['timestamp'].dt.date
+
+    for jour, group in df.groupby('date'):
+        valeurs = {}
+        for pollutant, limite in VALEURS_LIMITE.items():
+            if pollutant in group.columns:
+                concentration = group[pollutant].mean()
+                valeurs[pollutant] = (concentration / limite) * 100
+
+        if valeurs:
+            polluant_principal = max(valeurs, key=valeurs.get)
+            iqa_principal = round(valeurs[polluant_principal], 2)
+            iqa_jours.append({"date": jour, "iqa": iqa_principal})
+
+    iqa_tab = pd.DataFrame(iqa_jours)
+    file_path = os.path.join(DATA_DIR, f"iqa-{location_id}.csv")
+    iqa_tab.to_csv(file_path, index=False)
+    return iqa_tab
+
+#=============================================================================================================
+def pipeline_iqa(location_ids: list, token: str, days: int = 100) -> dict:
+    """
+    Exécute la récupération et le calcul IQA pour plusieurs location_ids.
+    Retourne un dictionnaire {location_id: DataFrame IQA}.
+    """
+    resultats = {}
+    for loc_id in location_ids:
+        st.info(f" Récupération des données pour Location {loc_id}")
+        df_full = get_full_history(loc_id, token, days)
+        df_iqa = calculer_iqa_journalier(df_full, loc_id)
+        resultats[loc_id] = df_iqa
+    return resultats
+
+#=============================================================================================================
+
+
 class RespireReportGenerator:
     def __init__(self, location_id: str, token: str):
         self.location_id = location_id
@@ -94,8 +199,10 @@ class RespireReportGenerator:
         
         for pollutant, limite in VALEURS_LIMITE.items():
             if pollutant in data and data[pollutant] is not None:
-                concentration = data[pollutant]
-                iqa_values[pollutant] = (concentration / limite) * 100
+                # ⚠️ on exclut humidité et température
+                if pollutant not in ["rhum_corrected", "atmp_corrected"]:
+                    concentration = data[pollutant]
+                    iqa_values[pollutant] = (concentration / limite) * 100
         
         if not iqa_values:
             return 0, "Aucun", "Données indisponibles", COLORS['secondary']
@@ -121,6 +228,7 @@ class RespireReportGenerator:
             color = COLORS['critique']
         
         return round(iqa_principal, 1), POLLUANTS_NOMS.get(polluant_principal, polluant_principal), status, color
+
 
     def creer_logo_respire(self) -> str:
         """Crée un logo simple pour RESPIRE"""
@@ -256,55 +364,31 @@ class RespireReportGenerator:
             plt.close(fig)
             return tmpfile.name
 
-    def creer_evolution_temporelle(self, iqa_value: float) -> str:
-        """Crée un graphique d'évolution temporelle stylisé"""
+
+    def creer_evolution_temporelle(self, location_id: str, token: str) -> str:
+        """Crée un graphique d'évolution temporelle avec données réelles"""
+        df = get_full_history(location_id, token, days=7)
+        df_iqa = calculer_iqa_journalier(df, int(location_id))
+        
+        if df_iqa.empty:
+            return ""
+        
         fig, ax = plt.subplots(figsize=(12, 6))
+        ax.plot(df_iqa['date'], df_iqa['iqa'], marker='o', linewidth=2, color=COLORS['primary'])
+        ax.fill_between(df_iqa['date'], df_iqa['iqa'], alpha=0.3, color=COLORS['accent'])
         
-        # Données simulées pour 7 jours
-        jours = pd.date_range(start=datetime.now() - timedelta(days=6), periods=7, freq='D')
-        valeurs = [iqa_value + np.random.randint(-20, 20) for _ in range(7)]
-        
-        # Graphique en aire avec dégradé
-        ax.fill_between(jours, valeurs, alpha=0.6, color=COLORS['accent'])
-        ax.plot(jours, valeurs, color=COLORS['primary'], linewidth=3, marker='o', markersize=8)
-        
-        # Zones de couleur de fond
-        ax.axhspan(0, 50, alpha=0.2, color=COLORS['bon'], label='Excellent/Bon')
-        ax.axhspan(50, 100, alpha=0.2, color=COLORS['modere'], label='Modere')
-        ax.axhspan(100, 200, alpha=0.2, color=COLORS['mauvais'], label='Mauvais/Critique')
-        
-        # Personnalisation
-        ax.set_title('EVOLUTION IQA - 7 DERNIERS JOURS', fontsize=16, fontweight='bold', pad=20)
-        ax.set_ylabel('Indice de Qualite de l\'Air (IQA)', fontsize=12)
+        ax.set_title("EVOLUTION IQA - 7 DERNIERS JOURS", fontsize=16, fontweight='bold')
+        ax.set_ylabel("Indice de Qualité de l'Air (IQA)")
         ax.grid(True, alpha=0.3, linestyle='--')
-        ax.legend(loc='upper right')
-        
-        # Format des dates
-        ax.xaxis.set_major_formatter(plt.matplotlib.dates.DateFormatter('%d/%m'))
+        ax.xaxis.set_major_formatter(mdates.DateFormatter('%d/%m'))
         plt.xticks(rotation=45)
         
-        # Annotations pour les points extrêmes
-        max_idx = np.argmax(valeurs)
-        min_idx = np.argmin(valeurs)
-        
-        ax.annotate(f'Max: {valeurs[max_idx]:.1f}', 
-                   xy=(jours[max_idx], valeurs[max_idx]),
-                   xytext=(10, 10), textcoords='offset points',
-                   bbox=dict(boxstyle='round,pad=0.3', facecolor=COLORS['mauvais'], alpha=0.7),
-                   arrowprops=dict(arrowstyle='->', color=COLORS['mauvais']))
-        
-        ax.annotate(f'Min: {valeurs[min_idx]:.1f}', 
-                   xy=(jours[min_idx], valeurs[min_idx]),
-                   xytext=(10, -20), textcoords='offset points',
-                   bbox=dict(boxstyle='round,pad=0.3', facecolor=COLORS['bon'], alpha=0.7),
-                   arrowprops=dict(arrowstyle='->', color=COLORS['bon']))
-        
-        plt.tight_layout()
-        
         with tempfile.NamedTemporaryFile(suffix=".png", delete=False) as tmpfile:
-            plt.savefig(tmpfile.name, format="png", dpi=300, bbox_inches='tight')
+            plt.savefig(tmpfile.name, dpi=300, bbox_inches='tight')
             plt.close(fig)
             return tmpfile.name
+
+
 
 class ProfessionalPDFReport(FPDF):
     def __init__(self):
@@ -436,6 +520,35 @@ def generate_professional_report(location_id: str, token: str) -> str:
     # RÉSUMÉ EXÉCUTIF avec jauge IQA
     pdf.ln(20)
     pdf.section_header("RESUME EXECUTIF", 52, 152, 219)
+
+
+    # TABLEAU DES POLLUANTS
+    pdf.ln(10)
+    pdf.section_header("DETAIL DES POLLUANTS", 52, 73, 94)
+    
+    pdf.set_font("Arial", 'B', 10)
+    pdf.cell(40, 10, "Polluant", 1, 0, 'C')
+    pdf.cell(40, 10, "Valeur", 1, 0, 'C')
+    pdf.cell(40, 10, "Seuil OMS", 1, 0, 'C')
+    pdf.cell(60, 10, "Statut", 1, 1, 'C')
+    
+    pdf.set_font("Arial", '', 10)
+    for polluant, limite in VALEURS_LIMITE.items():
+        if polluant in current_data and polluant not in ["rhum_corrected", "atmp_corrected"]:
+            val = current_data[polluant]
+            ratio = (val / limite) * 100
+            if ratio <= 50:
+                statut = "Bon"
+            elif ratio <= 100:
+                statut = "Modéré"
+            else:
+                statut = "Mauvais"
+            
+            pdf.cell(40, 10, POLLUANTS_NOMS.get(polluant, polluant), 1, 0, 'C')
+            pdf.cell(40, 10, f"{val:.1f}", 1, 0, 'C')
+            pdf.cell(40, 10, f"{limite}", 1, 0, 'C')
+            pdf.cell(60, 10, statut, 1, 1, 'C')
+
     
     # Jauge IQA
     pdf.image(gauge_path, x=20, y=pdf.get_y(), w=80)
@@ -519,6 +632,10 @@ def test_professional_report():
     except Exception as e:
         print(f"Erreur lors de la generation: {e}")
         return None
+
+
+
+
 
 if __name__ == "__main__":
     test_professional_report()
