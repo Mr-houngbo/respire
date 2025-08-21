@@ -567,12 +567,64 @@ def predict_iqa_esmt():
                     labels={"iqa_pred": "IQA prédit", "date": "Date"})
     st.plotly_chart(fig, use_container_width=True)
     
+#================================================================================================
+#                                 SECTION DE PREDICTION IQA DES OTHERS LOCATIONS
+#================================================================================================
     
     
+# === Fonction de création des lags ===
+def create_lags(data: pd.DataFrame, n_lags: int = 7) -> pd.DataFrame:
+    out = data.copy()
+    for lag in range(1, n_lags + 1):
+        out[f'lag_{lag}'] = out['iqa'].shift(lag)
+    return out
+
+# === 1) Fonction prédiction J+1 ===
+def predict_others_iqa(location_id: int, n_lags: int = 7) -> float:
+    """
+    Charge le modèle sauvegardé et retourne la prédiction J+1 de l'IQA
+    pour un location_id donné.
+
+    - location_id : identifiant de l’école
+    - get_last_iqa_func : fonction qui récupère les derniers IQA (10 derniers jours par ex.)
+    - n_lags : nombre de retards utilisés à l’entraînement (par défaut 7)
+    """
     
+    # 1. Récupérer les IQA des 10 derniers jours
+    df = get_full_history(location_id, token, days=10)
+    df = calculer_iqa_journalier(df_raw, location_id)
+    df = df.sort_values("date").reset_index(drop=True)
     
 
+    # 2. Créer les lags
+    df_lags = create_lags(df[["iqa"]], n_lags).dropna()
 
+    if df_lags.empty:
+        raise ValueError("❌ Pas assez de données pour créer les lags.")
+
+    # 3. Charger le modèle correspondant
+    model_path = f"linreg_iqa_best_{location_id}.pkl"
+    model = joblib.load(model_path)
+
+    # 4. Prendre la dernière ligne de features
+    last_feats = df_lags.drop(columns=["iqa"]).iloc[[-1]]
+
+    # 5. Prédire J+1
+    pred_next_day = float(model.predict(last_feats)[0])
+
+    return pred_next_day
+
+
+# === 2) Fonction d'affichage ===
+def show_prediction(location_id: int):
+    """
+    Affiche la prédiction J+1 dans Streamlit
+    """
+    try:
+        pred = predict_others_iqa(location_id)
+        st.success(f"📅 Prévision IQA pour demain (Location {location_id}) : **{pred:.2f}**")
+    except Exception as e:
+        st.error(f"Erreur : {str(e)}")
 
 
 
