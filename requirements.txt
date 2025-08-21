@@ -25,9 +25,20 @@ schedule
 python-dotenv
 seaborn
 sendgrid
-
+fpdf2 >= 2.7.0
+weasyprint
+jinja2
+pdfkit
+cffi
+cssselect2
+fonttools
+pydyf
+Pyphen
+tinycss2
+tinyhtml5
 
 # python -m tests.test_api_handler pour executer des fonctions , modules depuis la racine .
+
 
 
 
