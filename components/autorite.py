@@ -53,7 +53,7 @@ def show(location_id,logo_path,nom_ecole):
     
     predict_iqa_esmt()
 
-    
+    test_html_pdf_generation()
 
 
 
@@ -82,6 +82,7 @@ def show(location_id,logo_path,nom_ecole):
 
 
 # show_footer()
+
 
 
 
