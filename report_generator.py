@@ -47,6 +47,111 @@ COLORS = {
 
 location_id = "164928"
 
+
+
+
+
+
+#=============================================================================================================
+@st.cache_data(ttl=300)
+def get_measures_range(location_id: int, token: str, from_date: datetime, to_date: datetime) -> pd.DataFrame:
+    """
+    Récupère les données pour un `location_id` donné entre from_date et to_date (max 10 jours API).
+    """
+    base_url = "https://api.airgradient.com/public/api/v1/locations"
+    url = f"{base_url}/{location_id}/measures/past"
+
+    params = {
+        "token": token,
+        "from": from_date.strftime('%Y%m%dT%H%M%SZ'),
+        "to": to_date.strftime('%Y%m%dT%H%M%SZ'),
+    }
+
+    response = requests.get(url, params=params)
+    if response.status_code == 200:
+        data = response.json()
+        df = pd.DataFrame(data)
+        if not df.empty:
+            df['timestamp'] = pd.to_datetime(df['timestamp'])
+        return df
+    else:
+        st.error(f"Erreur API : {response.status_code} pour location {location_id}")
+        return pd.DataFrame()
+
+#=============================================================================================================
+def get_full_history(location_id: int, token: str, days: int = 100) -> pd.DataFrame:
+    """
+    Récupère toutes les données d'une location_id sur 'days' jours,
+    en faisant des requêtes API par tranches de 10 jours.
+    """
+    all_data = []
+    to_date = datetime.utcnow()
+
+    while days > 0:
+        chunk_days = min(days, 10)
+        from_date = to_date - timedelta(days=chunk_days)
+
+        df_chunk = get_measures_range(location_id, token, from_date, to_date)
+        if df_chunk.empty:
+            break
+
+        all_data.append(df_chunk)
+        days -= chunk_days
+        to_date = from_date  # on recule la fenêtre
+
+    if all_data:
+        df_full = pd.concat(all_data, ignore_index=True).drop_duplicates()
+        file_path = os.path.join(DATA_DIR, f"full-data-{days}-jours-{location_id}.csv")
+        df_full.to_csv(file_path, index=False)
+        return df_full
+    else:
+        return pd.DataFrame()
+
+#=============================================================================================================
+def calculer_iqa_journalier(df: pd.DataFrame, location_id: int) -> pd.DataFrame:
+    """
+    Calcule l’IQA journalier pour un DataFrame complet.
+    """
+    if df.empty:
+        return pd.DataFrame()
+
+    iqa_jours = []
+    df['date'] = df['timestamp'].dt.date
+
+    for jour, group in df.groupby('date'):
+        valeurs = {}
+        for pollutant, limite in VALEURS_LIMITE.items():
+            if pollutant in group.columns:
+                concentration = group[pollutant].mean()
+                valeurs[pollutant] = (concentration / limite) * 100
+
+        if valeurs:
+            polluant_principal = max(valeurs, key=valeurs.get)
+            iqa_principal = round(valeurs[polluant_principal], 2)
+            iqa_jours.append({"date": jour, "iqa": iqa_principal})
+
+    iqa_tab = pd.DataFrame(iqa_jours)
+    file_path = os.path.join(DATA_DIR, f"iqa-{location_id}.csv")
+    iqa_tab.to_csv(file_path, index=False)
+    return iqa_tab
+
+#=============================================================================================================
+def pipeline_iqa(location_ids: list, token: str, days: int = 100) -> dict:
+    """
+    Exécute la récupération et le calcul IQA pour plusieurs location_ids.
+    Retourne un dictionnaire {location_id: DataFrame IQA}.
+    """
+    resultats = {}
+    for loc_id in location_ids:
+        st.info(f" Récupération des données pour Location {loc_id}")
+        df_full = get_full_history(loc_id, token, days)
+        df_iqa = calculer_iqa_journalier(df_full, loc_id)
+        resultats[loc_id] = df_iqa
+    return resultats
+
+#=============================================================================================================
+
+
 class RespireReportGenerator:
     def __init__(self, location_id: str, token: str):
         self.location_id = location_id
@@ -519,6 +624,10 @@ def test_professional_report():
     except Exception as e:
         print(f"Erreur lors de la generation: {e}")
         return None
+
+
+
+
 
 if __name__ == "__main__":
     test_professional_report()
