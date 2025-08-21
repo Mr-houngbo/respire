@@ -603,7 +603,7 @@ def predict_others_iqa(location_id: int, n_lags: int = 7) -> float:
         raise ValueError("❌ Pas assez de données pour créer les lags.")
 
     # 3. Charger le modèle correspondant
-    model_path = f"linreg_iqa_best_{location_id}.pkl"
+    model_path = f"models/linreg_iqa_best_{location_id}.pkl"
     model = joblib.load(model_path)
 
     # 4. Prendre la dernière ligne de features
@@ -625,6 +625,7 @@ def show_prediction(location_id: int):
         st.success(f"📅 Prévision IQA pour demain (Location {location_id}) : **{pred:.2f}**")
     except Exception as e:
         st.error(f"Erreur : {str(e)}")
+
 
 
 
