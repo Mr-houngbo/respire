@@ -37,15 +37,8 @@ Pyphen
 tinycss2
 tinyhtml5
 
-libcairo2
-libgdk-pixbuf2.0-0
-libpangocairo-1.0-0
-libffi-dev
-shared-mime-info
-
-
-
 # python -m tests.test_api_handler pour executer des fonctions , modules depuis la racine .
+
 
 
 
