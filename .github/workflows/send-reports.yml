@@ -36,14 +36,21 @@ jobs:
     - name: Setup Python
       uses: actions/setup-python@v5
       with:
-        python-version: '3.11'
+        # ⚠️ Python 3.12 requis car WeasyPrint ne supporte pas encore 3.13
+        python-version: '3.12'
         cache: 'pip'
         cache-dependency-path: requirements.txt
     
-    - name: Install system dependencies
+    - name: Install system dependencies for WeasyPrint
       run: |
         sudo apt-get update
-        sudo apt-get install -y wkhtmltopdf  # Si nécessaire pour PDF generation
+        sudo apt-get install -y \
+          libpango-1.0-0 \
+          libcairo2 \
+          libgdk-pixbuf2.0-0 \
+          libpangocairo-1.0-0 \
+          libffi-dev \
+          shared-mime-info
     
     - name: Install Python dependencies
       run: |
@@ -51,7 +58,7 @@ jobs:
         if [ -f requirements.txt ]; then
           pip install -r requirements.txt
         else
-          pip install pandas streamlit python-dotenv sendgrid
+          pip install pandas streamlit python-dotenv sendgrid weasyprint jinja2 matplotlib seaborn requests
         fi
     
     - name: Verify secrets are available
@@ -59,6 +66,10 @@ jobs:
         echo "Checking secrets..."
         if [ -z "${{ secrets.SENDGRID_API_KEY }}" ]; then
           echo "❌ SENDGRID_API_KEY is not set"
+          exit 1
+        fi
+        if [ -z "${{ secrets.API_TOKEN }}" ]; then
+          echo "❌ API_TOKEN is not set"
           exit 1
         fi
         echo "✅ Secrets verification complete"
