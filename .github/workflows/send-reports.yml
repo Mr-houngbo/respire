@@ -20,7 +20,7 @@ on:
 
   # Déclencher sur push vers main (pour tests)
   push:
-    branches: [ main ]
+    branches: [ v2.0.0 ]
     paths:
       - 'src/**'
       - '.github/workflows/**'
