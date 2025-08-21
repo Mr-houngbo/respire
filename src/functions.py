@@ -13,8 +13,6 @@ import time
 from config.settings import token,BASE_URL,VALEURS_LIMITE,DATA_DIR
 import matplotlib.pyplot as plt
 
-
-
 #=============================================================================================================
 @st.cache_data(ttl=60) # expire au bout de 5 min
 def fetch_current_data(location_id: str, token: str) -> pd.DataFrame:
@@ -48,7 +46,7 @@ def fetch_current_data(location_id: str, token: str) -> pd.DataFrame:
         humidity = df.get('rhum_corrected', [50]).iloc[0] if 'rhum_corrected' in df.columns else 50
         pm10 = df.get('pm10_corrected', [0]).iloc[0] if 'pm10_corrected' in df.columns else 0
         pm1 = df.get('pm01_corrected', [0]).iloc[0] if 'pm01_corrected' in df.columns else 0
-        pm03 = df.get('pm003Count', [0]).iloc[0] if 'pm03' in df.columns else 0
+        pm03 = df.get('pm003Count', [0]).iloc[0] if 'pm003Count' in df.columns else 0
         tvoc = df.get('tvoc', [0]).iloc[0] if 'tvoc' in df.columns else 0
         nox = df.get('noxIndex', [0]).iloc[0] if 'noxIndex' in df.columns else 0
 
@@ -412,5 +410,6 @@ def calculate_air_quality_status(df):
         "humidity": humidity,
         "last_update": datetime.now().strftime("%H:%M")
     }
+
 
 
