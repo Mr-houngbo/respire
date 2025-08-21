@@ -167,7 +167,7 @@ class RespireReportGenerator:
 
         
         try:
-            response = requests.get(full_url, timeout=15)
+            response = requests.get(full_url)
             response.raise_for_status()
             data = response.json()
             
