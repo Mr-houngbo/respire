@@ -1,6 +1,7 @@
 import streamlit as st
 from src.footer import show_footer
 from components.autorite_ import *
+from src.functions import fetch_current_data,calculer_iqa
 from config.settings import token,sender
 from src.prediction import *
 
@@ -82,6 +83,7 @@ def show(location_id,logo_path,nom_ecole):
 
 
 # show_footer()
+
 
 
 
