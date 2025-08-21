@@ -1553,149 +1553,68 @@ class HTMLReportGenerator:
             print(f"❌ Erreur lors de la génération PDF: {e}")
             return None
 
+
 def create_streamlit_interface():
-    """Interface Streamlit pour générer et télécharger le rapport"""
-    st.set_page_config(
-        page_title="Générateur de Rapport RESPIRE",
-        page_icon="🌬️",
-        layout="wide"
-    )
-    
-    st.title("🌬️ Générateur de Rapport Qualité de l'Air")
-    st.markdown("### Programme RESPIRE - Surveillance Scolaire")
-    
-    # Sidebar avec paramètres
-    with st.sidebar:
-        st.header("⚙️ Paramètres")
-        location_id_input = st.text_input("Location ID", value=location_id)
-        token_input = st.text_input("Token API", value=token, type="password")
-        
-        format_output = st.radio(
-            "Format de sortie",
-            ["PDF", "HTML Preview", "Les deux"]
-        )
-        
-        st.markdown("---")
-        st.markdown("**Note**: La génération peut prendre quelques secondes pour récupérer les données et créer les graphiques.")
-    
-    # Interface principale
-    col1, col2 = st.columns([2, 1])
-    
-    with col1:
-        st.markdown("""
-        Ce générateur crée un rapport professionnel de qualité de l'air au format HTML puis l'exporte en PDF.
-        
-        **Fonctionnalités incluses:**
-        - 📊 Calcul de l'IQA (Indice de Qualité de l'Air)
-        - 📈 Tableaux de bord interactifs
-        - 📉 Graphiques d'évolution temporelle
-        - 🎯 Recommandations automatiques
-        - 📋 Données détaillées en temps réel
-        """)
-    
-    with col2:
-        if st.button("🚀 Générer le Rapport", type="primary", use_container_width=True):
-            with st.spinner("Génération du rapport en cours..."):
-                try:
-                    # Initialisation du générateur
-                    generator = HTMLReportGenerator(location_id_input, token_input)
-                    
-                    # Génération du HTML
-                    st.info("📝 Création du contenu HTML...")
-                    html_content = generator.generate_html_report()
-                    
-                    # Affichage HTML si demandé
-                    if format_output in ["HTML Preview", "Les deux"]:
-                        st.success("✅ HTML généré avec succès!")
-                        with st.expander("👀 Aperçu HTML", expanded=False):
-                            st.components.v1.html(html_content, height=600, scrolling=True)
-                        
-                        # Téléchargement HTML
-                        st.download_button(
-                            label="📄 Télécharger HTML",
-                            data=html_content,
-                            file_name=f"rapport_html_{location_id_input}_{datetime.now().strftime('%Y%m%d_%H%M')}.html",
-                            mime="text/html"
-                        )
-                    
-                    # Génération PDF si demandé
-                    if format_output in ["PDF", "Les deux"]:
-                        st.info("📄 Conversion en PDF...")
-                        pdf_filename = generator.generate_pdf_from_html(html_content)
-                        
-                        if pdf_filename and os.path.exists(pdf_filename):
-                            st.success("✅ PDF généré avec succès!")
-                            
-                            # Informations sur le fichier
-                            file_size = os.path.getsize(pdf_filename)
-                            st.info(f"📏 Taille du fichier: {file_size:,} bytes")
-                            
-                            # Bouton de téléchargement PDF
-                            with open(pdf_filename, "rb") as pdf_file:
-                                st.download_button(
-                                    label="📄 Télécharger PDF",
-                                    data=pdf_file.read(),
-                                    file_name=pdf_filename,
-                                    mime="application/pdf"
-                                )
-                            
-                            # Nettoyage
-                            try:
-                                os.remove(pdf_filename)
-                            except:
-                                pass
-                        else:
-                            st.error("❌ Erreur lors de la génération du PDF")
-                            st.info("💡 Vous pouvez tout de même télécharger la version HTML")
-                    
-                except Exception as e:
-                    st.error(f"❌ Erreur lors de la génération: {str(e)}")
-                    st.info("🔧 Vérifiez vos paramètres et votre connexion internet")
+    """Bouton Streamlit pour générer et télécharger le rapport"""
 
-# Fonction pour test direct
-def test_html_pdf_generation():
-    """Test de génération HTML → PDF"""
-    print("🧪 Test de génération HTML → PDF")
-    
-    try:
-        generator = HTMLReportGenerator(location_id, token)
-        
-        # Test HTML
-        print("📝 Génération HTML...")
-        html_content = generator.generate_html_report()
-        
-        # Sauvegarde HTML pour debug
-        html_filename = f"test_rapport_{datetime.now().strftime('%Y%m%d_%H%M')}.html"
-        with open(html_filename, 'w', encoding='utf-8') as f:
-            f.write(html_content)
-        print(f"✅ HTML sauvegardé: {html_filename}")
-        
-        # Test PDF
-        print("📄 Génération PDF...")
-        pdf_filename = generator.generate_pdf_from_html(html_content)
-        
-        if pdf_filename and os.path.exists(pdf_filename):
-            file_size = os.path.getsize(pdf_filename)
-            print(f"✅ PDF généré: {pdf_filename} ({file_size:,} bytes)")
-            return True
-        else:
-            print("❌ Échec génération PDF")
-            return False
-            
-    except Exception as e:
-        print(f"❌ Erreur: {e}")
-        import traceback
-        traceback.print_exc()
-        return False
+    if st.button("🚀 Générer le Rapport", type="primary", use_container_width=True):
+        with st.spinner("Génération du rapport en cours..."):
+            try:
+                # Initialisation du générateur
+                generator = HTMLReportGenerator(location_id_input, token_input)
+                
+                # Génération du HTML
+                st.info("📝 Création du contenu HTML...")
+                html_content = generator.generate_html_report()
+                
+                # Affichage HTML si demandé
+                if format_output in ["HTML Preview", "Les deux"]:
+                    st.success("✅ HTML généré avec succès!")
+                    with st.expander("👀 Aperçu HTML", expanded=False):
+                        st.components.v1.html(html_content, height=600, scrolling=True)
+                    
+                    # Téléchargement HTML
+                    st.download_button(
+                        label="📄 Télécharger HTML",
+                        data=html_content,
+                        file_name=f"rapport_html_{location_id_input}_{datetime.now().strftime('%Y%m%d_%H%M')}.html",
+                        mime="text/html"
+                    )
+                
+                # Génération PDF si demandé
+                if format_output in ["PDF", "Les deux"]:
+                    st.info("📄 Conversion en PDF...")
+                    pdf_filename = generator.generate_pdf_from_html(html_content)
+                    
+                    if pdf_filename and os.path.exists(pdf_filename):
+                        st.success("✅ PDF généré avec succès!")
+                        
+                        # Informations sur le fichier
+                        file_size = os.path.getsize(pdf_filename)
+                        st.info(f"📏 Taille du fichier: {file_size:,} bytes")
+                        
+                        # Bouton de téléchargement PDF
+                        with open(pdf_filename, "rb") as pdf_file:
+                            st.download_button(
+                                label="📄 Télécharger PDF",
+                                data=pdf_file.read(),
+                                file_name=pdf_filename,
+                                mime="application/pdf"
+                            )
+                        
+                        # Nettoyage
+                        try:
+                            os.remove(pdf_filename)
+                        except:
+                            pass
+                    else:
+                        st.error("❌ Erreur lors de la génération du PDF")
+                        st.info("💡 Vous pouvez tout de même télécharger la version HTML")
+                
+            except Exception as e:
+                st.error(f"❌ Erreur lors de la génération: {str(e)}")
+                st.info("🔧 Vérifiez vos paramètres et votre connexion internet")
 
-# Point d'entrée principal
-if __name__ == "__main__":
-    # Pour test direct
-    if len(os.sys.argv) > 1 and os.sys.argv[1] == "test":
-        test_html_pdf_generation()
-    else:
-        # Pour Streamlit
-        create_streamlit_interface()
 
 
 
