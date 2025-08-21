@@ -60,7 +60,7 @@ def envoyer_rapport_aux_autorites(location_id, sender):
         email = contact["email"]
 
         # Génération du rapport PDF
-        pdf_path = test_professional_report()
+        pdf_path = generate_report(location_id)
 
         subject = "Rapport Qualité de l'air - École"
         body = (
@@ -100,3 +100,4 @@ def main():
 
 if __name__ == "__main__":
     main()
+
