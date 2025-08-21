@@ -71,6 +71,8 @@ jobs:
         LOCATION_ID: ${{ github.event.inputs.location_id || '164928' }}
         SENDER_EMAIL: ${{ github.event.inputs.sender_email || 'houngbo.calixte.r@gmail.com' }}
         SENDGRID_API_KEY: ${{ secrets.SENDGRID_API_KEY }}
+        API_TOKEN: ${{ secrets.API_TOKEN }}
+        
       run: |
         echo "Starting air quality report process..."
         echo "Location ID: $LOCATION_ID"
