@@ -13,10 +13,15 @@ def show(location_id,logo_path,nom_ecole):
     df = fetch_current_data(location_id, token)
     df = pd.DataFrame([df])
     iqa = calculer_iqa(df)
+    
+    listt = ["151726","90106","90104","89441"]
 
     # Exemple : bouton Streamlit
     if st.button(f"Prédire J+1 pour {nom_ecole}"):
-        show_prediction(location_id)
+        if location_id in listt:
+            show_prediction(location_id)
+        else:
+            st.write("Désolé , {nom_ecole} n'est pas encore prise en charge par le sytem de prediction . ")
         
     st.markdown("""
             <div>
@@ -77,6 +82,7 @@ def show(location_id,logo_path,nom_ecole):
 
 
 # show_footer()
+
 
 
 
