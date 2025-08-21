@@ -54,7 +54,6 @@ location_id = "164928"
 
 
 #=============================================================================================================
-@st.cache_data(ttl=300)
 def get_measures_range(location_id: int, token: str, from_date: datetime, to_date: datetime) -> pd.DataFrame:
     """
     Récupère les données pour un `location_id` donné entre from_date et to_date (max 10 jours API).
@@ -69,11 +68,7 @@ def get_measures_range(location_id: int, token: str, from_date: datetime, to_dat
     }
 
 
-    headers = {"Authorization": f"Bearer {token}"}
-    response = requests.get(url, params=params, headers=headers, timeout=15)
-
-    
-    # response = requests.get(url, params=params)
+    response = requests.get(url, params=params)
     if response.status_code == 200:
         data = response.json()
         df = pd.DataFrame(data)
@@ -168,16 +163,11 @@ class RespireReportGenerator:
         """Récupère les données actuelles de qualité de l'air"""
         endpoint = f"/locations/{_location_id}/measures/current"
         params = {"token": _token}
-        full_url = f"{BASE_URL}{endpoint}?{urlencode(params)}"
-
-
-        headers = {"Authorization": f"Bearer {_token}"}
-        
+        full_url = f"{BASE_URL}{endpoint}?{urlencode(params)}"       
 
         
         try:
-            #response = requests.get(full_url)
-            response = requests.get(full_url, params=params, headers=headers, timeout=15)
+            response = requests.get(full_url, timeout=15)
             response.raise_for_status()
             data = response.json()
             
