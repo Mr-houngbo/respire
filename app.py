@@ -235,41 +235,124 @@ if page == "Accueil":
     show_header_playful()
         
     # ---------------------- # ---------------------- Carte des capteurs   # ---------------------- # ---------------------- 
-
-    st.title("Carte des capteurs installés dans les écoles au Sénégal")
-
-    # Liste de capteurs avec coordonnées
+    # En-tête stylisé avec titre et selectbox
+    st.markdown("""
+    <div style="
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        padding: 2rem 1.5rem;
+        border-radius: 15px;
+        margin-bottom: 2rem;
+        box-shadow: 0 8px 32px rgba(102, 126, 234, 0.3);
+        position: relative;
+        overflow: hidden;
+    ">
+        <div style="
+            position: absolute;
+            top: -50%;
+            right: -20%;
+            width: 200px;
+            height: 200px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            z-index: 1;
+        "></div>
+        <div style="
+            position: absolute;
+            bottom: -30%;
+            left: -10%;
+            width: 150px;
+            height: 150px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 50%;
+            z-index: 1;
+        "></div>
+        <div style="position: relative; z-index: 2;">
+            <h1 style="
+                color: white;
+                font-size: 2.5rem;
+                font-weight: 700;
+                margin: 0 0 0.5rem 0;
+                text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+                letter-spacing: -0.02em;
+            ">🌍 Carte des Capteurs</h1>
+            <p style="
+                color: rgba(255, 255, 255, 0.9);
+                font-size: 1.1rem;
+                margin: 0;
+                font-weight: 300;
+            ">Surveillance de la qualité de l'air dans les écoles du Sénégal</p>
+        </div>
+    </div>
+    """, unsafe_allow_html=True)
     
-    locations = pd.read_csv("locations_info.csv")
+    # Selectbox stylisée pour filtrer les écoles
+    col1, col2, col3 = st.columns([1, 2, 1])
+    with col2:
+        st.markdown("""
+        <div style="
+            background: white;
+            padding: 1.5rem;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+            border: 1px solid #e9ecef;
+            margin-bottom: 1.5rem;
+        ">
+            <div style="
+                display: flex;
+                align-items: center;
+                margin-bottom: 1rem;
+            ">
+                <span style="
+                    font-size: 1.5rem;
+                    margin-right: 0.5rem;
+                ">🎯</span>
+                <h3 style="
+                    color: #2c3e50;
+                    margin: 0;
+                    font-size: 1.2rem;
+                    font-weight: 600;
+                ">Filtrer par région ou école</h3>
+            </div>
+        """, unsafe_allow_html=True)
+        
+        # Liste de capteurs avec coordonnées
+        locations = pd.read_csv("locations_info.csv")
+        
+        # Selectbox pour filtrer (optionnel - vous pouvez la connecter à votre logique)
+        filter_option = st.selectbox(
+            "",
+            ["Toutes les écoles"] + list(locations['school_name'].unique()) if 'school_name' in locations.columns else ["Toutes les écoles"],
+            key="school_filter",
+            label_visibility="collapsed"
+        )
+        
+        st.markdown("</div>", unsafe_allow_html=True)
     
     # Déclenche un refresh automatique toutes les 60s
     # count = st_autorefresh(interval=60000, limit=100, key="fizzbuzzcounter")
-
+    
     # Recuperation des donnees actuelles de toutes les locations 
-    @st.cache_data(show_spinner=False,ttl=60) # expire au bout de 1 min
+    @st.cache_data(show_spinner=False, ttl=60)  # expire au bout de 1 min
     def get_all_locations_data(locations_df, token):
         results = {}
         for _, loc in locations_df.iterrows():
             results[loc["location_id"]] = fetch_current_data(str(loc["location_id"]), token)
         return results
-
+    
     data_by_location = get_all_locations_data(locations, token)
     
     # Creer la variable qui contient le statut selon la location
-    
     status = []
     for _, loc in locations.iterrows():
         data = data_by_location[loc["location_id"]]
         data = pd.DataFrame([data])
         status.append(get_aqi_status(calculer_iqa(pd.DataFrame(data))))
-
     locations["status"] = status
     
     # Carte centrée sur le Sénégal
-
     display_map_with_school_selector(locations, data_by_location)
     # section_en_savoir_plus_air(liens)             A remplacer par notre video de presentation du projet
-
+    
     # ---------------------- # ---------------------- # ---------------------- # ---------------------- 
    
 # --------------------- CONTENU PRINCIPAL -----------------------------------
@@ -466,6 +549,7 @@ main()
 
 
 show_footer()
+
 
 
 
