@@ -18,27 +18,28 @@ import time
 #=============================================================================================================
 def show_daily_tips(location_id, token):
     """
-    Affiche des conseils adaptatifs selon la qualité de l'air actuelle
+    Affiche des recommandations basées sur la qualité de l'air actuelle
     """
-    import streamlit.components.v1 as components
-    
-    # En-tête stylisé
+    # En-tête simple et professionnel
     st.markdown("""
     <div style="
-        background: linear-gradient(135deg, #ff9a9e 0%, #fecfef 50%, #fecfef 100%);
-        padding: 2rem;
-        border-radius: 20px;
-        margin-bottom: 2rem;
-        box-shadow: 0 10px 30px rgba(255, 154, 158, 0.3);
-        text-align: center;
+        background: linear-gradient(90deg, #f8f9fa 0%, #e9ecef 100%);
+        padding: 1.5rem;
+        border-radius: 8px;
+        margin-bottom: 1.5rem;
+        border-left: 4px solid #0066cc;
     ">
-        <h1 style="
-            color: white;
-            font-size: 2.2rem;
+        <h2 style="
+            color: #2c3e50;
+            font-size: 1.5rem;
             margin: 0;
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
-        ">Des conseils magiques adaptés à l'air d'aujourd'hui</h1>
-        
+            font-weight: 600;
+        ">Recommandations quotidiennes</h2>
+        <p style="
+            color: #6c757d;
+            margin: 0.5rem 0 0 0;
+            font-size: 0.95rem;
+        ">Conseils adaptés à la qualité de l'air actuelle</p>
     </div>
     """, unsafe_allow_html=True)
     
@@ -48,104 +49,130 @@ def show_daily_tips(location_id, token):
     iqa = calculer_iqa(df)
     
     if not iqa:
-        st.error("🔮 Impossible de récupérer les conseils magiques du jour")
+        st.error("Impossible de récupérer les données de qualité de l'air")
         return
     
-    # Conseils par niveau avec couleurs harmonisées
-    if iqa <= 50:
-        conseils = [
-            {"icon": "🏃‍♂️", "titre": "Fais du sport dehors", "desc": "C'est parfait pour jouer ou courir dans la cour !"},
-            {"icon": "🌿", "titre": "Occupe-toi du jardin", "desc": "Les plantes adorent aussi cet air pur !"},
-            {"icon": "🪟", "titre": "Aère ta classe", "desc": "Ouvre les fenêtres pendant les pauses."}
-        ]
-        couleur_bg = "#e8f5e8"
-        couleur_border = "#4caf50"
-        niveau_emoji = "😊"
-        niveau_texte = "Air excellent"
-        
-    elif iqa <= 100:
-        conseils = [
-            {"icon": "🚶‍♀️", "titre": "Privilégie la marche", "desc": "Viens à pied à l'école si possible."},
-            {"icon": "💧", "titre": "Hydrate-toi", "desc": "Bois de l'eau régulièrement pour rester en forme."},
-            {"icon": "🧼", "titre": "Lave-toi les mains", "desc": "Surtout avant de manger ou après la récré."}
-        ]
-        couleur_bg = "#f1f8e9"
-        couleur_border = "#8bc34a"
-        niveau_emoji = "🙂"
-        niveau_texte = "Air bon"
-        
-    elif iqa <= 150:
-        conseils = [
-            {"icon": "⛅", "titre": "Évite les efforts", "desc": "Limite les activités physiques en plein air."},
-            {"icon": "🪟", "titre": "Aération courte", "desc": "Aère ta salle en petits moments bien choisis."},
-            {"icon": "💤", "titre": "Repose-toi", "desc": "Sois attentif à ton énergie pendant la journée."}
-        ]
-        couleur_bg = "#fff8e1"
-        couleur_border = "#ffb300"
-        niveau_emoji = "😐"
-        niveau_texte = "Air moyen"
-        
-    elif iqa <= 200:
-        conseils = [
-            {"icon": "😷", "titre": "Porte ton masque", "desc": "Surtout si tu tousses ou si l'air pique les yeux."},
-            {"icon": "📚", "titre": "Reste calme", "desc": "Fais des activités tranquilles comme la lecture."},
-            {"icon": "🏠", "titre": "Reste à l'intérieur", "desc": "Pas de sport ou récré dehors aujourd'hui."}
-        ]
-        couleur_bg = "#ffebee"
-        couleur_border = "#e53935"
-        niveau_emoji = "😷"
-        niveau_texte = "Air mauvais"
-        
-    else:
-        conseils = [
-            {"icon": "🚫", "titre": "Ne sors pas", "desc": "L'air est très mauvais, reste à l'abri en classe."},
-            {"icon": "🧴", "titre": "Lave-toi bien", "desc": "Fais attention à ton hygiène pour te protéger."},
-            {"icon": "📞", "titre": "Préviens un adulte", "desc": "Si tu ne te sens pas bien, dis-le à ton professeur."}
-        ]
-        couleur_bg = "#fce4ec"
-        couleur_border = "#8e24aa"
-        niveau_emoji = "😨"
-        niveau_texte = "Air très mauvais"
+    # Configuration des conseils par niveau d'IQA
+    conseils_config = {
+        (0, 50): {
+            "conseils": [
+                {"icon": "🏃", "titre": "Activités extérieures", "desc": "Conditions idéales pour les activités de plein air"},
+                {"icon": "🌱", "titre": "Aération", "desc": "Aérez largement les espaces intérieurs"},
+                {"icon": "🚴", "titre": "Sport en extérieur", "desc": "Profitez-en pour faire du sport dehors"}
+            ],
+            "couleur": "#28a745",
+            "bg_color": "#d4edda",
+            "niveau": "Excellent",
+            "icon_niveau": "✅"
+        },
+        (51, 100): {
+            "conseils": [
+                {"icon": "🚶", "titre": "Marche privilégiée", "desc": "Favorisez la marche pour vos déplacements"},
+                {"icon": "💧", "titre": "Hydratation", "desc": "Maintenez une bonne hydratation"},
+                {"icon": "🪟", "titre": "Ventilation régulière", "desc": "Aérez régulièrement les locaux"}
+            ],
+            "couleur": "#6c757d",
+            "bg_color": "#f8f9fa",
+            "niveau": "Bon",
+            "icon_niveau": "✓"
+        },
+        (101, 150): {
+            "conseils": [
+                {"icon": "⚠️", "titre": "Activités modérées", "desc": "Limitez les efforts physiques intenses"},
+                {"icon": "🏠", "titre": "Intérieur privilégié", "desc": "Privilégiez les activités en intérieur"},
+                {"icon": "⏰", "titre": "Aération courte", "desc": "Aérez par courtes périodes"}
+            ],
+            "couleur": "#fd7e14",
+            "bg_color": "#fff3cd",
+            "niveau": "Modéré",
+            "icon_niveau": "⚡"
+        },
+        (151, 200): {
+            "conseils": [
+                {"icon": "😷", "titre": "Protection respiratoire", "desc": "Port du masque recommandé à l'extérieur"},
+                {"icon": "📚", "titre": "Activités calmes", "desc": "Privilégiez les activités peu intenses"},
+                {"icon": "🚫", "titre": "Éviter l'extérieur", "desc": "Limitez le temps passé à l'extérieur"}
+            ],
+            "couleur": "#dc3545",
+            "bg_color": "#f8d7da",
+            "niveau": "Mauvais",
+            "icon_niveau": "⚠️"
+        },
+        (201, 300): {
+            "conseils": [
+                {"icon": "🏠", "titre": "Confinement", "desc": "Restez à l'intérieur autant que possible"},
+                {"icon": "🧴", "titre": "Hygiène renforcée", "desc": "Lavez-vous fréquemment les mains"},
+                {"icon": "📞", "titre": "Surveillance santé", "desc": "Consultez si symptômes respiratoires"}
+            ],
+            "couleur": "#6f42c1",
+            "bg_color": "#e2e3f0",
+            "niveau": "Très mauvais",
+            "icon_niveau": "🚨"
+        }
+    }
     
-    # Affichage des conseils avec st.components.v1.html
-    cols = st.columns(len(conseils))
+    # Déterminer la configuration selon l'IQA
+    config = None
+    for (min_val, max_val), conf in conseils_config.items():
+        if min_val <= iqa <= max_val:
+            config = conf
+            break
     
-    for i, conseil in enumerate(conseils):
+    if not config:
+        st.error("Valeur d'IQA hors limites")
+        return
+    
+    # Affichage du niveau de qualité
+    st.markdown(f"""
+    <div style="
+        text-align: center;
+        padding: 1rem;
+        margin: 1rem 0;
+        background-color: {config['bg_color']};
+        border-radius: 8px;
+        border: 1px solid {config['couleur']};
+    ">
+        <span style="font-size: 1.5rem;">{config['icon_niveau']}</span>
+        <strong style="color: {config['couleur']}; margin-left: 0.5rem;">
+            Qualité de l'air : {config['niveau']} (IQA: {iqa})
+        </strong>
+    </div>
+    """, unsafe_allow_html=True)
+    
+    # Affichage des conseils
+    cols = st.columns(len(config['conseils']))
+    
+    for i, conseil in enumerate(config['conseils']):
         with cols[i]:
-            components.html(f"""
-            <div style='
-                background: {couleur_bg};
-                border: 2px solid {couleur_border};
-                border-radius: 15px;
-                padding: 20px;
+            st.markdown(f"""
+            <div style="
+                background-color: white;
+                border: 1px solid {config['couleur']};
+                border-radius: 8px;
+                padding: 1.5rem;
                 text-align: center;
-                height: 200px;
+                height: 180px;
                 display: flex;
                 flex-direction: column;
                 justify-content: center;
-                font-family: "Source Sans Pro", sans-serif;
-                box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-                transition: transform 0.3s ease;
-                cursor: pointer;
-            ' onmouseover="this.style.transform='translateY(-5px)'; this.style.boxShadow='0 10px 25px rgba(0,0,0,0.15)'"
-               onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 5px 15px rgba(0,0,0,0.1)'">
-                <div style='font-size: 45px; margin-bottom: 12px;'>{conseil["icon"]}</div>
-                <h4 style='
-                    color: {couleur_border}; 
-                    margin: 8px 0; 
-                    font-size: 16px;
-                    font-weight: bold;
-                '>{conseil["titre"]}</h4>
-                <p style='
-                    color: #555; 
-                    font-size: 13px; 
+                box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+                margin-bottom: 1rem;
+            ">
+                <div style="font-size: 2rem; margin-bottom: 1rem;">{conseil["icon"]}</div>
+                <h4 style="
+                    color: {config['couleur']}; 
+                    margin: 0.5rem 0; 
+                    font-size: 1rem;
+                    font-weight: 600;
+                ">{conseil["titre"]}</h4>
+                <p style="
+                    color: #6c757d; 
+                    font-size: 0.85rem; 
                     line-height: 1.4;
                     margin: 0;
-                    padding: 0 5px;
-                '>{conseil["desc"]}</p>
+                ">{conseil["desc"]}</p>
             </div>
-            """, height=270)
-    
+            """, unsafe_allow_html=True)
 #=============================================================================================================
 #=============================================================================================================
 def show_header(nom_ecole: str = None, logo_path: str = None):
@@ -729,6 +756,7 @@ def show_animation(video_url: str = None):
     
     
 #=============================================================================================================
+
 
 
 
