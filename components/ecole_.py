@@ -757,8 +757,61 @@ def show_animation(video_url: str = None):
     
 #=============================================================================================================
 
+import re
+import streamlit as st
+import streamlit.components.v1 as components
+from typing import Optional
 
+def show_animation_home(video_url: Optional[str] = None):
+    """
+    Affiche UNIQUEMENT la vidéo (YouTube ou fichier direct) sans aucun autre élément.
+    """
+    if not video_url:
+        return
 
+    def extract_youtube_id(url: str) -> Optional[str]:
+        # gère youtu.be/<id>, youtube.com/watch?v=<id>, shorts/<id>, embed/<id>
+        patterns = [
+            r"(?:youtu\.be/)([A-Za-z0-9_-]{6,})",
+            r"(?:v=)([A-Za-z0-9_-]{6,})",
+            r"(?:/embed/)([A-Za-z0-9_-]{6,})",
+            r"(?:/shorts/)([A-Za-z0-9_-]{6,})",
+        ]
+        for p in patterns:
+            m = re.search(p, url)
+            if m:
+                return m.group(1)
+        return None
 
+    yt_id = extract_youtube_id(video_url)
+
+    if yt_id:
+        # YouTube responsive (16:9), rien d'autre
+        components.html(
+            f"""
+            <div style="position:relative;width:100%;padding-top:56.25%;margin:0;">
+              <iframe
+                src="https://www.youtube.com/embed/{yt_id}"
+                title="YouTube video"
+                frameborder="0"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                allowfullscreen
+                style="position:absolute;top:0;left:0;width:100%;height:100%;border:0;display:block;">
+              </iframe>
+            </div>
+            """,
+            height=520,
+        )
+    else:
+        # Fichier direct (mp4/webm)
+        components.html(
+            f"""
+            <video controls playsinline style="width:100%;height:auto;display:block;margin:0;border:0;outline:none;">
+              <source src="{video_url}">
+              Votre navigateur ne supporte pas la lecture de cette vidéo.
+            </video>
+            """,
+            height=520,
+        )
 
 
