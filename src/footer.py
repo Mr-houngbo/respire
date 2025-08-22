@@ -13,7 +13,7 @@ def show_footer():
     
     /* Padding pour éviter que le footer masque le contenu */
     .main .block-container {
-        padding-bottom: 520px !important;
+        padding-bottom: 420px !important;
     }
     
     /* Supprimer le footer par défaut de Streamlit */
@@ -33,7 +33,6 @@ def show_footer():
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            
         }
         
         body {
@@ -50,12 +49,12 @@ def show_footer():
         }
         
         .footer-container {
-            background: linear-gradient(135deg, #1B5E20 0%, #2E7D32 30%, #43A047 70%, #66BB6A 100%);
-            padding: 3rem 2rem 2rem 2rem;
-            border-radius: 25px 25px 0 0;
+            background: linear-gradient(135deg, #2E7D32 0%, #43A047 50%, #66BB6A 100%);
+            padding: 2rem 2rem 1.5rem 2rem;
+            border-radius: 15px 15px 0 0;
             position: relative;
             overflow: hidden;
-            box-shadow: 0 -10px 40px rgba(27, 94, 32, 0.4);
+            box-shadow: 0 -5px 20px rgba(27, 94, 32, 0.3);
             margin-top: 2rem;
             margin-bottom: 0;
             width: 100vw;
@@ -63,114 +62,60 @@ def show_footer():
             margin-right: calc(-50vw + 50%);
         }
         
-        .footer-container::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            height: 4px;
-            background: linear-gradient(90deg, #81C784, #A5D6A7, #C8E6C9, #81C784);
-            background-size: 200% 100%;
-            animation: wave 3s ease-in-out infinite;
-        }
-        
-        @keyframes wave {
-            0%, 100% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
-        }
-        
         .footer-header {
             text-align: center;
-            margin-bottom: 2.5rem;
+            margin-bottom: 2rem;
             color: white;
         }
         
         .footer-logo {
-            font-size: 3.2rem;
-            font-weight: 900;
-            background: linear-gradient(45deg, #E8F5E8, #FFFFFF, #F1F8E9);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            margin-bottom: 0.8rem;
-            text-shadow: 0 4px 8px rgba(0,0,0,0.3);
-            letter-spacing: 3px;
-            animation: glow 2s ease-in-out infinite alternate;
-        }
-        
-        @keyframes glow {
-            from { text-shadow: 0 4px 8px rgba(0,0,0,0.3); }
-            to { text-shadow: 0 4px 20px rgba(232, 245, 232, 0.4); }
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: white;
+            margin-bottom: 0.5rem;
+            letter-spacing: 2px;
         }
         
         .footer-tagline {
-            font-size: 1.3rem;
-            opacity: 0.95;
+            font-size: 1.1rem;
+            opacity: 0.9;
             font-weight: 300;
-            letter-spacing: 1px;
         }
         
         .footer-content {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 2rem;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1.5rem;
             margin-bottom: 0rem;
         }
         
         .footer-card {
-            background: rgba(255, 255, 255, 0.15);
-            backdrop-filter: blur(15px);
-            border: 1px solid rgba(255, 255, 255, 0.25);
-            border-radius: 25px;
-            padding: 2.5rem 2rem;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 15px;
+            padding: 1.5rem;
             text-align: center;
-            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            position: relative;
-            overflow: hidden;
-        }
-        
-        .footer-card::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.15), transparent);
-            transition: left 0.6s;
-        }
-        
-        .footer-card:hover::before {
-            left: 100%;
+            transition: all 0.3s ease;
         }
         
         .footer-card:hover {
-            transform: translateY(-10px) scale(1.03);
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.25);
-            background: rgba(255, 255, 255, 0.25);
-            border: 1px solid rgba(255, 255, 255, 0.4);
-        }
-       
-        @keyframes bounce {
-            0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
-            40% { transform: translateY(-10px); }
-            60% { transform: translateY(-5px); }
+            transform: translateY(-3px);
+            background: rgba(255, 255, 255, 0.15);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
         }
         
         .card-title {
-            font-size: 1.4rem;
-            font-weight: 700;
+            font-size: 1.2rem;
+            font-weight: 600;
             color: #E8F5E8;
-            margin-bottom: 1.5rem;
-            text-transform: uppercase;
-            letter-spacing: 1.5px;
+            margin-bottom: 1rem;
+            letter-spacing: 1px;
         }
         
         .card-content {
-            color: rgba(255, 255, 255, 0.95);
-            line-height: 1.8;
-            font-size: 1rem;
+            color: rgba(255, 255, 255, 0.9);
+            line-height: 1.6;
+            font-size: 0.95rem;
         }
         
         .card-content strong {
@@ -182,72 +127,58 @@ def show_footer():
             display: flex;
             flex-wrap: wrap;
             justify-content: center;
-            gap: 0.8rem;
-            margin-top: 1.5rem;
+            gap: 0.5rem;
+            margin-top: 1rem;
         }
         
         .tech-badge {
-            background: rgba(255, 255, 255, 0.3);
+            background: rgba(255, 255, 255, 0.2);
             color: white;
-            padding: 0.6rem 1.2rem;
-            border-radius: 25px;
-            font-size: 0.9rem;
-            font-weight: 600;
-            border: 1px solid rgba(255, 255, 255, 0.4);
+            padding: 0.4rem 0.8rem;
+            border-radius: 15px;
+            font-size: 0.85rem;
+            font-weight: 500;
             transition: all 0.3s ease;
-            cursor: pointer;
         }
         
         .tech-badge:hover {
-            background: rgba(255, 255, 255, 0.4);
-            transform: scale(1.1) translateY(-2px);
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            background: rgba(255, 255, 255, 0.3);
+            transform: translateY(-1px);
         }
-        
         
         .footer-link {
             color: #E8F5E8;
             text-decoration: none;
-            font-weight: 600;
+            font-weight: 500;
             transition: all 0.3s ease;
-            border-bottom: 2px solid transparent;
         }
         
         .footer-link:hover {
             color: white;
-            border-bottom: 2px solid white;
-            text-shadow: 0 0 15px rgba(255, 255, 255, 0.6);
-            margin-bottom: 0rem !important;
+            text-decoration: underline;
         }
         
         @media (max-width: 768px) {
             .footer-container {
-                padding: 2rem 1.5rem 1.5rem 1.5rem;
+                padding: 1.5rem;
             }
             .footer-logo {
-                font-size: 2.5rem;
-            }
-            .footer-tagline {
-                font-size: 1.1rem;
+                font-size: 2rem;
             }
             .footer-content {
                 grid-template-columns: 1fr;
-                gap: 1.5rem;
+                gap: 1rem;
             }
             .footer-card {
-                padding: 2rem 1.5rem;
-            }
-            .card-icon {
-                font-size: 2.5rem;
+                padding: 1.2rem;
             }
         }
-        iframe.stFrame { margin-bottom: 0 !important; padding-bottom: 0 !important; height: 140px !important; /* Ajuste selon la hauteur réelle de ton footer */ }
         
         </style>
     </head>
     <body>
         <div>
-            <br><br><br><br><br>
+            <br><br><br>
         </div>
             
         <div class="footer-container">
@@ -260,9 +191,8 @@ def show_footer():
                 <div class="footer-card">
                     <div class="card-title">Équipe & Projet</div>
                     <div class="card-content">
-                        Créé avec passion par<br>
-                        <strong>Breath4Life</strong><br><br>
-                        Hackathon <a href="https://www.kaikai.dev" target="_blank" class="footer-link">Kaikai 2025</a><br><br>
+                        Créé par <strong>Breath4Life</strong><br>
+                        Hackathon <a href="https://www.kaikai.dev" target="_blank" class="footer-link">Kaikai 2025</a><br>
                         <em>"Sensibiliser pour mieux respirer"</em>
                     </div>
                 </div>
@@ -270,13 +200,11 @@ def show_footer():
                 <div class="footer-card">
                     <div class="card-title">Technologies</div>
                     <div class="card-content">
-                        Stack technique moderne<br><br>
                         <div class="tech-stack">
                             <span class="tech-badge">Python</span>
                             <span class="tech-badge">Streamlit</span>
                             <span class="tech-badge">Pandas</span>
                             <span class="tech-badge">AirGradient</span>
-                            <span class="tech-badge">CSS3</span>
                         </div>
                     </div>
                 </div>
@@ -285,13 +213,11 @@ def show_footer():
                     <div class="card-title">Code & Données</div>
                     <div class="card-content">
                         <strong>Capteurs temps réel</strong><br>
-                        AirGradient API<br><br>
-                        <a href="https://github.com/Mr-houngbo/respire/" target="_blank" class="footer-link">Code source GitHub</a><br><br>
-                         Version <strong>1.0.0</strong>
+                        <a href="https://github.com/Mr-houngbo/respire/" target="_blank" class="footer-link">Code source GitHub</a><br>
+                        Version <strong>1.0.0</strong>
                     </div>
                 </div>
             </div>
-           
         </div>
 
     </body>
@@ -299,5 +225,4 @@ def show_footer():
     """
     
     # Affichage avec st.components.v1.html
-    components.html(footer_html, height=674)
-    
+    components.html(footer_html, height=420)
