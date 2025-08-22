@@ -469,7 +469,15 @@ def main():
 main()
 
 
+#=========================== ENVOI DE MSG AUTO VIA WHATSAPP =================================
 
+from WhatsappSystem import WhatsAppAlertSystem
+wa = WhatsAppAlertSystem()
+results, sent = wa.check_and_send_automatic_alerts("École …", location_id)
+# ou
+wa.start_automatic_monitoring("École …", location_id)
+
+wa.send_wachap_message("+22177XXXXXXX", "Rapport du jour", msg_type="media",media_url="https://votre.cdn/rapport.pdf", filename="rapport.pdf")
 
 
 #=========================== SECTION TOUT EN BAS RESERVEE AU FOOTER =================================
@@ -482,6 +490,7 @@ st.markdown("""
     Breath4Life © 2025 • Pour un air plus sain dans nos écoles
 </div>
 """, unsafe_allow_html=True)
+
 
 
 
