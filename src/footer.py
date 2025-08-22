@@ -183,7 +183,7 @@ def show_footer():
             
         <div class="footer-container">
             <div class="footer-header">
-                <div class="footer-logo">RESPiRE</div>
+                <div class="footer-logo">RESPIRE</div>
                 <div class="footer-tagline">Dashboard de qualité de l'air dans les écoles</div>
             </div>
             
@@ -192,8 +192,7 @@ def show_footer():
                     <div class="card-title">Équipe & Projet</div>
                     <div class="card-content">
                         Créé par <strong>Breath4Life</strong><br>
-                        Hackathon <a href="https://www.kaikai.dev" target="_blank" class="footer-link">Kaikai 2025</a><br>
-                        <em>"Sensibiliser pour mieux respirer"</em>
+                        Dans le cadre du hackathon <a href="https://www.kaikai.dev" target="_blank" class="footer-link">Kaikai 2025</a><br>
                     </div>
                 </div>
                 
@@ -206,15 +205,20 @@ def show_footer():
                             <span class="tech-badge">Pandas</span>
                             <span class="tech-badge">AirGradient</span>
                         </div>
+                        <div class="tech-stack">
+                            <span class="tech-badge">Python</span>
+                            <span class="tech-badge">Streamlit</span>
+                            <span class="tech-badge">Pandas</span>
+                            <span class="tech-badge">AirGradient</span>
+                        </div>
                     </div>
                 </div>
                 
                 <div class="footer-card">
                     <div class="card-title">Code & Données</div>
                     <div class="card-content">
-                        <strong>Capteurs temps réel</strong><br>
                         <a href="https://github.com/Mr-houngbo/respire/" target="_blank" class="footer-link">Code source GitHub</a><br>
-                        Version <strong>1.0.0</strong>
+                        Version <strong>2.0.0</strong>
                     </div>
                 </div>
             </div>
@@ -226,3 +230,4 @@ def show_footer():
     
     # Affichage avec st.components.v1.html
     components.html(footer_html, height=420)
+
