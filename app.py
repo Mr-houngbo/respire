@@ -280,7 +280,7 @@ if page == "Accueil":
     display_map_with_school_selector(locations, data_by_location)
     # Video de presentation du projet
     
-    show_animation("assets/video/respire_presentation.mp4")
+    show_animation("https://github.com/Mr-houngbo/respire/releases/download/v2.0.0/respire_presentation.mp4")
     # ---------------------- # ---------------------- # ---------------------- # ---------------------- 
    
 # --------------------- CONTENU PRINCIPAL -----------------------------------
@@ -493,6 +493,7 @@ st.markdown("""
     Breath4Life © 2025 • Ensemble faisons respirer nos écoles.
 </div>
 """, unsafe_allow_html=True)
+
 
 
 
