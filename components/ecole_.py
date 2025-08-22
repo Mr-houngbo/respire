@@ -376,7 +376,7 @@ def section_en_savoir_plus_air(liens):
     """, unsafe_allow_html=True)
     
     # Conteneur principal
-    st.markdown('<div class="air-section">', unsafe_allow_html=True)
+   
     st.markdown('<h2 class="air-title"> En savoir plus sur l\'air</h2>', unsafe_allow_html=True)
     
     
@@ -756,6 +756,7 @@ def show_animation(video_url: str = None):
     
     
 #=============================================================================================================
+
 
 
 
