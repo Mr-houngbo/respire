@@ -204,7 +204,6 @@ def show_footer():
                             <span class="tech-badge">Python</span>
                             <span class="tech-badge">Streamlit</span>
                             <span class="tech-badge">HTML/CSS</span>
-                            <span class="tech-badge">Pandas</span>
                             <span class="tech-badge">AirGradient API</span>
                         </div>
                     </div>
@@ -226,6 +225,7 @@ def show_footer():
     
     # Affichage avec st.components.v1.html
     components.html(footer_html, height=428)
+
 
 
 
