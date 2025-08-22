@@ -188,7 +188,7 @@ def show_footer():
             
             <div class="footer-content">
                 <div class="footer-card">
-                    <div class="card-title">Équipe & Projet</div>
+                    <div class="card-title">Équipe</div>
                     <div class="card-content">
                         Créé par <strong>Breath4Life</strong><br>
                         Dans le cadre du hackathon <a href="https://www.kaikai.dev" target="_blank" class="footer-link">Kaikai 2025</a>
@@ -208,7 +208,7 @@ def show_footer():
                 </div>
                 
                 <div class="footer-card">
-                    <div class="card-title">Code & Données</div>
+                    <div class="card-title">Code</div>
                     <div class="card-content">
                         <a href="https://github.com/Mr-houngbo/respire/" target="_blank" class="footer-link">Repository GitHub</a><br>
                         Version <strong>2.0.0</strong>
@@ -223,3 +223,4 @@ def show_footer():
     
     # Affichage avec st.components.v1.html
     components.html(footer_html, height=398)
+
