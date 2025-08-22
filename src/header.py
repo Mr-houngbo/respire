@@ -8,76 +8,56 @@ from datetime import datetime
 import random
 
 
-# Version alternative encore plus ludique (optionnelle)
+# Version un peu plus pro 
+
 def show_header_playful():
     """
-    Version encore plus ludique avec effet de bulles et couleurs vives
+    Header professionnel, épuré et moderne
     """
     st.markdown("""
     <style>
-    .playful-header {
-        background: linear-gradient(45deg, #81c784, #aed581, #c5e1a5, #dcedc8);
-        border-radius: 25px;
-        padding: 30px;
-        margin-top:20px;
-        margin-bottom: 0px;
-        position: relative;
-        overflow: hidden;
-        box-shadow: 0 10px 30px rgba(129, 199, 132, 0.3);
+    .professional-header {
+        background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+        border: 1px solid #dee2e6;
+        border-radius: 0 0 12px 12px;
+        padding: 1rem 2rem;
+        margin: 2rem 2rem 2rem -1rem;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+        position: sticky;
+        top: 0;
+        z-index: 100;
     }
     
-    .playful-header::before {
-        content: '';
-        position: absolute;
-        top: -50%;
-        left: -50%;
-        width: 200%;
-        height: 200%;
-        background: radial-gradient(circle, rgba(255,255,255,0.1) 1px, transparent 1px);
-        background-size: 20px 20px;
-        animation: bubble-move 20s linear infinite;
-    }
-    
-    @keyframes bubble-move {
-        0% { transform: translate(0, 0) rotate(0deg); }
-        100% { transform: translate(-20px, -20px) rotate(360deg); }
-    }
-    
-    .title-playful {
-        font-size: 2.8rem;
-        font-weight: 900;
-        background: linear-gradient(45deg, #1b5e20, #2e7d32, #388e3c, #4caf50);
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
+    .header-title {
+        font-size: 1.8rem;
+        font-weight: 600;
+        color: #4ade80;
+        margin: 0;
         text-align: center;
-        margin-bottom: 0px;
-        position: relative;
-        z-index: 1;
+        letter-spacing: -0.02em;
     }
     
-    .breathing-text {
-        animation: breathe 2s ease-in-out infinite;
+    .header-subtitle {
+        font-size: 1rem;
+        color: #6c757d;
+        text-align: center;
+        margin-top: 0.5rem;
+        font-weight: 400;
     }
     
-    @keyframes breathe {
-        0%, 100% { transform: scale(1); }
-        50% { transform: scale(1.05); }
-    }
     </style>
     """, unsafe_allow_html=True)
     
     with st.container():
-        st.markdown('<div class="playful-header">', unsafe_allow_html=True)
+        st.markdown('''
+        <div class="professional-header">
+            <h1 class="header-title">
+                RESPIRE Dashboard
+            </h1>
+        </div>
+        ''', unsafe_allow_html=True)
         
-        st.markdown(
-            """
-            <div class="title-playful breathing-text">
-                🌈 RESPIRE - Ton Super Dashboard ! 🌈
-            </div>
-            """,
-            unsafe_allow_html=True
-        )
         
-        st.markdown('</div>', unsafe_allow_html=True)
         
+
 #=============================================================================================================
