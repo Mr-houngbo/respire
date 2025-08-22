@@ -428,11 +428,6 @@ def afficher_page_about():
             "title": "Design & Interface",
             "description": "Conception d'interfaces intuitives adaptées à tous les publics : élèves, parents et autorités.",
             "skills": ["UX/UI", "Design", "Accessibilité", "Responsive"]
-        },
-        {
-            "title": "Coordination & Partenariats",
-            "description": "Pilotage projet, relations institutionnelles et développement de partenariats stratégiques.",
-            "skills": ["Management", "Stratégie", "Communication", "Partenariats"]
         }
     ]
     
@@ -457,7 +452,6 @@ def afficher_page_about():
     # CONTACT
     # =====================================
     st.markdown("## 📞 Nous Contacter")
-    
     st.markdown("""
     <div class="contact-grid">
         <div class="contact-item">
@@ -469,24 +463,15 @@ def afficher_page_about():
                 </a>
             </p>
         </div>
-        
         <div class="contact-item">
             <div class="contact-icon">📱</div>
             <h4 class="contact-title">Téléphone</h4>
             <p class="contact-text">+221 77 XXX XX XX</p>
         </div>
-        
         <div class="contact-item">
             <div class="contact-icon">📍</div>
             <h4 class="contact-title">Localisation</h4>
             <p class="contact-text">Dakar, Sénégal</p>
         </div>
-    </div>
-    """, unsafe_allow_html=True)
-    
-    # Footer subtle
-    st.markdown("""
-    <div style="text-align: center; margin-top: 3rem; padding: 2rem 0; border-top: 1px solid var(--neutral-200); color: var(--neutral-500); font-size: 0.875rem;">
-        Breath4Life © 2024 • Pour un air plus sain dans nos écoles
     </div>
     """, unsafe_allow_html=True)
