@@ -487,9 +487,10 @@ wa.send_wachap_message("+22177XXXXXXX", "Rapport du jour", msg_type="media",medi
 #Footer subtle
 st.markdown("""
 <div style="text-align: center; margin-top: 3rem; padding: 2rem 0; border-top: 1px solid var(--neutral-200); color: var(--neutral-500); font-size: 0.875rem;">
-    Breath4Life © 2025 • Pour un air plus sain dans nos écoles
+    Breath4Life © 2025 • Ensemble faisons respirer nos écoles.
 </div>
 """, unsafe_allow_html=True)
+
 
 
 
