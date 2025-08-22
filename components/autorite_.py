@@ -20,7 +20,6 @@ import smtplib
 from email.message import EmailMessage
 
 
-
 # Configuration (à adapter selon vos données)
 DATA_DIR = os.path.join(os.path.dirname(__file__), '..', 'data/air_quality')
 
@@ -667,6 +666,8 @@ from typing import Dict, List, Tuple, Optional
 # Configuration existante (gardée de votre code)
 BASE_URL = "https://api.airgradient.com/public/api/v1"
 location_id = "164928"
+location_id_input = location_id
+
 
 VALEURS_LIMITE = {
     "pm03_count": 100000,
@@ -1553,6 +1554,7 @@ def create_streamlit_interface():
             except Exception as e:
                 st.error(f"❌ Erreur lors de la génération: {str(e)}")
                 st.info("🔧 Vérifiez vos paramètres et votre connexion internet")
+
 
 
 
