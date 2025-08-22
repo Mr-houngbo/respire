@@ -471,6 +471,8 @@ main()
 
 #=========================== ENVOI DE MSG AUTO VIA WHATSAPP =================================
 
+location_id = 164928
+
 from WhatsappSystem import WhatsAppAlertSystem
 wa = WhatsAppAlertSystem()
 results, sent = wa.check_and_send_automatic_alerts("École …", location_id)
@@ -490,6 +492,7 @@ st.markdown("""
     Breath4Life © 2025 • Ensemble faisons respirer nos écoles.
 </div>
 """, unsafe_allow_html=True)
+
 
 
 
