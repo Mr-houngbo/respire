@@ -49,11 +49,11 @@ def show_footer():
         }
         
         .footer-container {
-            background: linear-gradient(135deg, #e8f4f8 0%, #f0f8ff 50%, #f5f9fc 100%);
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
             padding: 2rem 2rem 1.5rem 2rem;
             position: relative;
             overflow: hidden;
-            box-shadow: 0 -3px 15px rgba(52, 152, 219, 0.1);
+            box-shadow: 0 -3px 15px rgba(102, 126, 234, 0.3);
             margin-top: 2rem;
             margin-bottom: 0;
             width: 100vw;
@@ -64,22 +64,22 @@ def show_footer():
         .footer-header {
             text-align: center;
             margin-bottom: 2rem;
-            color: #2c3e50;
+            color: white;
         }
         
         .footer-logo {
             font-size: 2.5rem;
             font-weight: 700;
-            color: #3498db;
+            color: white;
             margin-bottom: 0.5rem;
             letter-spacing: 2px;
         }
         
         .footer-tagline {
             font-size: 1.1rem;
-            opacity: 0.8;
+            opacity: 0.9;
             font-weight: 300;
-            color: #5a6c7d;
+            color: white;
         }
         
         .footer-content {
@@ -90,8 +90,8 @@ def show_footer():
         }
         
         .footer-card {
-            background: rgba(255, 255, 255, 0.7);
-            border: 1px solid rgba(52, 152, 219, 0.1);
+            background: rgba(255, 255, 255, 0.15);
+            border: 1px solid rgba(255, 255, 255, 0.3);
             padding: 1.5rem;
             text-align: center;
             transition: all 0.3s ease;
@@ -99,27 +99,27 @@ def show_footer():
         
         .footer-card:hover {
             transform: translateY(-2px);
-            background: rgba(255, 255, 255, 0.85);
-            box-shadow: 0 6px 20px rgba(52, 152, 219, 0.15);
+            background: rgba(255, 255, 255, 0.25);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
         }
         
         .card-title {
             font-size: 1.2rem;
             font-weight: 600;
-            color: #2c3e50;
+            color: white;
             margin-bottom: 1rem;
             letter-spacing: 0.5px;
         }
         
         .card-content {
-            color: #5a6c7d;
+            color: rgba(255, 255, 255, 0.9);
             line-height: 1.6;
             font-size: 0.9rem;
             font-weight: 400;
         }
         
         .card-content strong {
-            color: #2c3e50;
+            color: white;
             font-weight: 600;
         }
         
@@ -132,8 +132,8 @@ def show_footer():
         }
         
         .tech-badge {
-            background: rgba(52, 152, 219, 0.1);
-            color: #2c3e50;
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
             padding: 0.4rem 0.8rem;
             font-size: 0.8rem;
             font-weight: 500;
@@ -141,20 +141,20 @@ def show_footer():
         }
         
         .tech-badge:hover {
-            background: rgba(52, 152, 219, 0.2);
+            background: rgba(255, 255, 255, 0.3);
             transform: translateY(-1px);
         }
         
         .footer-link {
-            color: #3498db;
+            color: white;
             text-decoration: none;
             font-weight: 500;
             transition: all 0.3s ease;
         }
         
         .footer-link:hover {
-            color: #2980b9;
-            text-decoration: none;
+            color: #f8f9fa;
+            text-decoration: underline;
         }
         
         @media (max-width: 768px) {
@@ -173,7 +173,7 @@ def show_footer():
             }
         }
         
-        </style>
+    </style>
     </head>
     <body>
         <div>
@@ -223,4 +223,5 @@ def show_footer():
     
     # Affichage avec st.components.v1.html
     components.html(footer_html, height=398)
+
 
