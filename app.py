@@ -56,273 +56,241 @@ st.markdown("""
             """,unsafe_allow_html=True)
 
 
-# --------- SIDEBAR PERSONNALISÉE ---------
-# CSS personnalisé pour la sidebar
+#=========================================== NOUVELLE SIDEBAR =====================================
 
+# --------- CSS global ---------
 st.markdown("""
-            <style>
-                /* Styling global de la sidebar */
-                .css-1d391kg {
-                    background: linear-gradient(180deg, #e8f5e8 0%, #c8e6c9 50%, #a5d6a7 100%) !important;
-                    border-radius: 20px !important;
-                }
+    <style>
+        section[data-testid="stSidebar"] {
+            background-color: #F9FAFB !important;
+            border-right: 1px solid #E5E7EB !important;
+        }
+        .block-container { padding-top: 1rem; }
+        /* Hover doux + barre active (menu unique) */
+        #nav-all_menu .nav-link:hover {
+            background-color: rgba(74, 222, 128, 0.08) !important;
+            color: #047857 !important;
+        }
+        #nav-all_menu .nav-link.active { position: relative; }
+        #nav-all_menu .nav-link.active::before {
+            content: ''; position: absolute; left: 0; top: 50%; transform: translateY(-50%);
+            width: 4px; height: 20px; background: #4ade80; border-radius: 0 2px 2px 0;
+        }
+    </style>
+""", unsafe_allow_html=True)
 
-                /* Container de la sidebar */
-                .css-1cypcdb {
-                    background: linear-gradient(180deg, #e8f5e8 0%, #c8e6c9 100%) !important;
-                    border-right: 3px solid rgba(46, 125, 50, 0.2) !important;
-                    
-                }
+# --------- Styles option_menu ---------
+donezo_styles = {
+    "container": {"padding": "0", "background-color": "transparent"},
+    "icon": {"color": "inherit", "font-size": "16px"},
+    "nav-link": {
+        "color": "#6B7280",
+        "font-size": "14px",
+        "text-align": "left",
+        "margin": "2px 8px",
+        "border-radius": "8px",
+        "padding": "12px 16px",
+        "font-weight": "500",
+    },
+    "nav-link-selected": {
+        "background-color": "#F3F4F6",
+        "color": "#4ade80",
+        "border-radius": "8px",
+        "padding": "12px 16px",
+        "margin": "2px 8px",
+        "font-weight": "600",
+        "box-shadow": "0 2px 4px rgba(74, 222, 128, 0.12)"
+    }
+}
 
-                /* Style pour le menu option_menu */
-                .nav-link {
-                    background-color: rgba(255, 255, 255, 0.7) !important;
-                    color: #2e7d32 !important;
-                    border-radius: 20px !important;
-                    margin: 8px 5px !important;
-                    padding: 12px 20px !important;
-                    transition: all 0.3s ease !important;
-                    border: 2px solid transparent !important;
-                    font-weight: 600 !important;
-                    backdrop-filter: blur(10px) !important;
-                    
-                }
-
-                .nav-link:hover {
-                    background-color: rgba(46, 125, 50, 0.1) !important;
-                    color: #1b5e20 !important;
-                    border: 2px solid rgba(46, 125, 50, 0.3) !important;
-                    transform: translateX(5px) !important;
-                    box-shadow: 0 4px 15px rgba(46, 125, 50, 0.2) !important;
-                }
-
-                .nav-link-selected {
-                    background: linear-gradient(135deg, #4caf50, #66bb6a) !important;
-                    color: white !important;
-                    border: 2px solid rgba(255, 255, 255, 0.3) !important;
-                    box-shadow: 0 6px 20px rgba(76, 175, 80, 0.4) !important;
-                    transform: translateX(8px) !important;
-                }
-
-                /* Animation pour les icônes */
-                .nav-link i {
-                    transition: transform 0.3s ease !important;
-                }
-
-                .nav-link:hover i {
-                    transform: scale(1.2) !important;
-                }
-
-                .nav-link-selected i {
-                    transform: scale(1.1) !important;
-                }
-
-
-                @keyframes breathe {
-                    0%, 100% { transform: scale(1); }
-                    50% { transform: scale(1.1); }
-                }
-
-            </style>
-            """, unsafe_allow_html=True)
 
 #===================================================================================================
 
+
+# =============================== STATE ===============================
+if 'current_page' not in st.session_state:
+    st.session_state.current_page = "Accueil"
+
+# =============================== SIDEBAR (MENU UNIQUE) ===============================
 with st.sidebar:
-    # Logo 
-    # Affichage du logo cool 
-    
-    st.image("assets/images/logo_vert.png",output_format="auto")
-    
-    # Menu principal avec style personnalisé
-    selected_main = option_menu(
-        menu_title=None,  # On enlève le titre car on en a mis un stylisé
-        options = ["Accueil", "Eleves", "Parents", "Autorités", "Sensibilisation"],
-        icons = ["house-fill", "building", "people-fill", "shield-fill", "camera-video-fill"],
-        default_index=0,
-        orientation="vertical",
-        styles={
-            "container": {
-                "padding": "10px",
-                "background-color": "inherit",
-                "border-radius": "20px"
-            },
-            "icon": {
-                "color": "#2e7d32", 
-                "font-size": "18px",
-                "margin-right": "10px"
-            },
-            "nav-link": {
-                "font-size": "16px",
-                "text-align": "left",
-                "margin": "8px 0px",
-                "padding": "12px 15px",
-                "border-radius": "15px",
-                "background-color": "rgba(255, 255, 255, 0.7)",
-                "color": "#2e7d32",
-                "border": "2px solid transparent",
-                "transition": "all 0.3s ease",
-                "backdrop-filter": "blur(10px)"
-            },
-            "nav-link-selected": {
-                "background": "linear-gradient(135deg, #4caf50, #66bb6a)",
-                "color": "white",
-                "border": "2px solid rgba(255, 255, 255, 0.3)",
-                "box-shadow": "0 6px 20px rgba(76, 175, 80, 0.4)",
-                "transform": "translateX(5px)"
-            }
+    st.image("assets/images/logo_vert_.png", output_format="auto")
+
+    # --- styles communs ---
+    donezo_styles = {
+        "container": {"padding": "0", "background-color": "transparent"},
+        "icon": {"color": "inherit", "font-size": "16px"},
+        "nav-link": {
+            "color": "#6B7280",
+            "font-size": "14px",
+            "text-align": "left",
+            "margin": "2px 8px",
+            "border-radius": "8px",
+            "padding": "12px 16px",
+            "font-weight": "500",
+        },
+        "nav-link-selected": {
+            "background-color": "#F3F4F6",
+            "color": "#4ade80",
+            "border-radius": "8px",
+            "padding": "12px 16px",
+            "margin": "2px 8px",
+            "font-weight": "600",
+            "box-shadow": "0 2px 4px rgba(74, 222, 128, 0.12)"
         }
+    }
+
+    # --- CSS : titres non cliquables + hover doux + barre active ---
+    st.markdown("""
+    <style>
+      /* hover doux */
+      #nav-all_menu .nav-link:hover { background-color: rgba(74,222,128,.08) !important; color:#047857 !important; }
+      /* barre verte à gauche quand actif */
+      #nav-all_menu .nav-link.active { position: relative; }
+      #nav-all_menu .nav-link.active::before {
+        content:''; position:absolute; left:0; top:50%; transform:translateY(-50%);
+        width:4px; height:20px; background:#4ade80; border-radius:0 2px 2px 0;
+      }
+      /* Titres non cliquables (pseudo-éléments avant le 1er et le 6e item) */
+      #nav-all_menu ul { margin:0; padding:0; }
+      #nav-all_menu ul li:nth-child(1)::before,
+      #nav-all_menu ul li:nth-child(6)::before {
+        display:block; content:attr(data-section);
+        text-transform:uppercase; letter-spacing:.05em; font-weight:600; font-size:12px;
+        color:#9CA3AF; padding:16px 16px 8px 16px; margin:0;
+      }
+      /* on enlève le padding top du 1er item réel après chaque titre pour coller visuellement */
+      #nav-all_menu ul li:nth-child(1) a, #nav-all_menu ul li:nth-child(6) a { margin-top:0 !important; }
+    </style>
+    """, unsafe_allow_html=True)
+
+    # --- Menu unique : 5 items "MENU" puis 3 items "GENERAL" (pas d'items factices) ---
+    all_options = ["Accueil", "Eleves", "Parents", "Autorités", "Sensibilisations",
+                   "Paramètres", "KaiKai", "À propos"]
+    all_icons   = ["house-fill", "building", "people-fill", "shield-fill", "camera-video-fill",
+                   "gear-fill", "layers", "info-circle-fill"]
+
+    # default_index basé sur la page courante
+    if 'current_page' not in st.session_state:
+        st.session_state.current_page = "Accueil"
+    default_index = all_options.index(st.session_state.current_page) \
+                    if st.session_state.current_page in all_options else 0
+
+    # rendu des <li> avec attributs data-section pour injecter "MENU" et "GENERAL"
+    # astuce : on entoure l'option_menu par un conteneur pour pouvoir poser les data-section
+    st.markdown('<div id="nav-all_menu">', unsafe_allow_html=True)
+    selected = option_menu(
+        menu_title=None,
+        options=all_options,
+        icons=all_icons,
+        default_index=default_index,
+        orientation="vertical",
+        styles=donezo_styles,
+        key="all_menu"  # id nécessaire pour cibler le menu en CSS
     )
-    
-    # Séparateur décoratif
+    # ajoute les attributs data-section via JS léger (autorisé dans le markdown HTML)
+    st.markdown("""
+    <script>
+      const ul = window.parent.document.querySelector('#nav-all_menu ul');
+      if (ul) {
+        const li = ul.querySelectorAll('li');
+        if (li.length >= 8) {
+          li[0].setAttribute('data-section','MENU');      // avant Accueil (1er item)
+          li[5].setAttribute('data-section','GENERAL');   // avant Paramètres (6e item)
+        }
+      }
+    </script>
+    """, unsafe_allow_html=True)
+    st.markdown('</div>', unsafe_allow_html=True)
+
+    # maj page courante
+    if selected in all_options:
+        st.session_state.current_page = selected
+
+    # bloc message
     st.markdown(
         """
         <div style="
-            height: 3px; 
-            background: linear-gradient(90deg, #4caf50, #81c784, #a5d6a7, #4caf50);
-            border-radius: 2px; 
-            margin: 25px 10px;
-            animation: shimmer 2s infinite;
-        "></div>
-        """, 
-        unsafe_allow_html=True
-    )
-    
-    # Section informative
-    st.markdown(
-        """
-        <div style="
-            background: rgba(255, 255, 255, 0.8);
-            padding: 15px;
-            border-radius: 15px;
-            margin: 20px 5px;
-            text-align: center;
-            box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+            background: rgba(255,255,255,0.6);
+            border-radius: 8px;
+            padding: 12px 16px;
+            margin: 8px;
+            font-size: 12px;
+            text-align: left;
+            border: 1px solid #E5E7EB;
+            color: #6B7280;
         ">
-            <div style="color: #2e7d32; font-weight: bold; font-size: 0.9rem;">
-                Données en temps réel
-            </div>
-            <div style="color: #666; font-size: 0.8rem;">
-                Capteurs AirGradient
-            </div>
+            <b>Respirer, c'est vivre.</b><br>
+            Chaque souffle compte. <br>Agissons aujourd'hui pour un air plus pur demain.
         </div>
-        
-        <div style="
-            background: rgba(255,255,255,0.85);
-            border-radius: 12px;
-            padding: 15px;
-            margin-top: 20px;
-            font-size: 0.85rem;
-            text-align: center;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
-            color: #2e7d32;
-        ">
-            <b>Respirer, c’est vivre.</b><br>
-            Chaque souffle compte. <br>Agissons aujourd’hui pour un air plus pur demain.
-        </div>
-        
-        """, 
-        unsafe_allow_html=True
+        """, unsafe_allow_html=True
     )
-    
+
+# =============================== ROUTING (reprend ta logique) ===============================
+page = st.session_state.current_page
 
 # ---------------------- SECTIONS FIXES POUR LA PAGE D'ACCUEIL -------------------------------
 
-if selected_main == "Accueil":
-    show_header_playful()
-
-    tab1,tab2,tab3,tab4 = st.tabs(["Home","Parametres", "A Propos ","KaiKai"])
-
-    with tab1:
-
-        # Carte du Sénégal (à remplacer plus tard par vraie carte interactive)
-        # st.markdown("### 🗺️ Carte du Sénégal")
-        # st.info("Ici s’affichera la carte interactive avec les zones de pollution.")
-        # st.image("assets/images/carte_senegal.png", caption="Carte du senegal placeholder", use_container_width=True)
-        
-        # ---------------------- # ---------------------- Carte des capteurs   # ---------------------- # ---------------------- 
-
-        st.title("Carte des capteurs installés dans les écoles au Sénégal")
-
-        # Liste de capteurs avec coordonnées
-        
-        locations = pd.read_csv("locations_info.csv")
-        
-        # Déclenche un refresh automatique toutes les 60s
-        # count = st_autorefresh(interval=60000, limit=100, key="fizzbuzzcounter")
-
-        # Recuperation des donnees actuelles de toutes les locations 
-        @st.cache_data(show_spinner=False,ttl=60) # expire au bout de 1 min
-        def get_all_locations_data(locations_df, token):
-            results = {}
-            for _, loc in locations_df.iterrows():
-                results[loc["location_id"]] = fetch_current_data(str(loc["location_id"]), token)
-            return results
-
-        data_by_location = get_all_locations_data(locations, token)
-        
-        # Creer la variable qui contient le statut selon la location
-        
-        status = []
-        for _, loc in locations.iterrows():
-            data = data_by_location[loc["location_id"]]
-            data = pd.DataFrame([data])
-            status.append(get_aqi_status(calculer_iqa(pd.DataFrame(data))))
+if page == "Accueil":
     
-        locations["status"] = status
+    show_header_playful()
         
-        
-        
-        # Carte centrée sur le Sénégal
+    # ---------------------- # ---------------------- Carte des capteurs   # ---------------------- # ---------------------- 
 
+    st.title("Carte des capteurs installés dans les écoles au Sénégal")
 
-        display_map_with_school_selector(locations, data_by_location)
-        section_en_savoir_plus_air(liens)                   # Bloc de videos sur la qualite de l'air
+    # Liste de capteurs avec coordonnées
+    
+    locations = pd.read_csv("locations_info.csv")
+    
+    # Déclenche un refresh automatique toutes les 60s
+    # count = st_autorefresh(interval=60000, limit=100, key="fizzbuzzcounter")
 
-        # ---------------------- # ---------------------- # ---------------------- # ---------------------- 
-    with tab2:
-        # Onglet : Parametres 
-        from components import parametres
-        parametres.parametre()
+    # Recuperation des donnees actuelles de toutes les locations 
+    @st.cache_data(show_spinner=False,ttl=60) # expire au bout de 1 min
+    def get_all_locations_data(locations_df, token):
+        results = {}
+        for _, loc in locations_df.iterrows():
+            results[loc["location_id"]] = fetch_current_data(str(loc["location_id"]), token)
+        return results
 
-    with tab3 :
-        
-        # Onglet : A propos
+    data_by_location = get_all_locations_data(locations, token)
+    
+    # Creer la variable qui contient le statut selon la location
+    
+    status = []
+    for _, loc in locations.iterrows():
+        data = data_by_location[loc["location_id"]]
+        data = pd.DataFrame([data])
+        status.append(get_aqi_status(calculer_iqa(pd.DataFrame(data))))
 
-        from components import apropos
-        apropos.afficher_page_about()
-        
-            
-        
-    with tab4 :
+    locations["status"] = status
+    
+    # Carte centrée sur le Sénégal
 
-        # Onglet : KaiKai
+    display_map_with_school_selector(locations, data_by_location)
+    section_en_savoir_plus_air(liens)                   # Bloc de videos sur la qualite de l'air
 
-        from components.kaikai import render_kaikai_page
-        
-        render_kaikai_page()
-        
+    # ---------------------- # ---------------------- # ---------------------- # ---------------------- 
+   
 # --------------------- CONTENU PRINCIPAL -----------------------------------
 
 # ---------------------- ACTIONS DES MENUS PRINCIPAUX -----------------------
         
-if selected_main == "Eleves":
+elif page == "Eleves":
     from components import ecole
     ecole.show()
 
-elif selected_main == "Parents":
+elif page == "Parents":
     from components import parent
     parent.show()
 
-elif selected_main == "Autorités":
+elif page == "Autorités":
     from components import autorite
     
     show_header()
 
     # Création d'une liste de tuples pour regrouper les infos
     ecoles = list(zip(location_ids, logo_paths, school_names))
-
-    
 
     # CSS personnalisé pour styliser la selectbox
     st.markdown("""
@@ -437,10 +405,21 @@ elif selected_main == "Autorités":
     classify_by_iqa(location_ids, token,school_names)
 
 
-elif selected_main == "Sensibilisation":
+elif page == "Sensibilisations":
     from components import sensibilisation
-
     sensibilisation.show_sensibilisation_page()
+
+elif page == "Paramètres":
+    from components import parametres
+    parametres.parametre()
+
+elif page == "KaiKai":
+    from components.kaikai import render_kaikai_page
+    render_kaikai_page()
+
+elif page == "À propos":
+    from components import apropos
+    apropos.afficher_page_about()
 
 
 
@@ -487,6 +466,7 @@ main()
 
 
 show_footer()
+
 
 
 
