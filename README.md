@@ -27,7 +27,7 @@
 
 | Dashboard principal | Page de sensibilisation |
 |---------------------|--------------------------|
-| ![Dashboard](assets/screenshots/dashboard.png) | ![Sensibilisation](assets/screenshots/sensibilisation.png) |
+| ![Dashboard](assets/screenshots/dashboard__.png) | ![Sensibilisation](assets/screenshots/sensibilisation.png) |
 
 ---
 
@@ -156,4 +156,5 @@ This README is also available in [English](README.en.md).
 **Protégeons la santé des enfants, respirons.** 💙🌱
 
 ```
+
 
