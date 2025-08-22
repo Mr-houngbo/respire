@@ -295,7 +295,6 @@ def render_kaikai_page():
     }
     </style>
     """, unsafe_allow_html=True)
-
     # En-tête Hero professionnel
     st.markdown("""
     <div class="professional-container">
@@ -318,9 +317,8 @@ def render_kaikai_page():
             <p class="mission-text">
                 <strong>Kaikai</strong> est une entreprise sociale sénégalaise de premier plan qui place l'innovation 
                 au cœur des défis environnementaux, sanitaires et de développement durable. 
-                Nous accompagnons la transformation digitale et sociale du continent africain.
+                Ils accompagnent la transformation digitale et sociale du continent africain à travers des initiatives concrètes.
             </p>
-            
             <div class="features-grid">
                 <div class="feature-item">
                     <div class="feature-icon">🚀</div>
@@ -329,7 +327,6 @@ def render_kaikai_page():
                         <div class="feature-desc">Programmes d'accompagnement et d'accélération pour les startups à impact</div>
                     </div>
                 </div>
-                
                 <div class="feature-item">
                     <div class="feature-icon">🤝</div>
                     <div class="feature-content">
@@ -337,15 +334,13 @@ def render_kaikai_page():
                         <div class="feature-desc">Collaboration avec des acteurs locaux et internationaux</div>
                     </div>
                 </div>
-                
                 <div class="feature-item">
                     <div class="feature-icon">🎯</div>
                     <div class="feature-content">
                         <div class="feature-title">Événements Structurants</div>
-                        <div class="feature-desc">Organisation de hackathons et competitions d'innovation</div>
+                        <div class="feature-desc">Organisation de hackathons et compétitions d'innovation comme celui qui nous réunit</div>
                     </div>
                 </div>
-                
                 <div class="feature-item">
                     <div class="feature-icon">🌍</div>
                     <div class="feature-content">
@@ -371,22 +366,19 @@ def render_kaikai_page():
     # Section Hackathon premium
     st.markdown("""
     <div class="hackathon-section">
-        <h2 class="hackathon-title">Hackathon Qualité de l'Air</h2>
-        <p class="hackathon-subtitle">Innovation technologique pour un environnement scolaire sain</p>
-        
+        <h2 class="hackathon-title">Hackathon Organisé par Kaikai</h2>
+        <p class="hackathon-subtitle">Un défi d'innovation pour la qualité de l'air dans les écoles</p>
         <div class="stats-grid">
             <div class="stat-card">
                 <div class="stat-icon">🎯</div>
                 <div class="stat-title">Objectif</div>
                 <div class="stat-desc">Développer des solutions concrètes pour améliorer la qualité de l'air dans les établissements scolaires</div>
             </div>
-            
             <div class="stat-card">
                 <div class="stat-icon">💡</div>
                 <div class="stat-title">Innovation</div>
                 <div class="stat-desc">Technologies de pointe basées sur l'IoT, l'analyse de données et l'intelligence artificielle</div>
             </div>
-            
             <div class="stat-card">
                 <div class="stat-icon">🌍</div>
                 <div class="stat-title">Impact</div>
@@ -395,27 +387,25 @@ def render_kaikai_page():
         </div>
     </div>
     """, unsafe_allow_html=True)
-
     # Citation inspirante
     st.markdown("""
     <div class="quote-section">
         <p class="quote-text">
-            "Ce hackathon rassemble l'écosystème d'innovation sénégalais autour d'un enjeu majeur de santé publique. 
-            Notre projet RESPiRE illustre parfaitement cette synergie entre technologie, engagement social et impact environnemental."
+            "Kaikai a organisé ce hackathon pour rassembler l'écosystème d'innovation sénégalais autour d'un enjeu majeur de santé publique. 
+            Nous sommes fiers de participer avec notre projet RESPiRE qui illustre cette synergie entre technologie, engagement social et impact environnemental."
         </p>
     </div>
     """, unsafe_allow_html=True)
-
     # Call-to-action professionnel
     st.markdown("""
     <div class="cta-section">
-        <h3 class="cta-title">Partenaire d'Excellence</h3>
+        <h3 class="cta-title">Merci à Kaikai</h3>
         <p class="cta-text">
-            Nous remercions sincèrement Kaikai pour son accompagnement exceptionnel et son engagement 
-            indéfectible en faveur de l'innovation durable et de l'entrepreneuriat social au Sénégal.
+            Nous remercions sincèrement Kaikai pour avoir organisé ce hackathon et pour leur accompagnement exceptionnel. 
+            Leur engagement en faveur de l'innovation durable et de l'entrepreneuriat social au Sénégal nous inspire et nous motive.
         </p>
         <a href="https://www.kaikai.dev" target="_blank" class="cta-button">
-            Découvrir l'Écosystème Kaikai
+            Découvrir Kaikai
         </a>
     </div>
     """, unsafe_allow_html=True)
