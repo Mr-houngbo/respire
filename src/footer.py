@@ -13,7 +13,7 @@ def show_footer():
     
     /* Padding pour éviter que le footer masque le contenu */
     .main .block-container {
-        padding-bottom: 480px !important;
+        padding-bottom: 380px !important;
     }
     
     /* Supprimer le footer par défaut de Streamlit */
@@ -49,12 +49,12 @@ def show_footer():
         }
         
         .footer-container {
-            background: linear-gradient(135deg, #2E7D32 0%, #43A047 50%, #66BB6A 100%);
+            background: linear-gradient(135deg, #6c757d 0%, #868e96 50%, #adb5bd 100%);
             padding: 2rem 2rem 1.5rem 2rem;
             border-radius: 15px 15px 0 0;
             position: relative;
             overflow: hidden;
-            box-shadow: 0 -5px 20px rgba(27, 94, 32, 0.3);
+            box-shadow: 0 -5px 20px rgba(108, 117, 125, 0.2);
             margin-top: 2rem;
             margin-bottom: 0;
             width: 100vw;
@@ -84,7 +84,7 @@ def show_footer():
         
         .footer-content {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            grid-template-columns: repeat(3, 1fr);
             gap: 1.5rem;
             margin-bottom: 0rem;
         }
@@ -92,39 +92,28 @@ def show_footer():
         .footer-card {
             background: rgba(255, 255, 255, 0.1);
             border: 1px solid rgba(255, 255, 255, 0.2);
-            border-radius: 15px;
+            border-radius: 12px;
             padding: 1.5rem;
             text-align: center;
             transition: all 0.3s ease;
         }
         
         .footer-card:hover {
-            transform: translateY(-3px);
+            transform: translateY(-2px);
             background: rgba(255, 255, 255, 0.15);
-            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
         }
         
         .card-title {
-            font-size: 1.3rem;
-            font-weight: 700;
-            color: #ffffff;
-            margin-bottom: 1.2rem;
-            letter-spacing: 1px;
-            text-transform: uppercase;
-            border-bottom: 2px solid rgba(255, 255, 255, 0.3);
-            padding-bottom: 0.5rem;
-        }
-        
-        .card-subtitle {
-            font-size: 1rem;
+            font-size: 1.2rem;
             font-weight: 600;
-            color: #E8F5E8;
-            margin: 1rem 0 0.5rem 0;
-            text-transform: capitalize;
+            color: #ffffff;
+            margin-bottom: 1rem;
+            letter-spacing: 0.5px;
         }
         
         .card-content {
-            color: rgba(255, 255, 255, 0.85);
+            color: rgba(255, 255, 255, 0.9);
             line-height: 1.6;
             font-size: 0.9rem;
             font-weight: 400;
@@ -140,14 +129,14 @@ def show_footer():
             flex-wrap: wrap;
             justify-content: center;
             gap: 0.5rem;
-            margin-top: 1rem;
+            margin-top: 0.5rem;
         }
         
         .tech-badge {
             background: rgba(255, 255, 255, 0.2);
             color: white;
             padding: 0.4rem 0.8rem;
-            border-radius: 15px;
+            border-radius: 12px;
             font-size: 0.8rem;
             font-weight: 500;
             transition: all 0.3s ease;
@@ -161,13 +150,13 @@ def show_footer():
         .footer-link {
             color: #ffffff;
             text-decoration: none;
-            font-weight: 600;
+            font-weight: 500;
             transition: all 0.3s ease;
         }
         
         .footer-link:hover {
-            color: #E8F5E8;
-            text-decoration: underline;
+            color: #f8f9fa;
+            text-decoration: none;
         }
         
         @media (max-width: 768px) {
@@ -198,29 +187,34 @@ def show_footer():
                 <div class="footer-logo">RESPIRE</div>
                 <div class="footer-tagline">Dashboard de qualité de l'air dans les écoles</div>
             </div>
+            
             <div class="footer-content">
                 <div class="footer-card">
                     <div class="card-title">Équipe & Projet</div>
                     <div class="card-content">
-                        Créé par <strong>Breath4Life</strong> Dans le cadre du hackathon de <a href="https://www.kaikai.dev" target="_blank" class="footer-link">Kaikai 2025</a>
+                        Créé par <strong>Breath4Life</strong><br>
+                        Dans le cadre du hackathon <a href="https://www.kaikai.dev" target="_blank" class="footer-link">Kaikai 2025</a>
                     </div>
                 </div>
+                
                 <div class="footer-card">
                     <div class="card-title">Technologies</div>
+                    <div class="card-content">
                         <div class="tech-stack">
-                            <span class="tech-badge">Python </span>
+                            <span class="tech-badge">Python</span>
+                            <span class="tech-badge">Streamlit</span>
                             <span class="tech-badge">HTML/CSS</span>
-                            <span class="tech-badge">JavaScript</span>
                             <span class="tech-badge">Pandas</span>
                             <span class="tech-badge">AirGradient API</span>
-                            <span class="tech-badge">Streamlit</span>
                         </div>
                     </div>
                 </div>
+                
                 <div class="footer-card">
                     <div class="card-title">Code & Données</div>
                     <div class="card-content">
-                        <a href="https://github.com/Mr-houngbo/respire/" target="_blank" class="footer-link">Repository GitHub  | Version <strong>2.0.0</strong>  </a>
+                        <a href="https://github.com/Mr-houngbo/respire/" target="_blank" class="footer-link">Repository GitHub</a><br>
+                        Version <strong>2.0.0</strong>
                     </div>
                 </div>
             </div>
@@ -231,6 +225,4 @@ def show_footer():
     """
     
     # Affichage avec st.components.v1.html
-    components.html(footer_html, height=480)
-
-
+    components.html(footer_html, height=380)
