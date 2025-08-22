@@ -13,7 +13,7 @@ def show_footer():
     
     /* Padding pour éviter que le footer masque le contenu */
     .main .block-container {
-        padding-bottom: 420px !important;
+        padding-bottom: 480px !important;
     }
     
     /* Supprimer le footer par défaut de Streamlit */
@@ -105,21 +105,33 @@ def show_footer():
         }
         
         .card-title {
-            font-size: 1.2rem;
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: #ffffff;
+            margin-bottom: 1.2rem;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            border-bottom: 2px solid rgba(255, 255, 255, 0.3);
+            padding-bottom: 0.5rem;
+        }
+        
+        .card-subtitle {
+            font-size: 1rem;
             font-weight: 600;
             color: #E8F5E8;
-            margin-bottom: 1rem;
-            letter-spacing: 1px;
+            margin: 1rem 0 0.5rem 0;
+            text-transform: capitalize;
         }
         
         .card-content {
-            color: rgba(255, 255, 255, 0.9);
+            color: rgba(255, 255, 255, 0.85);
             line-height: 1.6;
-            font-size: 0.95rem;
+            font-size: 0.9rem;
+            font-weight: 400;
         }
         
         .card-content strong {
-            color: #E8F5E8;
+            color: #ffffff;
             font-weight: 600;
         }
         
@@ -136,7 +148,7 @@ def show_footer():
             color: white;
             padding: 0.4rem 0.8rem;
             border-radius: 15px;
-            font-size: 0.85rem;
+            font-size: 0.8rem;
             font-weight: 500;
             transition: all 0.3s ease;
         }
@@ -147,14 +159,14 @@ def show_footer():
         }
         
         .footer-link {
-            color: #E8F5E8;
+            color: #ffffff;
             text-decoration: none;
-            font-weight: 500;
+            font-weight: 600;
             transition: all 0.3s ease;
         }
         
         .footer-link:hover {
-            color: white;
+            color: #E8F5E8;
             text-decoration: underline;
         }
         
@@ -190,35 +202,47 @@ def show_footer():
             <div class="footer-content">
                 <div class="footer-card">
                     <div class="card-title">Équipe & Projet</div>
+                    <div class="card-subtitle">Développeurs</div>
                     <div class="card-content">
-                        Créé par <strong>Breath4Life</strong><br>
-                        Dans le cadre du hackathon <a href="https://www.kaikai.dev" target="_blank" class="footer-link">Kaikai 2025</a><br>
+                        Créé par <strong>Breath4Life</strong>
+                    </div>
+                    <div class="card-subtitle">Événement</div>
+                    <div class="card-content">
+                        Hackathon <a href="https://www.kaikai.dev" target="_blank" class="footer-link">Kaikai 2025</a>
                     </div>
                 </div>
                 
                 <div class="footer-card">
                     <div class="card-title">Technologies</div>
+                    <div class="card-subtitle">Frontend & Backend</div>
                     <div class="card-content">
                         <div class="tech-stack">
                             <span class="tech-badge">Python</span>
                             <span class="tech-badge">Streamlit</span>
-                            <span class="tech-badge">Pandas</span>
-                            <span class="tech-badge">AirGradient</span>
+                            <span class="tech-badge">HTML/CSS</span>
+                            <span class="tech-badge">JavaScript</span>
                         </div>
+                    </div>
+                    <div class="card-subtitle">Données & API</div>
+                    <div class="card-content">
                         <div class="tech-stack">
-                            <span class="tech-badge">Python</span>
-                            <span class="tech-badge">Streamlit</span>
                             <span class="tech-badge">Pandas</span>
                             <span class="tech-badge">AirGradient</span>
+                            <span class="tech-badge">REST API</span>
+                            <span class="tech-badge">JSON</span>
                         </div>
                     </div>
                 </div>
                 
                 <div class="footer-card">
                     <div class="card-title">Code & Données</div>
+                    <div class="card-subtitle">Source Code</div>
                     <div class="card-content">
-                        <a href="https://github.com/Mr-houngbo/respire/" target="_blank" class="footer-link">Code source GitHub</a><br>
-                        Version <strong>2.0.0</strong>
+                        <a href="https://github.com/Mr-houngbo/respire/" target="_blank" class="footer-link">Repository GitHub</a>
+                    </div>
+                    <div class="card-subtitle">Version</div>
+                    <div class="card-content">
+                        <strong>2.0.0</strong> - Production
                     </div>
                 </div>
             </div>
@@ -229,5 +253,4 @@ def show_footer():
     """
     
     # Affichage avec st.components.v1.html
-    components.html(footer_html, height=420)
-
+    components.html(footer_html, height=480)
