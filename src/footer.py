@@ -225,6 +225,7 @@ def show_footer():
     """
     
     # Affichage avec st.components.v1.html
-    components.html(footer_html, height=430)
+    components.html(footer_html, height=440)
+
 
 
