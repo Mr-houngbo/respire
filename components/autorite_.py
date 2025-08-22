@@ -668,7 +668,8 @@ BASE_URL = "https://api.airgradient.com/public/api/v1"
 location_id = "164928"
 location_id_input = location_id
 token_input = token
-format_output = "pdf"
+format_output = "PDF"
+
 
 VALEURS_LIMITE = {
     "pm03_count": 100000,
@@ -1551,6 +1552,7 @@ def create_streamlit_interface():
             except Exception as e:
                 st.error(f"❌ Erreur lors de la génération: {str(e)}")
                 st.info("🔧 Vérifiez vos paramètres et votre connexion internet")
+
 
 
 
