@@ -9,7 +9,7 @@ from src.functions import *
 from config.settings import token,BASE_URL
 from src.carte import *
 from config.settings import token,BASE_URL,VALEURS_LIMITE,location_ids,DATA_DIR,liens,school_names,logo_paths,sender
-from components.ecole_ import section_en_savoir_plus_air,show_animation
+from components.ecole_ import section_en_savoir_plus_air,show_animation_home
 from pathlib import Path
 from components.autorite_ import show_header
 import warnings
@@ -493,6 +493,7 @@ st.markdown("""
     Breath4Life © 2025 • Ensemble faisons respirer nos écoles.
 </div>
 """, unsafe_allow_html=True)
+
 
 
 
