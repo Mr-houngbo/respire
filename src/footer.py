@@ -198,17 +198,12 @@ def show_footer():
                 <div class="footer-logo">RESPIRE</div>
                 <div class="footer-tagline">Dashboard de qualité de l'air dans les écoles</div>
             </div>
-            
             <div class="footer-content">
                 <div class="footer-card">
                     <div class="card-title">Équipe & Projet</div>
                     <div class="card-subtitle">Développeurs</div>
                     <div class="card-content">
-                        Créé par <strong>Breath4Life</strong>
-                    </div>
-                    <div class="card-subtitle">Événement</div>
-                    <div class="card-content">
-                        Hackathon <a href="https://www.kaikai.dev" target="_blank" class="footer-link">Kaikai 2025</a>
+                        Créé par <strong>Breath4Life</strong> Dans le cadre du hackathon de <a href="https://www.kaikai.dev" target="_blank" class="footer-link">Kaikai 2025</a>
                     </div>
                 </div>
                 
@@ -217,8 +212,7 @@ def show_footer():
                     <div class="card-subtitle">Frontend & Backend</div>
                     <div class="card-content">
                         <div class="tech-stack">
-                            <span class="tech-badge">Python</span>
-                            <span class="tech-badge">Streamlit</span>
+                            <span class="tech-badge">Python | Streamlit</span>
                             <span class="tech-badge">HTML/CSS</span>
                             <span class="tech-badge">JavaScript</span>
                         </div>
@@ -227,8 +221,7 @@ def show_footer():
                     <div class="card-content">
                         <div class="tech-stack">
                             <span class="tech-badge">Pandas</span>
-                            <span class="tech-badge">AirGradient</span>
-                            <span class="tech-badge">REST API</span>
+                            <span class="tech-badge">AirGradient API</span>
                             <span class="tech-badge">JSON</span>
                         </div>
                     </div>
@@ -236,13 +229,8 @@ def show_footer():
                 
                 <div class="footer-card">
                     <div class="card-title">Code & Données</div>
-                    <div class="card-subtitle">Source Code</div>
                     <div class="card-content">
-                        <a href="https://github.com/Mr-houngbo/respire/" target="_blank" class="footer-link">Repository GitHub</a>
-                    </div>
-                    <div class="card-subtitle">Version</div>
-                    <div class="card-content">
-                        <strong>2.0.0</strong> - Production
+                        <a href="https://github.com/Mr-houngbo/respire/" target="_blank" class="footer-link">Repository GitHub  | Version <strong>2.0.0</strong>  </a>
                     </div>
                 </div>
             </div>
@@ -254,3 +242,4 @@ def show_footer():
     
     # Affichage avec st.components.v1.html
     components.html(footer_html, height=480)
+
