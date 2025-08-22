@@ -268,7 +268,7 @@ if page == "Accueil":
     # Carte centrée sur le Sénégal
 
     display_map_with_school_selector(locations, data_by_location)
-    section_en_savoir_plus_air(liens)                   # Bloc de videos sur la qualite de l'air
+    # section_en_savoir_plus_air(liens)             A remplacer par notre video de presentation du projet
 
     # ---------------------- # ---------------------- # ---------------------- # ---------------------- 
    
@@ -466,6 +466,7 @@ main()
 
 
 show_footer()
+
 
 
 
