@@ -232,7 +232,7 @@ page = st.session_state.current_page
 
 if page == "Accueil":
     
-    show_header_playful()
+    #show_header_playful()
         
     # ---------------------- # ---------------------- Carte des capteurs   # ---------------------- # ---------------------- 
     # En-tête simple et efficace
@@ -476,6 +476,7 @@ main()
 
 
 show_footer()
+
 
 
 
