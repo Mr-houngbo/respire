@@ -29,6 +29,8 @@ def show():
      
     #BLOC IV
     show_daily_tips(location_id,token)
+
+    section_en_savoir_plus_air(liens)                   # Bloc de videos sur la qualite de l'air
     
     st.markdown("""
             <div>
@@ -64,3 +66,4 @@ def show():
 
 
 # show_footer()
+
