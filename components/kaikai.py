@@ -525,13 +525,6 @@ def render_kaikai_page():
                         </p>
                     </div>
                     <div class="feature-card">
-                        <div class="feature-icon">🎯</div>
-                        <h3 class="feature-title">Événements Structurants</h3>
-                        <p class="feature-description">
-                            Organisation de hackathons et compétitions d'innovation comme celui qui nous réunit aujourd'hui.
-                        </p>
-                    </div>
-                    <div class="feature-card">
                         <div class="feature-icon">🌍</div>
                         <h3 class="feature-title">Solutions Africaines</h3>
                         <p class="feature-description">
@@ -606,4 +599,5 @@ def render_kaikai_page():
         </div>
     </div>
     """, unsafe_allow_html=True)
+
 
