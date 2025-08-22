@@ -483,7 +483,6 @@ def render_kaikai_page():
                 <p class="hero-subtitle">Lead and digital development</p>
             </div>
         </div>
-        
         <!-- Section Mission -->
         <div class="content-section">
             <div class="section-header">
@@ -492,7 +491,6 @@ def render_kaikai_page():
                     L'entreprise sociale qui transforme l'écosystème d'innovation africain
                 </p>
             </div>
-            
             <div class="mission-grid">
                 <div class="mission-content">
                     <p class="mission-text">
@@ -505,12 +503,10 @@ def render_kaikai_page():
                         un acteur incontournable de l'écosystème d'innovation sénégalais.
                     </p>
                 </div>
-                
                 <div class="logo-container">
                     <div class="kaikai-logo-display">k</div>
                 </div>
             </div>
-            
             <!-- Section Features -->
             <div class="features-section">
                 <div class="features-grid">
@@ -521,7 +517,6 @@ def render_kaikai_page():
                             Programmes d'accompagnement et d'accélération pour les startups à impact social et environnemental.
                         </p>
                     </div>
-                    
                     <div class="feature-card">
                         <div class="feature-icon">🤝</div>
                         <h3 class="feature-title">Partenariats Stratégiques</h3>
@@ -529,7 +524,6 @@ def render_kaikai_page():
                             Collaboration avec des acteurs locaux et internationaux pour maximiser l'impact des projets.
                         </p>
                     </div>
-                    
                     <div class="feature-card">
                         <div class="feature-icon">🎯</div>
                         <h3 class="feature-title">Événements Structurants</h3>
@@ -537,7 +531,6 @@ def render_kaikai_page():
                             Organisation de hackathons et compétitions d'innovation comme celui qui nous réunit aujourd'hui.
                         </p>
                     </div>
-                    
                     <div class="feature-card">
                         <div class="feature-icon">🌍</div>
                         <h3 class="feature-title">Solutions Africaines</h3>
@@ -548,7 +541,6 @@ def render_kaikai_page():
                 </div>
             </div>
         </div>
-        
         <!-- Section Hackathon -->
         <div class="hackathon-section">
             <div class="hackathon-content">
@@ -556,7 +548,6 @@ def render_kaikai_page():
                 <p class="hackathon-subtitle">
                     Un défi d'innovation pour améliorer la qualité de l'air dans les écoles sénégalaises
                 </p>
-                
                 <div class="objectives-grid">
                     <div class="objective-card">
                         <span class="objective-icon">🎯</span>
@@ -566,7 +557,6 @@ def render_kaikai_page():
                             dans les établissements scolaires du Sénégal.
                         </p>
                     </div>
-                    
                     <div class="objective-card">
                         <span class="objective-icon">💡</span>
                         <h3 class="objective-title">Innovation</h3>
@@ -575,7 +565,6 @@ def render_kaikai_page():
                             et l'intelligence artificielle adaptées au contexte local.
                         </p>
                     </div>
-                    
                     <div class="objective-card">
                         <span class="objective-icon">🌍</span>
                         <h3 class="objective-title">Impact</h3>
@@ -587,7 +576,6 @@ def render_kaikai_page():
                 </div>
             </div>
         </div>
-        
         <!-- Témoignage -->
         <div class="content-section">
             <div class="testimonial-section">
@@ -600,7 +588,6 @@ def render_kaikai_page():
                 </div>
             </div>
         </div>
-        
         <!-- Call to Action -->
         <div class="content-section">
             <div class="cta-section">
@@ -619,3 +606,4 @@ def render_kaikai_page():
         </div>
     </div>
     """, unsafe_allow_html=True)
+
