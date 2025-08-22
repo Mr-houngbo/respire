@@ -94,123 +94,62 @@ st.markdown("""
 
 def show_header():
     """
-    Affiche un en-tête moderne et attractif pour la page École.
-    :param nom_ecole: Nom de l'école à afficher (optionnel)
-    :param logo_path: Chemin vers le logo de l'école (optionnel)
+    Affiche un en-tête simple et élégant pour la page Autorité.
     """
     
-    # CSS personnalisé pour l'animation et le style
     st.markdown("""
     <style>
     .header-container {
-        background: linear-gradient(135deg, #e8f5e8 0%, #c8e6c9 50%, #a5d6a7 100%);
-        border-radius: 20px;
-        padding: 25px;
-        margin-bottom: 10px;
-        box-shadow: 0 8px 32px rgba(46, 125, 50, 0.1);
-        border: 2px solid rgba(46, 125, 50, 0.1);
-        backdrop-filter: blur(10px);
+        background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+        border: 1px solid #dee2e6;
+        border-radius: 0 0 12px 12px;
+        padding: 1.5rem 2rem;
+        margin: -1rem -1rem 2rem -1rem;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+        position: sticky;
+        top: 0;
+        z-index: 100;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+    
+    .header-content {
+        flex: 1;
     }
     
     .title-main {
-        font-size: 2.5rem;
-        font-weight: bold;
-        color: #1b5e20;
-        text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
-        margin-bottom: 0px;
-        animation: fadeInUp 1s ease-out;
+        font-size: 1.8rem;
+        font-weight: 600;
+        color: #2c3e50;
+        margin: 0 0 0.5rem 0;
+        letter-spacing: -0.02em;
     }
     
     .subtitle {
-        font-size: 1.3rem;
-        color: #2e7d32;
-        margin-bottom: 0px;
-        font-weight: 500;
-        animation: fadeInUp 1.2s ease-out;
-    }
-    
-    
-    .air-emoji {
-        font-size: 2rem;
-        animation: float 3s ease-in-out infinite;
-        margin: 0 10px;
-    }
-    
-    @keyframes fadeInUp {
-        from {
-            opacity: 0;
-            transform: translateY(30px);
-        }
-        to {
-            opacity: 1;
-            transform: translateY(0);
-        }
-    }
-    
-    @keyframes bounce {
-        0%, 20%, 50%, 80%, 100% {
-            transform: translateY(0);
-        }
-        40% {
-            transform: translateY(-10px);
-        }
-        60% {
-            transform: translateY(-5px);
-        }
-    }
-    
-    @keyframes float {
-        0%, 100% {
-            transform: translateY(0px);
-        }
-        50% {
-            transform: translateY(-10px);
-        }
-    }
-    
-    .decorative-line {
-        height: 4px;
-        background: linear-gradient(90deg, #4caf50, #81c784, #a5d6a7, #4caf50);
-        border-radius: 2px;
-        margin: 10px 0;
-        animation: shimmer 2s infinite;
-    }
-    
-    @keyframes shimmer {
-        0% {
-            background-position: -200px 0;
-        }
-        100% {
-            background-position: 200px 0;
-        }
+        font-size: 1rem;
+        color: #6c757d;
+        margin: 0;
+        font-weight: 400;
+        line-height: 1.4;
     }
     </style>
     """, unsafe_allow_html=True)
 
-    # Conteneur principal avec design moderne
     with st.container():
-        st.markdown('<div class="header-container">', unsafe_allow_html=True)
-        
-        col1, col2 = st.columns([4, 1])
-        
-        with col1:
-            # Titre principal avec emojis animés
-            st.markdown(
-                """
+        st.markdown('''
+        <div class="header-container">
+            <div class="header-content">
                 <div class="title-main">
                     Bienvenue sur l'espace Autorité de Respire
                 </div>
-                """,
-                unsafe_allow_html=True
-            )
-            
-            # Sous-titre engageant
-            st.markdown(
-                '<div class="subtitle">Découvrez comment va l\'air de l\'école dans les ecoles de votre ville aujourd\'hui et prenez des décisions. </div>',
-                unsafe_allow_html=True
-            )
-            
-        st.markdown('</div>', unsafe_allow_html=True)
+                <div class="subtitle">
+                    Découvrez comment va l'air de l'école dans les écoles de votre ville aujourd'hui et prenez des décisions.
+                </div>
+            </div>
+        </div>
+        ''', unsafe_allow_html=True)
+
 
 
 def show_line():
@@ -1614,6 +1553,7 @@ def create_streamlit_interface():
             except Exception as e:
                 st.error(f"❌ Erreur lors de la génération: {str(e)}")
                 st.info("🔧 Vérifiez vos paramètres et votre connexion internet")
+
 
 
 
