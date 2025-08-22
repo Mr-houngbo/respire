@@ -36,23 +36,23 @@ liens = {
             
             "1":
                 {
-                    "lien":"https://youtu.be/3YyaYqYO7Ks?si=fXdVMjUsqSSBHE45",
-                    "nom":"Montpellier Méditerranée Métropole"
-                },
-            "2":
-                {
                     "lien":"https://youtu.be/GFkaDF_c6zA?si=_axvJFh5ksmEAJGr",
                     "nom":"Agence de la transition ecologique ADEME"
                 },
-            "3":
+            "2":
                 {
                     "lien":"https://youtu.be/AUrSjPIPxgY?si=IF_vhIcFGe6dPepl",
                     "nom":"CCube Academy"
                 },
-            "4":
+            "3":
                 {
                     "lien":"https://youtu.be/IPXIvaXI0xg?si=XXFErUfpcrXsEgUb",
                     "nom":"European Environment Agency"
+                },
+            "4":
+                {
+                    "lien":"https://youtu.be/3YyaYqYO7Ks?si=fXdVMjUsqSSBHE45",
+                    "nom":"Montpellier Méditerranée Métropole"
                 }
                 
         }
@@ -64,6 +64,7 @@ locations = pd.read_csv("locations_info.csv")
 location_ids = locations["location_id"]
 school_names = locations["name"]
 logo_paths = locations["logo_path"]
+
 
 
 
