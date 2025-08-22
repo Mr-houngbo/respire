@@ -958,9 +958,6 @@ class HTMLReportGenerator:
         
         return self._fig_to_base64(fig)
 
-
-
-
     def _fig_to_base64(self, fig) -> str:
         """Convertit une figure matplotlib en base64 sans créer de fichier temporaire"""
         buf = io.BytesIO()
@@ -1494,7 +1491,6 @@ class HTMLReportGenerator:
             print(f"❌ Erreur lors de la génération PDF: {e}")
             return None
 
-
 def create_streamlit_interface():
     """Bouton Streamlit pour générer et télécharger le rapport"""
 
@@ -1555,6 +1551,7 @@ def create_streamlit_interface():
             except Exception as e:
                 st.error(f"❌ Erreur lors de la génération: {str(e)}")
                 st.info("🔧 Vérifiez vos paramètres et votre connexion internet")
+
 
 
 
