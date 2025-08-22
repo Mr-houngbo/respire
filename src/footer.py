@@ -49,11 +49,11 @@ def show_footer():
         }
         
         .footer-container {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
+            background: linear-gradient(135deg, #2d5016 0%, #3d6b1a 50%, #4a7c1e 100%);
             padding: 2rem 2rem 1.5rem 2rem;
             position: relative;
             overflow: hidden;
-            box-shadow: 0 -3px 15px rgba(102, 126, 234, 0.3);
+            box-shadow: 0 -3px 15px rgba(45, 80, 22, 0.3);
             margin-top: 2rem;
             margin-bottom: 0;
             width: 100vw;
@@ -173,7 +173,7 @@ def show_footer():
             }
         }
         
-    </style>
+        </style>
     </head>
     <body>
         <div>
@@ -223,5 +223,6 @@ def show_footer():
     
     # Affichage avec st.components.v1.html
     components.html(footer_html, height=398)
+
 
 
