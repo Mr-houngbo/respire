@@ -185,7 +185,7 @@ def create_optimized_map(locations, data_by_location):
     # Carte avec tiles personnalisés
     m = folium.Map(
         location=[7.0, 21.0],
-        zoom_start=4,
+        zoom_start=3,
         tiles=None  # On va ajouter nos propres tiles
     )
     
@@ -431,6 +431,7 @@ def display_map_with_school_selector(locations, data_by_location, height=600):
 # Utilisation dans Streamlit
 # m = create_optimized_map(locations, data_by_location)
 # st_folium(m, width="100%", height=600, returned_objects=[], use_container_width=True)
+
 
 
 
