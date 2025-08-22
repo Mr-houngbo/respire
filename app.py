@@ -9,7 +9,7 @@ from src.functions import *
 from config.settings import token,BASE_URL
 from src.carte import *
 from config.settings import token,BASE_URL,VALEURS_LIMITE,location_ids,DATA_DIR,liens,school_names,logo_paths,sender
-from components.ecole_ import section_en_savoir_plus_air
+from components.ecole_ import section_en_savoir_plus_air,show_animation
 from pathlib import Path
 from components.autorite_ import show_header
 import warnings
@@ -17,7 +17,6 @@ warnings.filterwarnings("ignore")
 from streamlit_autorefresh import st_autorefresh
 import json
 from sms_system import SMSAlertSystem
-
 
 # CSS pour cacher la barre Streamlit
 hide_streamlit_style = """
@@ -279,7 +278,9 @@ if page == "Accueil":
     
     # Carte centrée sur le Sénégal
     display_map_with_school_selector(locations, data_by_location)
-    # section_en_savoir_plus_air(liens)             A remplacer par notre video de presentation du projet
+    # Video de presentation du projet
+    
+    show_animation("assets/video/respire_presentation.mp4")
     # ---------------------- # ---------------------- # ---------------------- # ---------------------- 
    
 # --------------------- CONTENU PRINCIPAL -----------------------------------
@@ -492,6 +493,7 @@ st.markdown("""
     Breath4Life © 2025 • Ensemble faisons respirer nos écoles.
 </div>
 """, unsafe_allow_html=True)
+
 
 
 
