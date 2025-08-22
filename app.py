@@ -235,18 +235,18 @@ if page == "Accueil":
     show_header_playful()
         
     # ---------------------- # ---------------------- Carte des capteurs   # ---------------------- # ---------------------- 
-     # En-tête simple et efficace
+    # En-tête simple et efficace
     st.markdown("""
     <div style="
-        background-color: #4a90e2;
-        padding: 2rem;
-        border-radius: 10px;
+        background-color: #6c757d;
+        padding: 1rem 1.5rem;
+        border-radius: 8px;
         margin-bottom: 1.5rem;
         text-align: center;
     ">
         <h1 style="
             color: white;
-            font-size: 2.2rem;
+            font-size: 1.8rem;
             margin: 0;
             font-weight: 600;
         ">🌍 Carte des capteurs installés dans les écoles au Sénégal</h1>
@@ -280,7 +280,6 @@ if page == "Accueil":
     # Carte centrée sur le Sénégal
     display_map_with_school_selector(locations, data_by_location)
     # section_en_savoir_plus_air(liens)             A remplacer par notre video de presentation du projet
-    
     # ---------------------- # ---------------------- # ---------------------- # ---------------------- 
    
 # --------------------- CONTENU PRINCIPAL -----------------------------------
@@ -477,6 +476,7 @@ main()
 
 
 show_footer()
+
 
 
 
