@@ -6,3 +6,5 @@ name,location_id,lat,lon,logo_path
 "Ecole Notre Dame des Victoires, Diourbel",151726,14.653855,-16.2306,"assets/images/logo_vic.jpeg"
 "Station de référence, Pikine",151804,14.7444588,-17.4017114,"assets/images/logo_pik.jpeg"
 "Ecole Superieure Multinationnale des Telecommunications ",164928,14.700088,-17.451042,"assets/images/logo_esmt.jpeg"
+"Complexe Scolaire Limamoulaye",168395,14.704371,-17452163,"assets/images/logo_lim.jpeg",
+"CEM Martin Luther King",168400,14.682637,-17.44367,"assets/images/logo_mlk.jpeg"
